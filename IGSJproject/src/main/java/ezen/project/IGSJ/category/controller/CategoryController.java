@@ -32,9 +32,11 @@ public class CategoryController {
 	@GetMapping("/items/{num}")
 	@ResponseBody
 	public List<CategoryDTO> getCategoryInfos(@PathVariable int num) throws Exception {
+		
 		System.out.println(num);
 		List<CategoryDTO> categoryInfos = categoryService.getCategoryInfos(num);
 		return categoryInfos;
+		
 	} // getCategoryInfos
 	
 
