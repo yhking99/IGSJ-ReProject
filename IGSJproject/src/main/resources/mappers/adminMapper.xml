@@ -6,14 +6,14 @@
 	<select id="getAllUsers" parameterType="hashMap" resultType="ezen.project.IGSJ.member.domain.MemberDTO">
 		select
 
-		userId,
-		userPwd,
-		userName,
-		userPhoneNumber,
-		userEmail,
-		userJoinDate,
-		userVerify,
-		userBirth
+			userId,
+			userPwd,
+			userName,
+			userPhoneNumber,
+			userEmail,
+			userJoinDate,
+			userVerify,
+			userBirth
 
 		from MemberDTO
 
@@ -100,5 +100,49 @@
 		</if>
 
 	</select>
+	
+	<!-- 관리자 회원 상세 정보 조회 -->
+	<select id="adminSelectMember" parameterType="String" resultType="ezen.project.IGSJ.member.domain.MemberDTO">
+		select 
+			userId,
+			userPwd,
+			userName,
+			userPhoneNumber,
+			userEmail,
+			userJoinDate,
+			userVerify,
+			userBirth
+			
+		from MemberDTO
+		where userId = #{userId}
+	</select>
+	<select id="adminSelectAddress" parameterType="String" resultType="ezen.project.IGSJ.address.domain.MemberAddressDTO">
+		select 
+			userId,
+			postAddress,
+			address,
+			detailAddress
+			
+		from MemberAddressDTO
+		where userId = #{userId}
+	</select>
+	
+	<!-- 관리자 회원 정보 수정 -->
+	<update id="adminMemberModify" parameterType="ezen.project.IGSJ.member.domain.MemberDTO">
+		update MemberDTO
+			set
+				userPwd = #{userPwd},
+				userEmail = #{userEmail}
+		where userId = #{userId}
+	</update>
+	<update id="adminAddressModify" parameterType="ezen.project.IGSJ.address.domain.MemberAddressDTO">
+		update MemberAddressDTO
+			set
+				postAddress = #{postAddress},
+				address = #{address},
+				detailAddress = #{detailAddress}
+				
+		where userId = #{userId}
+	</update>
 
 </mapper>
