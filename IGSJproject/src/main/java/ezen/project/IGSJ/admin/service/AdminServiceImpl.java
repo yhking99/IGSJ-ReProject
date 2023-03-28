@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ezen.project.IGSJ.admin.dao.AdminDAO;
 import ezen.project.IGSJ.member.domain.MemberDTO;
+import ezen.project.IGSJ.product.domain.ProductDTO;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -43,5 +44,14 @@ public class AdminServiceImpl implements AdminService{
 		logger.info("관리자 페이지 전체 상품 목록 불러오기 service");
 		
 		return adminDAO.getProductList(displayTotalContent, pageContent, searchType, keyword);
+	}
+	
+	// 검색 결과에 따른 상품 불러오기
+	@Override
+	public int searchProduct(String searchType, String keyword) throws Exception {
+		
+		logger.info("관리자 페이지 검색결과에 따른 상품 수 출력");
+		
+		return adminDAO.searchProduct(searchType, keyword);
 	}
 }
