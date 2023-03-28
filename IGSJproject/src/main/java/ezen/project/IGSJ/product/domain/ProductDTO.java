@@ -15,6 +15,7 @@ public class ProductDTO {
 
 	// 조인용 변수
 	private String storedFileRootName;
+	private String thumb;
 
 	public String getPno() {
 		return pno;
@@ -88,11 +89,19 @@ public class ProductDTO {
 		this.storedFileRootName = storedFileRootName;
 	}
 
+	public String getThumb() {
+		return thumb;
+	}
+
+	public void setThumb(String thumb) {
+		this.thumb = thumb;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductDTO [pno=" + pno + ", cno=" + cno + ", product_name=" + product_name + ", product_price=" + product_price + ", product_stock="
 				+ product_stock + ", product_description=" + product_description + ", product_regDate=" + product_regDate + ", userId=" + userId
-				+ ", storedFileRootName=" + storedFileRootName + "]";
+				+ ", storedFileRootName=" + storedFileRootName + ", thumb=" + thumb + "]";
 	}
 
 }
