@@ -1,5 +1,7 @@
 package ezen.project.IGSJ.address.dao;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
