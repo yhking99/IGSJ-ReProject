@@ -2,6 +2,8 @@ package ezen.project.IGSJ.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.admin.service.AdminService;
 import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
@@ -93,4 +96,39 @@ public class AdminController {
 		model.addAttribute("selectedPageNum", pageNum);
 
 	}
+	
+	// 관리자 회원 정보 수정 페이지 진입
+	@RequestMapping(value = "/admin/membermodifypage", method = RequestMethod.GET)
+	public String adminMemberModifyPage(
+			@RequestParam("userId") String userId, 
+			MemberDTO memberDTO, 
+			MemberAddressDTO memberAddressDTO,
+			Model model) throws Exception {
+		
+		logger.info("관리자 회원 정보 수정 페이지 접속");
+		
+		memberDTO = adminService.adminSelectMember(userId);
+		
+		memberAddressDTO = adminService.adminSelectAddress(userId);
+		
+		model.addAttribute("userInfo", memberDTO);
+		model.addAttribute("userAddressInfo", memberAddressDTO);
+		
+		return "/admin/membermodify";
+	}
+	
+	// 관리자 회원 정보 수정 실행
+	@RequestMapping(value = "/admin/membermodify", method = RequestMethod.POST)
+	public String adminMemberModify(MemberDTO memberDTO , MemberAddressDTO memberAddressDTO , HttpSession session) throws Exception {
+		
+		logger.info("관리자 회원 정보 수정 시작");
+		
+		adminService.adminMemberModify(memberDTO, memberAddressDTO);
+		
+		//adminService.adminAddressModify(memberAddressDTO);
+		
+		return "redirect:/admin/memberlist?pageNum=1";
+	}
+	
+	// 관리자 회원 삭제 ajax
 }
