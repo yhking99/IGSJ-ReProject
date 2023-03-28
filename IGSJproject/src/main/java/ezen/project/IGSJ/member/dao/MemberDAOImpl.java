@@ -46,4 +46,21 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne(NAME_SPACE + ".memberIdCheck", memberDTO);
 		
 	}
+	
+	//회원정보 수정 로직
+	@Override
+	public void memberModify(MemberDTO memberDTO) throws Exception {
+
+		logger.info("회원정보 수정 로직 memberModify - DAO");
+		
+		sqlSession.update(NAME_SPACE + ".memberModify", memberDTO);
+	}
+	//회원 정보 찾기
+	@Override
+	public MemberDTO memberProfile(String userId) throws Exception {
+		
+		logger.info("회원 정보 찾기 memberProfile - DAO");
+		
+		return sqlSession.selectOne(NAME_SPACE + ".memberProfile", userId);
+	}
 }
