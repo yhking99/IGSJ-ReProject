@@ -45,4 +45,13 @@ public class AdminServiceImpl implements AdminService{
 		
 		return adminDAO.getProductList(displayTotalContent, pageContent, searchType, keyword);
 	}
+	
+	// 검색 결과에 따른 상품 불러오기
+	@Override
+	public int searchProduct(String searchType, String keyword) throws Exception {
+		
+		logger.info("관리자 페이지 검색결과에 따른 상품 수 출력");
+		
+		return adminDAO.searchProduct(searchType, keyword);
+	}
 }

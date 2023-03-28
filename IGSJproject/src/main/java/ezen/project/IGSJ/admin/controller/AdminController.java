@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ezen.project.IGSJ.admin.service.AdminService;
 import ezen.project.IGSJ.member.domain.MemberDTO;
+import ezen.project.IGSJ.product.domain.ProductDTO;
 import ezen.project.IGSJ.utils.pagination.PageIngredient;
 
 @Controller
@@ -65,7 +66,7 @@ public class AdminController {
 	// 전체 상품 목록 불러오기
 	@RequestMapping(value = "/admin/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
-			@RequestParam(value = "searchType", required = false, defaultValue = "userId") String searchType,
+			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
 			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
 
 		logger.info("관리자 페이지 - 상품 목록 출력 getProductList - controller");
@@ -83,7 +84,7 @@ public class AdminController {
 		// 게시글 총 갯수를 구한다. 단 검색타입과 키워드에 맞춘 결과에 대한 총 갯수를 출력해야한다.
 		page.setTotalContent(adminService.searchProduct(searchType, keyword));
 
-		List<MemberDTO> adminProductList = null;
+		List<ProductDTO> adminProductList = null;
 		adminProductList = adminService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword);
 		model.addAttribute("adminProductList", adminProductList);
 		model.addAttribute("page", page);
