@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ezen.project.IGSJ.admin.dao.AdminDAO;
 import ezen.project.IGSJ.member.domain.MemberDTO;
+import ezen.project.IGSJ.product.domain.ProductDTO;
 
 @Service
 public class AdminServiceImpl implements AdminService{

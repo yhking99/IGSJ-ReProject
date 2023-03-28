@@ -3,6 +3,7 @@ package ezen.project.IGSJ.admin.service;
 import java.util.List;
 
 import ezen.project.IGSJ.member.domain.MemberDTO;
+import ezen.project.IGSJ.product.domain.ProductDTO;
 
 public interface AdminService {
 	
