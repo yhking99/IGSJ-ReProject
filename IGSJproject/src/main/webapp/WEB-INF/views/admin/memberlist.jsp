@@ -9,12 +9,6 @@
 <meta charset="UTF-8">
 <title>(Admin)회원 목록 보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<!--
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
--->
 <style>
 #paging a {
 	text-decoration: none;
@@ -38,6 +32,10 @@ th, td {
 	vertical-align: middle;
 	padding: 15px;
 	border-bottom: 1px solid #e9e9e9;
+}
+
+span {
+	margin: 10px;
 }
 </style>
 </head>
@@ -83,9 +81,9 @@ th, td {
 								</c:otherwise>
 							</c:choose>
 							<td>
-								<a href="#">[수정]</a>
+								<a href="/admin/membermodifypage?userId=${adminMemberList.userId }">[수정]</a>
 								<br>
-								<a href="#">[삭제]</a>
+								<a href="javascript:removeMember('${adminMemberList.userId }')">[삭제]</a>
 							</td>
 						</tr>
 					</c:forEach>

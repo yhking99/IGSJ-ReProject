@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.admin.dao.AdminDAO;
 import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
@@ -53,5 +54,37 @@ public class AdminServiceImpl implements AdminService{
 		logger.info("관리자 페이지 검색결과에 따른 상품 수 출력");
 		
 		return adminDAO.searchProduct(searchType, keyword);
+	}
+	
+	// 관리자 회원 정보 수정 실행
+	@Override
+	public void adminMemberModify(MemberDTO memberDTO, MemberAddressDTO memberAddressDTO) throws Exception {
+
+		logger.info("관리자 회원 정보 수정 SERVICE");
+		
+		adminDAO.adminMemberModify(memberDTO, memberAddressDTO);
+	}
+	
+	// 관리자 회원 선택에 따른 정보 가져오기
+	@Override
+	public MemberDTO adminSelectMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 정보 수정, 수정할 회원 아이디 : {}", userId);
+		
+		return adminDAO.adminSelectMember(userId);
+	}
+	@Override
+	public MemberAddressDTO adminSelectAddress(String userId) throws Exception {
+		
+		return adminDAO.adminSelectAddress(userId);
+	}
+	
+	// 관리자 회원 삭제
+	@Override
+	public void adminRemoveMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 삭제 service");
+		
+		adminDAO.adminRemoveMember(userId);
 	}
 }

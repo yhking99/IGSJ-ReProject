@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
 
@@ -78,5 +79,38 @@ public class AdminDAOImpl implements AdminDAO {
 		searchData.put("keyword", keyword);
 
 		return sqlSession.selectOne(NAME_SPACE + ".searchProduct", searchData);
+	}
+	
+	// 관리자 회원 정보 수정
+	@Override
+	public void adminMemberModify(MemberDTO memberDTO, MemberAddressDTO memberAddressDTO) throws Exception {
+		
+		logger.info("관리자 회원 정보 수정 DAO");
+		
+		sqlSession.update(NAME_SPACE + ".adminMemberModify", memberDTO);
+		sqlSession.update(NAME_SPACE + ".adminAddressModify", memberAddressDTO);
+	}
+	
+	// 관리자 회원 선택에 따른 정보 가져오기
+	@Override
+	public MemberDTO adminSelectMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 상세정보 조회 DAO, 조회된 회원 : {}", userId);
+		
+		return sqlSession.selectOne(NAME_SPACE + ".adminSelectMember", userId);
+	}
+	@Override
+	public MemberAddressDTO adminSelectAddress(String userId) throws Exception {
+		
+		return sqlSession.selectOne(NAME_SPACE + ".adminSelectAddress", userId);
+	}
+	
+	// 관리자 회원 삭제
+	@Override
+	public void adminRemoveMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 삭제 DAO");
+		
+		sqlSession.delete(NAME_SPACE + ".adminRemoveMember", userId);
 	}
 }

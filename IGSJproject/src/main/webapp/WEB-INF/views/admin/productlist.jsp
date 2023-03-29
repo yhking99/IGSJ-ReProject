@@ -89,9 +89,9 @@ th, td {
 							<td align="right">${adminProductList.userId}</td>
 							<td align="right">${adminProductList.cno}</td>
 							<td>
-								<a href="#">[수정]</a>
+								<a href="/admin/productmodifypage">[수정]</a>
 								<br>
-								<a href="#">[삭제]</a>
+								<a href="/admin/productdelete">[삭제]</a>
 							</td>
 						</tr>
 					</c:forEach>
