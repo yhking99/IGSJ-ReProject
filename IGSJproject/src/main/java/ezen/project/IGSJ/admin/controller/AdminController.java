@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.admin.service.AdminService;
@@ -21,20 +23,20 @@ import ezen.project.IGSJ.utils.pagination.PageIngredient;
 
 @Controller
 public class AdminController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
+
 	@Autowired
 	private AdminService adminService;
-	
+
 	// 관리자 페이지 입장
 	@RequestMapping(value = "/admin/mainpage", method = RequestMethod.GET)
 	public void adminMainPage() throws Exception {
-		
+
 		logger.info("관리자 페이지 입장");
-		
+
 	}
-	
+
 	// 전체 회원 불러오기
 	@RequestMapping(value = "/admin/memberlist", method = RequestMethod.GET)
 	public void getAllUsers(@RequestParam("pageNum") int pageNum,
@@ -65,7 +67,59 @@ public class AdminController {
 		model.addAttribute("selectedPageNum", pageNum);
 
 	}
-	
+
+	// 관리자 회원 정보 수정 페이지 진입
+	@RequestMapping(value = "/admin/membermodifypage", method = RequestMethod.GET)
+	public String adminMemberModifyPage(@RequestParam("userId") String userId, MemberDTO memberDTO, MemberAddressDTO memberAddressDTO, Model model)
+			throws Exception {
+
+		logger.info("관리자 회원 정보 수정 페이지 접속");
+
+		memberDTO = adminService.adminSelectMember(userId);
+
+		memberAddressDTO = adminService.adminSelectAddress(userId);
+
+		model.addAttribute("userInfo", memberDTO);
+		model.addAttribute("userAddressInfo", memberAddressDTO);
+
+		return "/admin/membermodify";
+	}
+
+	// 관리자 회원 정보 수정 실행
+	@RequestMapping(value = "/admin/membermodify", method = RequestMethod.POST)
+	public String adminMemberModify(MemberDTO memberDTO, MemberAddressDTO memberAddressDTO, HttpSession session) throws Exception {
+
+		logger.info("관리자 회원 정보 수정 시작");
+
+		adminService.adminMemberModify(memberDTO, memberAddressDTO);
+
+		return "redirect:/admin/memberlist?pageNum=1";
+	}
+
+	// 관리자 회원 삭제 ajax
+	@ResponseBody
+	@RequestMapping(value = "/admin/removeMember", method = RequestMethod.POST)
+	public boolean adminRemoveMember(@RequestParam("userId") String userId) throws Exception {
+
+		logger.info("관리자 회원 삭제 시작 controller");
+
+		adminService.adminRemoveMember(userId);
+
+		return true;
+	}
+	// 관리자 인증번호 생성하기
+	@ResponseBody
+	@RequestMapping(value = "/admin/removeMember", method = RequestMethod.GET)
+	public String generateAdminAuthPwd(@RequestParam("tempAdminPwd") String tempAdminPwd) throws Exception {
+
+		tempAdminPwd = RandomStringUtils.randomAlphanumeric(20);
+
+		System.out.println("관리자 인증번호 생성 완료 : " + tempAdminPwd);
+
+		return tempAdminPwd;
+
+	}
+
 	// 전체 상품 목록 불러오기
 	@RequestMapping(value = "/admin/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
@@ -96,39 +150,10 @@ public class AdminController {
 		model.addAttribute("selectedPageNum", pageNum);
 
 	}
-	
-	// 관리자 회원 정보 수정 페이지 진입
-	@RequestMapping(value = "/admin/membermodifypage", method = RequestMethod.GET)
-	public String adminMemberModifyPage(
-			@RequestParam("userId") String userId, 
-			MemberDTO memberDTO, 
-			MemberAddressDTO memberAddressDTO,
-			Model model) throws Exception {
-		
-		logger.info("관리자 회원 정보 수정 페이지 접속");
-		
-		memberDTO = adminService.adminSelectMember(userId);
-		
-		memberAddressDTO = adminService.adminSelectAddress(userId);
-		
-		model.addAttribute("userInfo", memberDTO);
-		model.addAttribute("userAddressInfo", memberAddressDTO);
-		
-		return "/admin/membermodify";
+
+	// 관리자 상품 조회
+	@RequestMapping(value = "/admin/productview", method = RequestMethod.GET)
+	public void methodName() throws Exception {
+
 	}
-	
-	// 관리자 회원 정보 수정 실행
-	@RequestMapping(value = "/admin/membermodify", method = RequestMethod.POST)
-	public String adminMemberModify(MemberDTO memberDTO , MemberAddressDTO memberAddressDTO , HttpSession session) throws Exception {
-		
-		logger.info("관리자 회원 정보 수정 시작");
-		
-		adminService.adminMemberModify(memberDTO, memberAddressDTO);
-		
-		//adminService.adminAddressModify(memberAddressDTO);
-		
-		return "redirect:/admin/memberlist?pageNum=1";
-	}
-	
-	// 관리자 회원 삭제 ajax
 }

@@ -29,4 +29,11 @@
 	WHERE userId = #{userId}
 
 </select>
+
+<delete id = "removeAddress" parameterType = "ezen.project.IGSJ.address.domain.MemberAddressDTO">
+	
+	DELETE FROM MemberAddressDTO
+	WHERE userId = #{userId}
+
+</delete>
 </mapper>
