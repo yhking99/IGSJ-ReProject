@@ -58,6 +58,13 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDAO.memberProfile(userId);
 	}
-	
+	//회원 탈퇴
+	@Override
+	public int removeMember(MemberDTO memberDTO) throws Exception {
+		
+		logger.info("회원 탈퇴 removeMember - Service");
+		
+		return memberDAO.removeMember(memberDTO);
+	}
 	
 }
