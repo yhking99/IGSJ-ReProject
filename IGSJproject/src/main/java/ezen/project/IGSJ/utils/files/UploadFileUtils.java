@@ -1,4 +1,4 @@
-package ezen.project.IGSJ.utils;
+package ezen.project.IGSJ.utils.files;
 
 import java.io.File;
 import java.text.DecimalFormat;
