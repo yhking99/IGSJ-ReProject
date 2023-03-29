@@ -21,7 +21,7 @@ import ezen.project.IGSJ.category.domain.CategoryDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
 import ezen.project.IGSJ.productFile.domain.ProductFileDTO;
 import ezen.project.IGSJ.seller.service.SellerService;
-import ezen.project.IGSJ.utils.files.UploadFileUtils;
+import ezen.project.IGSJ.utils.UploadFileUtils;
 import net.sf.json.JSONArray;
 
 @Controller
