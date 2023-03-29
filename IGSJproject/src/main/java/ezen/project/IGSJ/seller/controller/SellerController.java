@@ -75,7 +75,7 @@ public class SellerController {
 	
 		sellerService.postRegister(product,productFile);
 		
-		return "/";
+		return "redirect:/seller/register";
 	}
 		// --------------------------------------------------------------------------
 		// ck 에디터에서 파일 업로드
