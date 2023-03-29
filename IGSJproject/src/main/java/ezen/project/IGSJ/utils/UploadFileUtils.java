@@ -1,4 +1,4 @@
-package ezen.project.IGSJ.utils.files;
+package ezen.project.IGSJ.utils;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -11,8 +11,8 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class UploadFileUtils {
 	  
-	 static final int THUMB_WIDTH = 300;
-	 static final int THUMB_HEIGHT = 300;
+	 static final int THUMB_WIDTH = 100;
+	 static final int THUMB_HEIGHT = 100;
 	 
 	 public static String fileUpload(String uploadPath,
 	         String fileName,
