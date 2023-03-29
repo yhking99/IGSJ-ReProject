@@ -141,8 +141,23 @@
 				postAddress = #{postAddress},
 				address = #{address},
 				detailAddress = #{detailAddress}
-				
 		where userId = #{userId}
 	</update>
+	
+	<!-- 관리자 회원 삭제 -->
+	<delete id="adminRemoveMember" parameterType="String">
+		<!-- 주문 구현시 다시 살려야하는 부분 
+			delete 
+				from OrderDTO
+			where userId = #{userId};
+			
+			delete 
+				from MemberAdressDTO
+			where userId = #{userId};
+		--> 
+		delete 
+			from MemberDTO
+		where userId = #{userId};
+	</delete>
 
 </mapper>

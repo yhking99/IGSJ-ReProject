@@ -22,10 +22,12 @@ public interface AdminService {
 		
 	// 관리자 회원 정보 수정 실행
 	public void adminMemberModify(MemberDTO memberDTO , MemberAddressDTO memberAddressDTO) throws Exception;
-	// public void adminAddressModify(MemberAddressDTO memberAddressDTO) throws Exception;
 	
 	// 관리자 회원 선택에 따른 정보 가져오기
 	public MemberDTO adminSelectMember(String userId) throws Exception;
 	public MemberAddressDTO adminSelectAddress (String userId) throws Exception;
+	
+	// 관리자 회원 삭제
+	public void adminRemoveMember(String userId) throws Exception;
 
 }
