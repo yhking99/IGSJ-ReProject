@@ -109,3 +109,9 @@ input[readonly="readonly"]:focus{
 	background: #bebebe;
 	outline: none;
 }
+
+span{
+	border-radius: 5px;
+	background: #bebebe;
+	padding : 5px;
+}
