@@ -104,4 +104,13 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return sqlSession.selectOne(NAME_SPACE + ".adminSelectAddress", userId);
 	}
+	
+	// 관리자 회원 삭제
+	@Override
+	public void adminRemoveMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 삭제 DAO");
+		
+		sqlSession.delete(NAME_SPACE + ".adminRemoveMember", userId);
+	}
 }

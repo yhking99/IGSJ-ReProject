@@ -54,5 +54,15 @@ public class MemberAddressController {
 	
 		return memberAddressDTO;
 	}
-	
+	//회원 탈퇴(주소)
+	@ResponseBody
+	@PostMapping("/removeAddress")
+	public int removeAddress(@RequestBody MemberAddressDTO memberAddressDTO) throws Exception {
+		
+		logger.info("회원 탈퇴(주소) removeAddress - Controller");
+		
+		int result = memberAddressService.removeAddress(memberAddressDTO);
+		
+		return result;
+	}
 }
