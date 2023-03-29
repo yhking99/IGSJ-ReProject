@@ -83,9 +83,9 @@ th, td {
 								</c:otherwise>
 							</c:choose>
 							<td>
-								<a href="#">[수정]</a>
+								<a href="/admin/membermodifypage?userId=${adminMemberList.userId }">[수정]</a>
 								<br>
-								<a href="#">[삭제]</a>
+								<a href="/admin/memberdelete">[삭제]</a>
 							</td>
 						</tr>
 					</c:forEach>
