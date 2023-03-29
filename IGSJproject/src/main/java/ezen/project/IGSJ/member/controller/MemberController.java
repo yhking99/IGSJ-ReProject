@@ -111,6 +111,12 @@ public class MemberController {
 		
 		logger.info("회원정보 수정 기능 로직, 수정 정보 {}", memberDTO);
 		
+		String inputPass = memberDTO.getUserPwd();
+
+		String pass = passEncoder.encode(inputPass);
+		
+		memberDTO.setUserPwd(pass);
+		
 		memberService.memberModify(memberDTO);
 		
 		memberLogout(session);
@@ -122,10 +128,25 @@ public class MemberController {
 	public MemberDTO memberProfile(@PathVariable String userId) throws Exception {
 		
 		logger.info("회원 정보 찾기 memberProfile - Controller, 회원아이디 {}", userId);
+	
 		
 		MemberDTO memberDTO = memberService.memberProfile(userId);
 		
+		
 		return memberDTO;
+	}
+	
+	//회원 탈퇴
+	@ResponseBody
+	@PostMapping("/removeMember")
+	public int removeMember(MemberDTO memberDTO) throws Exception {
+		
+		logger.info("회원 탈퇴 removeMember - Controller");
+		
+		int result = memberService.removeMember(memberDTO);
+		
+		return result;
+		
 	}
 
 }

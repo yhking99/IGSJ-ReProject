@@ -65,4 +65,14 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return sqlSession.selectOne(NAME_SPACE + ".memberProfile", userId);
 	}
+	//회원 탈퇴
+	@Override
+	public int removeMember(MemberDTO memberDTO) throws Exception {
+		
+		logger.info("회원 탈퇴 removeMember - DAO");
+		
+		return sqlSession.delete(NAME_SPACE + ".removeMember", memberDTO);
+	}
+	
+	
 }

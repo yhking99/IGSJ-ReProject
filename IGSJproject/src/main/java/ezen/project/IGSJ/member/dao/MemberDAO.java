@@ -18,4 +18,7 @@ public interface MemberDAO {
 	
 	// 회원정보 찾기
 	public MemberDTO memberProfile(String userId) throws Exception;
+
+	// 회원 탈퇴
+	public int removeMember(MemberDTO memberDTO) throws Exception;
 }
