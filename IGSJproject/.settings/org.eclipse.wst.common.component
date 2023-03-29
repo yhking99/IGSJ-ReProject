@@ -2,8 +2,6 @@
 
 
 
-
-
     <wb-module deploy-name="spring-1.0.0-BUILD-SNAPSHOT">
 
 
@@ -45,7 +43,6 @@
 
 
     </wb-module>
-
 
 
 

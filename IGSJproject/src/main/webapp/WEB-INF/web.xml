@@ -4,9 +4,6 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
               version="4.0">
 
-
-
-
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -15,6 +12,7 @@
 		/WEB-INF/spring/spring-security.xml
 		</param-value>
 	</context-param>
+
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -37,8 +35,6 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-
 
 	<!-- 한글 설정 시작 -->
 	<filter>

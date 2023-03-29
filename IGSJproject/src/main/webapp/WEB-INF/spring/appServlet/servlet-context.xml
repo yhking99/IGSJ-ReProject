@@ -52,6 +52,7 @@
 	 <resources mapping="/ckUpload/**" location="/resources/ckUpload/" />
 	<!-- 파일 업로드 끝 -->
 	
+	
 	<!-- 인터셉터 경로 및 객체생성-->
 	<!-- 로깅 -->
 	<!-- <context:component-scan base-package="com.project.interceptor"></context:component-scan>
