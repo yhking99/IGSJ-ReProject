@@ -71,7 +71,6 @@
 	WHERE userId = #{userId}
 	AND	userPwd = #{userPwd}
 
-
 </delete>
 
 

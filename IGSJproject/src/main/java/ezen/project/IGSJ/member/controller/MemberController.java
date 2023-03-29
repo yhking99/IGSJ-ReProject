@@ -139,7 +139,7 @@ public class MemberController {
 	//회원 탈퇴
 	@ResponseBody
 	@PostMapping("/removeMember")
-	public int removeMember(MemberDTO memberDTO) throws Exception {
+	public int removeMember(@RequestBody MemberDTO memberDTO) throws Exception {
 		
 		logger.info("회원 탈퇴 removeMember - Controller");
 		

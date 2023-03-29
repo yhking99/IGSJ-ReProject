@@ -78,4 +78,13 @@ public class AdminServiceImpl implements AdminService{
 		
 		return adminDAO.adminSelectAddress(userId);
 	}
+	
+	// 관리자 회원 삭제
+	@Override
+	public void adminRemoveMember(String userId) throws Exception {
+		
+		logger.info("관리자 회원 삭제 service");
+		
+		adminDAO.adminRemoveMember(userId);
+	}
 }
