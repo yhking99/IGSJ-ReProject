@@ -49,57 +49,57 @@ public class SellerController {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 
-	@RequestMapping(value="/mainpage", method=RequestMethod.GET)
-	public void getMain() throws Exception{}
-	
-	@RequestMapping(value="/register",method=RequestMethod.GET)
-	public void getRegister(Model model) throws Exception{
-		
+	@RequestMapping(value = "/mainpage", method = RequestMethod.GET)
+	public void getMain() throws Exception {
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public void getRegister(Model model) throws Exception {
+
 		List<CategoryDTO> category = null;
 		category = sellerService.getCategory();
 		model.addAttribute("category", JSONArray.fromObject(category));
 	}
-	
-	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public String postRegister(ProductDTO product, ProductFileDTO productFile,@RequestParam("product_img") MultipartFile file, HttpServletRequest request)throws Exception {
-		
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String postRegister(ProductDTO product, ProductFileDTO productFile, @RequestParam("product_img") MultipartFile file,
+			HttpServletRequest request) throws Exception {
+
 		AwsS3 awsS3 = AwsS3.getInstance();
 		String s3ObjectUrl = null;
-		
-	    try {
-	        // Upload file to S3 bucket
-	        String fileName = file.getOriginalFilename();
-	        InputStream is = file.getInputStream();
-	        
-	        s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
-	        
-	        // Set the file properties
-	        String rs = RandomStringUtils.randomAlphanumeric(20);
-	        product.setPno(rs);
-	        productFile.setPno(rs);
-	        product.setUserId("1111");
-	        productFile.setOriginalFileName(fileName);
-	        productFile.setStoredFileRootName(s3ObjectUrl);
 
-	        // Call the sellerService to save the product and file information
-	        sellerService.postRegister(product,productFile);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-			
-	    return "redirect:/seller/productlist?pageNum=1";
+		try {
+			// Upload file to S3 bucket
+			String fileName = file.getOriginalFilename();
+			InputStream is = file.getInputStream();
+
+			s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
+
+			// Set the file properties
+			String rs = RandomStringUtils.randomAlphanumeric(20);
+			product.setPno(rs);
+			productFile.setPno(rs);
+			product.setUserId("1111");
+			productFile.setOriginalFileName(fileName);
+			productFile.setStoredFileRootName(s3ObjectUrl);
+
+			// Call the sellerService to save the product and file information
+			sellerService.postRegister(product, productFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/seller/productlist?pageNum=1";
 	}
 
+	// --------------------------------------------------------------------------
+	// ck 에디터에서 파일 업로드
+	// --------------------------------------------------------------------------
+	@ResponseBody
+	@RequestMapping(value = "/register/ckUpload", method = RequestMethod.POST)
+	public String fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
 
-		// --------------------------------------------------------------------------
-		// ck 에디터에서 파일 업로드
-		// --------------------------------------------------------------------------
-		@ResponseBody
-		@RequestMapping(value="/register/ckUpload", method = RequestMethod.POST )
-		public String fileUpload(HttpServletRequest request, HttpServletResponse response,
-			MultipartHttpServletRequest multiFile) throws IOException {
-	
-		//Json 객체 생성
+		// Json 객체 생성
 		JsonObject json = new JsonObject();
 		// Json 객체를 출력하기 위해 PrintWriter 생성
 		PrintWriter printWriter = null;
@@ -162,37 +162,37 @@ public class SellerController {
 		}
 		return null;
 	}
-		// 전체 상품 목록 불러오기
-		@RequestMapping(value = "/seller/productlist", method = RequestMethod.GET)
-		public void getProductList(@RequestParam("pageNum") int pageNum,
-				@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
-				@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
 
+	// 전체 상품 목록 불러오기
+	@RequestMapping(value = "/seller/productlist", method = RequestMethod.GET)
+	public void getProductList(@RequestParam("pageNum") int pageNum,
+			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
 
-			// 파라미터 순서 int contentNum , int maxPageNum, int selectContent
-			page = new PageIngredient(5, 5, 5);
+		// 파라미터 순서 int contentNum , int maxPageNum, int selectContent
+		page = new PageIngredient(5, 5, 5);
 
-			page.setPageNum(pageNum);
-			page.setSearchType(searchType);
-			page.setKeyword(keyword);
-			page.setSearchTypeAndKeyword(searchType, keyword);
+		page.setPageNum(pageNum);
+		page.setSearchType(searchType);
+		page.setKeyword(keyword);
+		page.setSearchTypeAndKeyword(searchType, keyword);
 
-			// 게시글 총 갯수를 구한다. 단 검색타입과 키워드에 맞춘 결과에 대한 총 갯수를 출력해야한다.
-			page.setTotalContent(sellerService.searchProduct(searchType, keyword));
+		// 게시글 총 갯수를 구한다. 단 검색타입과 키워드에 맞춘 결과에 대한 총 갯수를 출력해야한다.
+		page.setTotalContent(sellerService.searchProduct(searchType, keyword));
 
-			List<ProductDTO> sellerProductList = null;
-			sellerProductList = sellerService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword);
-			model.addAttribute("sellerProductList", sellerProductList);
-			model.addAttribute("page", page);
+		List<ProductDTO> sellerProductList = null;
+		sellerProductList = sellerService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword);
+		model.addAttribute("sellerProductList", sellerProductList);
+		model.addAttribute("page", page);
 
-			// 현재 페이지가 몇페이지인지 쉽게 구분하기위한 구분자를 넘겨주자
-			model.addAttribute("selectedPageNum", pageNum);
+		// 현재 페이지가 몇페이지인지 쉽게 구분하기위한 구분자를 넘겨주자
+		model.addAttribute("selectedPageNum", pageNum);
 
-		}
+	}
 
-		// 판매자 상품 조회
-		@RequestMapping(value = "/seller/productview", method = RequestMethod.GET)
-		public void methodName() throws Exception {
+	// 판매자 상품 조회
+	@RequestMapping(value = "/seller/productview", method = RequestMethod.GET)
+	public void methodName() throws Exception {
 
-		}
+	}
 }
