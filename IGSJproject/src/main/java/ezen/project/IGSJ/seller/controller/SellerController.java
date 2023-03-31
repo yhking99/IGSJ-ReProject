@@ -1,8 +1,6 @@
 package ezen.project.IGSJ.seller.controller;
 
 import java.io.File;
-
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,12 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.google.gson.JsonObject;
 
 import ezen.project.IGSJ.category.domain.CategoryDTO;
@@ -80,7 +72,6 @@ public class SellerController {
 	        InputStream is = file.getInputStream();
 	        
 	        s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
-
 	        
 	        // Set the file properties
 	        String rs = RandomStringUtils.randomAlphanumeric(20);

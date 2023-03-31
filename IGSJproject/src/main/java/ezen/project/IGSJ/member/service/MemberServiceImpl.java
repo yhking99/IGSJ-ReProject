@@ -71,6 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberDAO.removeMember(memberDTO);
 	}
+
 	//비밀번호 검증
 	@Override
 	public String getPwd(String userId) throws Exception {
@@ -78,6 +79,6 @@ public class MemberServiceImpl implements MemberService {
 		logger.info("비밀번호 검증 getPwd - Service");
 		
 		return memberDAO.getPwd(userId);
-	}
+
 
 }

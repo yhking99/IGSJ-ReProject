@@ -73,6 +73,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return sqlSession.delete(NAME_SPACE + ".removeMember", memberDTO);
 	}
+
 	//비밀번호 검증
 	@Override
 	public String getPwd(String userId) throws Exception {
@@ -80,6 +81,6 @@ public class MemberDAOImpl implements MemberDAO {
 		logger.info("비밀번호 검증 getPwd - DAO");
 		
 		return sqlSession.selectOne(NAME_SPACE + ".getPwd", userId);
-	}
+
 
 }
