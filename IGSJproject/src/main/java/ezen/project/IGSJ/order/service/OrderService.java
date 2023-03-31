@@ -2,10 +2,10 @@ package ezen.project.IGSJ.order.service;
 
 import ezen.project.IGSJ.order.domain.OrderDTO;
 
-public class OrderService {
+public interface OrderService {
 
-	//주문 등록
-	public void orderWrite(OrderDTO orderDTO) throws Exception;
+	//주문 정보
+	public void orderInfo(OrderDTO orderDTO) throws Exception;
 	
 	
 	

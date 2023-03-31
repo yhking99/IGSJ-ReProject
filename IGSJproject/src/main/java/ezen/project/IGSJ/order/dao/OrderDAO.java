@@ -4,6 +4,6 @@ import ezen.project.IGSJ.order.domain.OrderDTO;
 
 public interface OrderDAO {
 	
-	//주문서 작성
-	public void orderWrite(OrderDTO orderDTO) throws Exception;
+	//주문 정보
+	public void orderInfo(OrderDTO orderDTO) throws Exception;
 }
