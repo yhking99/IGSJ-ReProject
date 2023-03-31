@@ -33,6 +33,7 @@
 	<context:component-scan base-package="ezen.project.IGSJ.productFile"/>
 	<context:component-scan base-package="ezen.project.IGSJ.seller"/>
 	<context:component-scan base-package="ezen.project.IGSJ.utils"/>
+	<context:component-scan base-package="ezen.project.IGSJ.order"/>
 	
 	<!-- 파일 업로드 -->
 	<!-- 파일 업로드 경로 -->
