@@ -19,11 +19,8 @@ import ezen.project.IGSJ.product.service.ProductService;
 @RequestMapping("/product")
 public class ProductController {
 
-	@Autowired(required = false)
-	private ProductDTO      productDTO;
 	@Autowired
 	private ProductService  productService;
-
 
 	// 카테고리 넘버에 따른 상품 추출
 	@GetMapping("/items/{num}")

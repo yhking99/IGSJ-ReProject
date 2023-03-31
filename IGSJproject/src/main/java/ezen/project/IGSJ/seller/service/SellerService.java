@@ -12,4 +12,10 @@ public interface SellerService {
 	
 	public void postRegister(ProductDTO product, ProductFileDTO productFile) throws Exception;
 	
+	// 전체 상품 불러오기
+		public List<ProductDTO> getProductList(int displayTotalContent, int pageContent, String searchType, String keyword) throws Exception;
+
+	// 검색결과에 따른 상품 출력
+	public int searchProduct(String searchType, String keyword) throws Exception;
+	
 }

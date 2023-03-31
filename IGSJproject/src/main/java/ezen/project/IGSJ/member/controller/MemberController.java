@@ -1,6 +1,5 @@
 package ezen.project.IGSJ.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,13 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.member.service.MemberService;
 
+@Controller("MemberController")
 @CrossOrigin(origins = "http://localhost:8080")
-@Controller
 @RequestMapping("/member")
 public class MemberController {
 
@@ -36,6 +35,7 @@ public class MemberController {
 	// 회원가입(POST)
 	@ResponseBody
 	@PostMapping("/memberSignUp")
+	@ResponseBody
 	public void signUpMember(@RequestBody MemberDTO memberDTO) throws Exception {
 
 		logger.info("회원가입 Step1 memberDTO ==> {}", memberDTO.toString());
@@ -49,48 +49,15 @@ public class MemberController {
 		memberService.signUpMember(memberDTO);
 
 	}
-
-	// 로그인 기능 구현
-	@GetMapping("/member/memberLogin")
-	public void memberLogin(MemberDTO memberDTO, HttpServletRequest req, RedirectAttributes reat) throws Exception {
-
-		// memberDTO를 로그로 찍어서 앞단에서 넘어온 입력값을 확인하여 요청자의 오류부터 확인한다.
-		logger.info("로그인 진행 memberLoginPage - Controller");
-
-		String inputPass = memberDTO.getUserPwd();
-
-		String pass = passEncoder.encode(inputPass);
-
-		memberDTO.setUserPwd(pass);
-
-		MemberDTO memberInfo = memberService.memberLogin(memberDTO);
-
-		HttpSession session = req.getSession();
-
-		// 로그인 정보가 없을 경우 공통화 시키기
-		if (memberInfo == null) {
-			session.setAttribute("isLogon", null);
-			reat.addFlashAttribute("loginMessage", false);
-			logger.info("로그인이 실패하였습니다.");
-
-		} else {
-			// DB에 로그인과 관련된 정보가 있다면?
-			session.setAttribute("memberInfo", memberInfo);
-		}
-
-	}
-
-	// 로그아웃 기능
-	@GetMapping("/memberLogout")
-	public String memberLogout(HttpSession session) throws Exception {
-
-		logger.info("회원 로그아웃, 로그아웃 계정 : {}", session.getAttribute("memberInfo").toString());
-
-		session.invalidate();
-
-		// 성공시 앞단에서 메인페이지로 이동시켜준다.
-		return "https://localhost:8080/";
-	}
+	
+	// 로그인
+	@PostMapping("/memberLogin")
+	@ResponseBody
+	public MemberDTO memberLogin(@RequestBody MemberDTO memberDTO) throws Exception {
+		
+		return memberService.memberLogin(memberDTO);
+		
+	} // memberLogin()
 
 	// 회원가입 아이디 중복 체크
 	@ResponseBody
@@ -121,7 +88,6 @@ public class MemberController {
 
 		memberService.memberModify(memberDTO);
 
-		memberLogout(session);
 	}
 
 	// 회원 정보 찾기
