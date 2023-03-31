@@ -13,6 +13,7 @@
 <P>  The time on the server is ${serverTime}. </P>
 
 <a href="/admin/mainpage">관리자 페이지</a>
+<a href="/seller/mainpage">판매자 페이지</a>
 <br>
 <%= request.getRealPath("/") %>
 </body>

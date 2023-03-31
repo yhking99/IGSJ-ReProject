@@ -1,3 +1,4 @@
+<%@page import="org.apache.taglibs.standard.lang.jstl.DivideOperator"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -7,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>(Admin)상품목록보기</title>
+<title>(seller)상품목록보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -72,32 +73,34 @@ th, td {
 					
 					adminProductList
 				-->
-					<c:forEach var="adminProductList" items="${adminProductList }">
+					<c:forEach var="sellerProductList" items="${sellerProductList }">
 						<tr>
-							<td align="right">${adminProductList.pno}</td>
+							<td align="right">${sellerProductList.pno}</td>
 							<td align="right">
-								<img alt="상품 이미지 로딩 실패" src="${adminProductList.storedFileRootName}" width="100" height="100">
+								<img alt="상품 이미지 로딩 실패" src="${sellerProductList.storedFileRootName}" width="100" height="100">
 							</td>
 							<td align="right">
-								<a href="${contextPath}/product/productDetail?pno=${adminProductList.pno}">${adminProductList.product_name}</a>
+								<a href="${contextPath}/product/productDetail?pno=${sellerProductList.pno}">${adminProductList.product_name}</a>
 							</td>
-							<td align="right">${adminProductList.product_price}</td>
-							<td align="right">${adminProductList.product_stock}</td>
+							<td align="right">${sellerProductList.product_price}</td>
+							<td align="right">${sellerProductList.product_stock}</td>
 							<td align="right">
-								<fmt:formatDate value="${adminProductList.product_regDate}" pattern="yyyy.MM.dd hh:mm" />
+								<fmt:formatDate value="${sellerProductList.product_regDate}" pattern="yyyy.MM.dd hh:mm" />
 							</td>
-							<td align="right">${adminProductList.userId}</td>
-							<td align="right">${adminProductList.cno}</td>
+							<td align="right">${sellerProductList.userId}</td>
+							<td align="right">${sellerProductList.cno}</td>
 							<td>
-								<a href="/admin/productmodifypage">[수정]</a>
+								<a href="/seller/productmodifypage">[수정]</a>
 								<br>
-								<a href="/admin/productdelete">[삭제]</a>
+								<a href="/seller/productdelete">[삭제]</a>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
-
+			
+			<div>
+				<div align="center">
 			<!-- 페이징 시작 -->
 			<%
 			PageIngredient pageIngredient = (PageIngredient) request.getAttribute("page");
@@ -108,7 +111,7 @@ th, td {
 			if (pageIngredient.isPrevPage() == true) {
 			%>
 			<span>
-				<a href="/admin/productlist?pageNum=<%=pageIngredient.getStartPage() - 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">◀이전</a>
+				<a href="/seller/productlist?pageNum=<%=pageIngredient.getStartPage() - 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">◀이전</a>
 			</span>
 			<%
 			}
@@ -119,7 +122,7 @@ th, td {
 			if (selectedPageNum != i) {
 			%>
 			<span>
-				<a id="notSelectedPage" href="/admin/productlist?pageNum=<%=i%><%=pageIngredient.getSearchTypeAndKeyword()%>"><%=i%></a>
+				<a id="notSelectedPage" href="/seller/productlist?pageNum=<%=i%><%=pageIngredient.getSearchTypeAndKeyword()%>"><%=i%></a>
 			</span>
 			<%
 			} else if (selectedPageNum == i) {
@@ -130,17 +133,22 @@ th, td {
 			<%
 			}
 			}
-
+			
 			/* 다음버튼 만들기 */
 			if (pageIngredient.isNextPage() == true) {
 			%>
 			<span>
-				<a href="/admin/productlist?pageNum=<%=pageIngredient.getEndPage() + 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">다음▶</a>
+				<a href="/seller/productlist?pageNum=<%=pageIngredient.getEndPage() + 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">다음▶</a>
 			</span>
 			<%
 			}
 			%>
+			</div>
 			<!-- 페이징 끝 -->
+				<div align="right">
+				<a href="/seller/register">상품등록</a>
+				</div>
+			</div>
 		</div>
 		<!-- 
 			private int cno; // 카테고리 번호
@@ -161,6 +169,6 @@ th, td {
 
 	</div>
 
-	<script src="/resources/admin/adminProductList.js"></script>
+	<script src="/resources/seller/sellerProductList.js"></script>
 </body>
 </html>

@@ -19,5 +19,56 @@
 		insert into ProductFileDTO(pno,originalFileName,storedFileRootName,storedThumbNailName)
 		values ( #{pno}, #{originalFileName},#{storedFileRootName},#{storedThumbNailName})
 	</insert>
+	
+	<!-- 판매자 : 전체 상품 불러오기 -->
+	<select id="getProductList" parameterType="hashMap" resultType="ezen.project.IGSJ.product.domain.ProductDTO">
+		select
+
+		product.pno,
+		pft.storedFileRootName,
+		cno,
+		product_name,
+		product_price,
+		product_stock,
+		product_description,
+		product_regDate,
+		userId
+
+		from ProductDTO as product
+		left outer join ProductFileDTO as pft
+		on product.pno = pft.pno
+
+		<if test="searchType.equals('userId')">
+			where userId like concat('%', #{keyword}, '%')
+		</if>
+		<if test="searchType.equals('product_name')">
+			where product_name like concat('%', #{keyword}, '%')
+		</if>
+		<if test="searchType.equals('cno')">
+			where cno between #{keyword} and #{keyword} + 100
+		</if>
+
+		order by product_name <!-- 검색결과 가나다순 정리 -->
+		limit #{displayTotalContent} , #{pageContent}
+
+	</select>
+
+	<!-- 검색된 결과에 일치하는 상품 -->
+	<select id="searchProduct" resultType="Int" parameterType="hashmap">
+
+		select count(*)
+		from ProductDTO
+
+		<if test="searchType.equals('userId')">
+			where userId like concat('%', #{keyword}, '%')
+		</if>
+		<if test="searchType.equals('product_name')">
+			where product_name like concat('%', #{keyword}, '%')
+		</if>
+		<if test="searchType.equals('cno')">
+			where cno between #{keyword} and #{keyword} + 100
+		</if>
+
+	</select>
 
 </mapper>
