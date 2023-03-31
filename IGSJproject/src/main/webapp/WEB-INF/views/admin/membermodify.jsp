@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>${userInfo.userId }회원 상세 정보</title>
-<link rel="stylesheet" href="/resources/admin/adminMemberModify.css">
+<link rel="stylesheet" href="/resources/Outer/admin/css/adminMemberModify.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -79,6 +79,6 @@
 		</div>
 	</div>
 </body>
-<script src="/resources/admin/adminMemberModify.js"></script>
+<script src="/resources/Outer/admin/js/adminMemberModify.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </html>
