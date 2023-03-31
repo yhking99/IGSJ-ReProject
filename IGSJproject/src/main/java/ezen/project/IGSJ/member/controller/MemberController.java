@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.member.service.MemberService;
 
@@ -33,9 +32,7 @@ public class MemberController {
 	private BCryptPasswordEncoder passEncoder;
 
 	// 회원가입(POST)
-	@ResponseBody
 	@PostMapping("/memberSignUp")
-	@ResponseBody
 	public void signUpMember(@RequestBody MemberDTO memberDTO) throws Exception {
 
 		logger.info("회원가입 Step1 memberDTO ==> {}", memberDTO.toString());
