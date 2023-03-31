@@ -33,7 +33,6 @@ public class MemberController {
 	private BCryptPasswordEncoder passEncoder;
 
 	// 회원가입(POST)
-	@ResponseBody
 	@PostMapping("/memberSignUp")
 	@ResponseBody
 	public void signUpMember(@RequestBody MemberDTO memberDTO) throws Exception {

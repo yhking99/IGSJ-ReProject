@@ -2,43 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.memberMapper">
 
-<!-- 
-	MemberDTO
-	userId	varchar(20)	NO	PRI	
-	userPwd	varchar(500)	NO		
-	userName	varchar(15)	NO		
-	userPhoneNumber	varchar(20)	NO		
-	userEmail	varchar(40)	NO		
-	userJoinDate	datetime	NO		CURRENT_TIMESTAMP
-	userVerify	int	NO		0
-	userBirth	varchar(20)	NO		
- -->
+	<!-- MemberDTO userId varchar(20) NO PRI userPwd varchar(500) NO userName varchar(15) NO userPhoneNumber varchar(20) NO userEmail varchar(40) NO userJoinDate datetime NO CURRENT_TIMESTAMP userVerify int NO 0 userBirth varchar(20) NO -->
 
-<!-- 회원가입(회원정보) -->
-<insert id = "signUpMember" parameterType = "ezen.project.IGSJ.member.domain.MemberDTO">
-	
-	INSERT INTO MemberDTO (userId, userPwd, userName, userPhoneNumber, userJoinDate, userEmail, userBirth)
-	VALUES(#{userId}, #{userPwd}, #{userName}, #{userPhoneNumber}, NOW(), #{userEmail}, #{userBirth})
-</insert>
+	<!-- 회원가입(회원정보) -->
+	<insert id="signUpMember" parameterType="ezen.project.IGSJ.member.domain.MemberDTO">
 
-<!-- 로그인 기능 -->
-<select id = "memberLogin" parameterType = "ezen.project.IGSJ.member.domain.MemberDTO" resultType = "ezen.project.IGSJ.member.domain.MemberDTO">
+		INSERT INTO MemberDTO (userId, userPwd, userName, userPhoneNumber, userJoinDate, userEmail, userBirth)
+		VALUES(#{userId}, #{userPwd}, #{userName}, #{userPhoneNumber}, NOW(), #{userEmail}, #{userBirth})
 
-	SELECT userId, userPwd
-	FROM MemberDTO
-	WHERE userId = #{userId}
-	AND userPwd = #{userPwd}
+	</insert>
 
-</select>
+	<!-- 로그인 기능 -->
+	<select id="memberLogin" parameterType="ezen.project.IGSJ.member.domain.MemberDTO" resultType="ezen.project.IGSJ.member.domain.MemberDTO">
 
-<!-- 회원가입 아이디 중복 체크 -->
-<select id = "memberIdCheck" resultType = "int" parameterType = "String">
-	
-	SELECT COUNT(*)
-	FROM MemberDTO
-	WHERE userId = #{userId}
+		SELECT userId, userPwd
+		FROM MemberDTO
+		WHERE userId = #{userId}
+		AND userPwd = #{userPwd}
 
-</select>
+	</select>
+
+	<!-- 회원가입 아이디 중복 체크 -->
+	<select id="memberIdCheck" resultType="int" parameterType="String">
+
+		SELECT COUNT(*)
+		FROM MemberDTO
+		WHERE userId = #{userId}
+
+	</select>
 
 	<!-- 회원가입(회원정보) -->
 	<insert id="signUpMember" parameterType="ezen.project.IGSJ.member.domain.MemberDTO">
@@ -68,11 +59,11 @@
 
 		UPDATE MemberDTO
 		SET
-      userPwd = #{userPwd},
-      userName = #{userName},
-      userPhoneNumber = #{userPhoneNumber},
-      userEmail = #{userEmail},
-      userBirth = #{userBirth}
+		userPwd = #{userPwd},
+		userName = #{userName},
+		userPhoneNumber = #{userPhoneNumber},
+		userEmail = #{userEmail},
+		userBirth = #{userBirth}
 		WHERE userId = #{userId}
 		<!-- userPwd = #{userPwd}, -->
 	</update>
@@ -96,14 +87,14 @@
 
 	</delete>
 
-<!-- 회원 탈퇴에 필요한 비밀번호 찾기 -->
-<select id = "getPwd" parameterType = "ezen.project.IGSJ.member.domain.MemberDTO" resultType = "String">
-	
-	SELECT userPwd
-	FROM MemberDTO
-	WHERE userId = #{userId}
+	<!-- 회원 탈퇴에 필요한 비밀번호 찾기 -->
+	<select id="getPwd" parameterType="ezen.project.IGSJ.member.domain.MemberDTO" resultType="String">
 
-</select>
+		SELECT userPwd
+		FROM MemberDTO
+		WHERE userId = #{userId}
+
+	</select>
 
 
 </mapper>
