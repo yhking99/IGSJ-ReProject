@@ -82,5 +82,5 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return sqlSession.selectOne(NAME_SPACE + ".getPwd", userId);
 
-
+	}
 }
