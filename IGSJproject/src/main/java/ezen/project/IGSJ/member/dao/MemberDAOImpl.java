@@ -1,14 +1,11 @@
 package ezen.project.IGSJ.member.dao;
 
-import java.util.HashMap;
-
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.member.domain.MemberDTO;
 
 @Repository
@@ -72,6 +69,16 @@ public class MemberDAOImpl implements MemberDAO {
 		logger.info("회원 탈퇴 removeMember - DAO");
 		
 		return sqlSession.delete(NAME_SPACE + ".removeMember", memberDTO);
+	}
+	
+	// 회원 탈퇴에 필요한 비밀번호 찾기
+	@Override
+	public String getPwd(String userId) throws Exception {
+
+		logger.info("회원 탈퇴에 필요한 비밀번호 찾기 getPwd - DAO");
+		
+		return sqlSession.selectOne(NAME_SPACE + ".getPwd", userId);
+	
 	}
 	
 	

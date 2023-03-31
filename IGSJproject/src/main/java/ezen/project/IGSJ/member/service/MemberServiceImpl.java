@@ -66,5 +66,13 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDAO.removeMember(memberDTO);
 	}
+	// 회원 탈퇴에 필요한 비밀번호 찾기
+	@Override
+	public String getPwd(String userId) throws Exception {
+		
+		logger.info("회원 탈퇴에 필요한 비밀번호 찾기 getPwd - Service");
+		
+		return memberDAO.getPwd(userId);
+	}
 	
 }

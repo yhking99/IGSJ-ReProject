@@ -29,7 +29,6 @@
 	WHERE userId = #{userId}
 	AND userPwd = #{userPwd}
 
-
 </select>
 
 <!-- 회원가입 아이디 중복 체크 -->
@@ -58,7 +57,7 @@
 <!-- 회원 정보 찾기 -->
 <select id = "memberProfile" parameterType = "String" resultType = "ezen.project.IGSJ.member.domain.MemberDTO">
 
-	SELECT userId, userPwd, userName, userPhoneNumber, userEmail, userBirth
+	SELECT userId, userName, userPhoneNumber, userEmail, userBirth
 	FROM MemberDTO
 	WHERE userId = #{userId}
 
@@ -72,6 +71,15 @@
 	AND	userPwd = #{userPwd}
 
 </delete>
+
+<!-- 회원 탈퇴에 필요한 비밀번호 찾기 -->
+<select id = "getPwd" parameterType = "ezen.project.IGSJ.member.domain.MemberDTO" resultType = "String">
+	
+	SELECT userPwd
+	FROM MemberDTO
+	WHERE userId = #{userId}
+
+</select>
 
 
 </mapper>
