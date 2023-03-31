@@ -2,6 +2,9 @@ package ezen.project.IGSJ.board.domain;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BoardDTO {
 	
 	private int bno;
