@@ -132,13 +132,7 @@ $(document).on("change", "select.category1", function(){
 	 
 	 var cate2Select = $("select.category2");
 	 
-	 /*
-	 for(var i = 0; i < cate2Arr.length; i++) {
-	   cate2Select.append("<option value='" + cate2Arr[i].cateCode + "'>"
-	        + cate2Arr[i].cateName + "</option>");
-	 }
-	 */
-	
+
 	  cate2Select.empty();
 
 
@@ -158,6 +152,7 @@ $(document).on("change", "select.category1", function(){
 	 });
 	 
 	});
+
 </script>
 <script>
 $("#product_img").change(function(){
