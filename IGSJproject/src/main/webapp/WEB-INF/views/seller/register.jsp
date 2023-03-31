@@ -76,10 +76,10 @@
 			
 			<div class="inputArea">
  			<label for="gdsImg">이미지</label>
- 			<input type="file" id="p_img" name="file" />
+ 			<input type="file" id="product_img" name="product_img" />
 			 <div class="select_img"><img src="" /></div>
 			 </div>
-		
+		<%=request.getRealPath("/") %>
 			<div class="inputArea">
 			 	<button type="submit" id="register_Btn" class="btn btn-primary">등록</button>
 			</div>
@@ -115,7 +115,8 @@ for(var i = 0; i < cate1Arr.length; i++) {
 }
 
 $(document).on("change", "select.category1", function(){
-	 
+	  cate2Arr = [];
+
 	 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
 	 for(var i = 0; i < jsonData.length; i++) {
 	  
@@ -131,7 +132,9 @@ $(document).on("change", "select.category1", function(){
 	 
 	 var cate2Select = $("select.category2");
 	 
-	 cate2Select.children().remove();
+
+	  cate2Select.empty();
+
 
 	 $("option:selected", this).each(function(){
 	  
@@ -149,8 +152,10 @@ $(document).on("change", "select.category1", function(){
 	 });
 	 
 	});
-	
-	$("#p_img").change(function(){
+
+</script>
+<script>
+$("#product_img").change(function(){
 	 if(this.files && this.files[0]) {
 	  var reader = new FileReader;
 	  reader.onload = function(data) {
@@ -160,7 +165,6 @@ $(document).on("change", "select.category1", function(){
 	 }
 	});
 </script>
-
 <script>
 var regExp = /[^0-9]/gi;
 
