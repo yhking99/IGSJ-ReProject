@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>${userInfo.userId }회원 상세 정보</title>
-<link rel="stylesheet" href="/resources/admin/adminMemberModify.css">
+<link rel="stylesheet" href="/resources/Outer/admin/css/adminMemberModify.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -23,7 +23,7 @@
 						<div id="idError" class="error"></div>
 						<br />
 						<b>비밀번호</b>
-						<input type="password" id="userPwd" name="userPwd" />
+						<input type="password" id="userPwd" name="userPwd" required="required"/>
 						<div id="pwdError" class="error"></div>
 						<br />
 						<b>이름</b>
@@ -34,7 +34,7 @@
 						<input title="생년월일은 수정이 불가능합니다"type="text" id="userBirth" value="${userInfo.userBirth}" readonly="readonly" />
 						<br />
 						<b>이메일</b>
-						<input type="email" id="userEmail" name="userEmail" value="${userInfo.userEmail}" />
+						<input type="email" id="userEmail" name="userEmail" value="${userInfo.userEmail}" required="required"/>
 						<div id="emailError" class="error"></div>
 						<br />
 						<b>가입일</b>
@@ -60,12 +60,12 @@
 						<br />
 						<div class="address">
 							<b>주소</b>
-							<input id="postAddress" name="postAddress" type="text" placeholder="우편번호" value="${userAddressInfo.postAddress }" readonly="readonly"/>
+							<input id="postAddress" name="postAddress" type="text" placeholder="우편번호" value="${userAddressInfo.postAddress }" readonly="readonly" required="required"/>
 							<button type="button" onclick="findAddr()">우편번호 검색</button>
-							<input id="address" name="address" type="text" placeholder="주소" value=${userAddressInfo.address } readonly="readonly" />
+							<input id="address" name="address" type="text" placeholder="주소" value="${userAddressInfo.address }" readonly="readonly" required="required"/>
 							<br />
 							<div id="addressError" class="error"></div>
-							<input id="detailAddress" name="detailAddress" type="text" placeholder="상세주소 입력" ${userAddressInfo.detailAddress } />
+							<input id="detailAddress" name="detailAddress" type="text" placeholder="상세주소 입력" value="${userAddressInfo.detailAddress }" required="required"/>
 							<div id="detailAddError" class="error"></div>
 						</div>
 					</div>
@@ -73,15 +73,12 @@
 				<hr />
 				<!--수정버튼-->
 				<div class="user-update">
-					<button type=submit id="update-btn" name="update-btn" onclick="editInfo()">수정</button>
-				</div>
-				<div class="user-withdrawal">
-					<button type="button" id="withdrawal-btn" name="withdrawal-btn" onclick="removeMember()">회원탈퇴</button>
+					<button id="update-btn" name="update-btn" onclick="editInfo()">수정</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </body>
-<script src="/resources/admin/adminMemberModify.js"></script>
+<script src="/resources/Outer/admin/js/adminMemberModify.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </html>

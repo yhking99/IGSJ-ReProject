@@ -1,19 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>상품 등록</title>
-	<link href="../../resources/css/admin/product.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="../../resources/ckeditor/ckeditor.js"></script>
-<style type="text/css">
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+
+<style >
 		.listWrap {
 	width : 90%;
 	margin : 0 auto;
-}
+	}
+	.ck-editor__editable {
+	    min-height: 600px;
+	}
 </style>
 </head>
 <body>
@@ -40,22 +43,31 @@
 			 <label for="productPrice">상품가격</label>
 			 <input type="text" id="product_price" name="product_price" />
 			</div>
-			
+
 			<div class="inputArea">
-			 <label for="productContent">상품소개</label>
-			 <textarea rows="5" cols="50" id="product_description" name="product_description"></textarea>
-			 <script>
-					 var ckeditor_config = {
-					   resize_enaleb : false,
-					   enterMode : CKEDITOR.ENTER_BR,
-					   shiftEnterMode : CKEDITOR.ENTER_P,
-					   filebrowserUploadUrl : "/seller/ckUpload",
-					   filebrowserUploadMethod: 'form'
-					 };
-					 CKEDITOR.replace("product_description", ckeditor_config);
-					 
-			</script>
+			 <label for="product_description">상품소개</label>
+			 <textarea id="product_description" name="product_description"></textarea>
+			 <script type="text/javascript">
+				var myEditor;
+					ClassicEditor
+						.create( document.querySelector( '#product_description' ), {
+							ckfinder: {
+						        uploadUrl: '/seller/register/ckUpload' // 내가 지정한 업로드 url (post로 요청감)
+							}, 
+							removePlugins: [ 'Heading' ],
+						    language: "ko"
+						} )
+						.then( editor => {
+					        console.log( 'Editor was initialized', editor );
+					        myEditor = editor;
+					    } )
+						.catch( error => {
+						    console.error( error );
+						} );
+				</script>
+
 			</div>
+
 			
 			<div class="inputArea">
 			 <label for="productStock">상품수량</label>
@@ -64,17 +76,16 @@
 			
 			<div class="inputArea">
  			<label for="gdsImg">이미지</label>
- 			<input type="file" id="p_img" name="file" />
+ 			<input type="file" id="product_img" name="product_img" />
 			 <div class="select_img"><img src="" /></div>
 			 </div>
-		
+		<%=request.getRealPath("/") %>
 			<div class="inputArea">
 			 	<button type="submit" id="register_Btn" class="btn btn-primary">등록</button>
 			</div>
 			
 		</form>
 	</div>
-	
 <script>
 // 컨트롤러에서 데이터 받기
 var jsonData = JSON.parse('${category}');
@@ -104,7 +115,8 @@ for(var i = 0; i < cate1Arr.length; i++) {
 }
 
 $(document).on("change", "select.category1", function(){
-	 
+	  cate2Arr = [];
+
 	 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
 	 for(var i = 0; i < jsonData.length; i++) {
 	  
@@ -120,14 +132,9 @@ $(document).on("change", "select.category1", function(){
 	 
 	 var cate2Select = $("select.category2");
 	 
-	 /*
-	 for(var i = 0; i < cate2Arr.length; i++) {
-	   cate2Select.append("<option value='" + cate2Arr[i].cateCode + "'>"
-	        + cate2Arr[i].cateName + "</option>");
-	 }
-	 */
-	 
-	 cate2Select.children().remove();
+
+	  cate2Select.empty();
+
 
 	 $("option:selected", this).each(function(){
 	  
@@ -145,7 +152,10 @@ $(document).on("change", "select.category1", function(){
 	 });
 	 
 	});
-	$("#p_img").change(function(){
+
+</script>
+<script>
+$("#product_img").change(function(){
 	 if(this.files && this.files[0]) {
 	  var reader = new FileReader;
 	  reader.onload = function(data) {
@@ -155,12 +165,11 @@ $(document).on("change", "select.category1", function(){
 	 }
 	});
 </script>
-
 <script>
 var regExp = /[^0-9]/gi;
 
-$("#p_price").keyup(function(){ numCheck($(this)); });
-$("#p_stock").keyup(function(){ numCheck($(this)); });
+$("#product_price").keyup(function(){ numCheck($(this)); });
+$("#product_stock").keyup(function(){ numCheck($(this)); });
 
 function numCheck(selector) {
    var tempVal = selector.val();

@@ -1,7 +1,5 @@
 package ezen.project.IGSJ.address.dao;
 
-import java.util.HashMap;
-
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +43,17 @@ public class MemberAddressDAOImpl implements MemberAddressDAO {
 		logger.info("회원 정보 찾기 memberAddressProfile - DAO");
 		
 		return sqlSession.selectOne(NAME_SPACE + ".memberAddressProfile", userId);
+	}
+	//회원 탈퇴(주소)
+	@Override
+	public int removeAddress(MemberAddressDTO memberAddressDTO) throws Exception {
+
+		logger.info("회원 탈퇴(주소) removeAddress - DAO");
+		
+		return sqlSession.delete(NAME_SPACE + ".removeAddress", memberAddressDTO);
+	}
+	// 회원 탈퇴에 필요한 비밀번호 찾기
+	public MemberAddressDAOImpl() {
+		// TODO Auto-generated constructor stub
 	}
 }
