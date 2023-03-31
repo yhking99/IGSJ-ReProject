@@ -71,5 +71,11 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberDAO.removeMember(memberDTO);
 	}
+	
+	@Override
+	public String getPwd(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

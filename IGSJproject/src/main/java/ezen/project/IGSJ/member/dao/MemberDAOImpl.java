@@ -73,5 +73,11 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return sqlSession.delete(NAME_SPACE + ".removeMember", memberDTO);
 	}
+	
+	@Override
+	public String getPwd(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
