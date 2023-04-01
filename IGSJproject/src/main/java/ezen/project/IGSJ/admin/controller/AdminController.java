@@ -1,6 +1,8 @@
 package ezen.project.IGSJ.admin.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,6 +28,7 @@ import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
 import ezen.project.IGSJ.productFile.domain.ProductFileDTO;
 import ezen.project.IGSJ.seller.service.SellerService;
+import ezen.project.IGSJ.utils.AwsS3;
 import ezen.project.IGSJ.utils.UploadFileUtils;
 import ezen.project.IGSJ.utils.pagination.PageIngredient;
 import net.sf.json.JSONArray;
@@ -202,41 +205,31 @@ public class AdminController {
 	// 관리자 상품 정보 수정
 	@RequestMapping(value = "/admin/productmodify", method = RequestMethod.POST)
 	public String adminProductModify(ProductDTO productDTO, ProductFileDTO productFile,
-			MultipartFile file, Model model, HttpServletRequest req) throws Exception {
+			@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
 
 		logger.info("관리자 상품 정보 수정 시작 controller");
+		AwsS3 awsS3 = AwsS3.getInstance();
+		String s3ObjectUrl = null;
 
-		// 새로운 파일이 등록되었는지 확인
-		if (file.getOriginalFilename() != null && file.getOriginalFilename() != "") {
-			// 기존 파일을 삭제
-			new File(uploadPath + req.getParameter("originalFileName")).delete();
-			new File(uploadPath + req.getParameter("storedFileRootName")).delete();
-			new File(uploadPath + req.getParameter("storedThumbNailName")).delete();
+		try {
+			// Upload file to S3 bucket
+			String fileName = file.getOriginalFilename();
+			InputStream is = file.getInputStream();
 
-			// 새로 첨부한 파일을 등록
-			String imgUploadPath = uploadPath + File.separator + "imgUpload";
-			String ymdPath = UploadFileUtils.calcPath(imgUploadPath);
-			String fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath);
-			
-			// DB에 저장될 파일 경로, 이 경로는 나중에 img태그를 이용하여 클라이언트한테 이미지를 보여줄 때 중요하게 사용이 된다.
-			String storedFileName = File.separator + "imgUpload" + ymdPath + File.separator + fileName;
-			String storedThumbNail = File.separator + "imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName;
+			s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
+			if( productDTO.getOriginalFileName() != s3ObjectUrl) {
+				awsS3.delete(productDTO.getOriginalFileName());
+			}
+			productFile.setOriginalFileName(fileName);
+			productFile.setStoredFileRootName(s3ObjectUrl);
 
-			productFile.setOriginalFileName(file.getOriginalFilename());
-			productFile.setStoredFileRootName(storedFileName);
-			productFile.setStoredThumbNailName(storedThumbNail);
-
-		} else { 
-			// 새로운 파일이 등록되지 않았다면
-			// 기존 이미지를 그대로 사용
-			productFile.setOriginalFileName(req.getParameter("originalFileName"));
-			productFile.setStoredFileRootName(req.getParameter("storedFileRootName"));
-			productFile.setStoredThumbNailName(req.getParameter("storedThumbNailName"));
-
+			adminService.adminProductModify(productDTO, productFile);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
 		logger.info("제품 이미지까지 수정 완료");
 
-		adminService.adminProductModify(productDTO, productFile);
 
 		return "redirect:/admin/productDetail?pno=" + productDTO.getPno();
 	}
