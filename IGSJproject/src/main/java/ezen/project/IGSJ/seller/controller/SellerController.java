@@ -1,13 +1,11 @@
 package ezen.project.IGSJ.seller.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -74,7 +72,7 @@ public class SellerController {
 	}
 
 	// aws s3 상품 업로드
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/productRegister", method = RequestMethod.POST)
 	public String postRegister(ProductDTO product, ProductFileDTO productFile, @RequestParam("product_img") MultipartFile file,
 			HttpServletRequest request) throws Exception {
 
