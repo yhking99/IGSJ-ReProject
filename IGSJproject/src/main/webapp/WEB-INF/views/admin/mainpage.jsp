@@ -14,6 +14,9 @@
 		<ul>
 			<li><a href="/admin/productlist?pageNum=1">상품관리페이지</a></li>
 		</ul>
+		<ul>
+			<li><a href="/seller/register">상품등록페이지</a></li>
+		</ul>
 	</div>
 </body>
 </html>
