@@ -119,6 +119,9 @@ public class SellerController {
 		OutputStream out = null;
 		// 파일을 가져오기 위해 MultipartHttpServletRequest 의 getFile 메서드 사용
 		MultipartFile file = multiFile.getFile("upload");
+		
+		AwsS3 awsS3 = AwsS3.getInstance();
+		String uploadPath = null;
 		// 파일이 비어있지 않고(비어 있다면 null 반환)
 		if (file != null) {
 			// 파일 사이즈가 0보다 크고, 파일이름이 공백이 아닐때
@@ -127,31 +130,26 @@ public class SellerController {
 
 					try {
 						// 파일 이름 설정
-						String fileName = file.getName();
+						String fileName = file.getOriginalFilename();
+						InputStream is = file.getInputStream();
 						// 바이트 타입설정
 						byte[] bytes;
 						// 파일을 바이트 타입으로 변경
 						bytes = file.getBytes();
 						// 파일이 실제로 저장되는 경로
-						String uploadPath = request.getServletContext().getRealPath("/resources/ckUpload/");
+						uploadPath = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
 						// 저장되는 파일에 경로 설정
 						File uploadFile = new File(uploadPath);
 						if (!uploadFile.exists()) {
 							uploadFile.mkdirs();
 						}
-						// 파일이름을 랜덤하게 생성
-						fileName = UUID.randomUUID().toString();
-						// 업로드 경로 + 파일이름을 줘서 데이터를 서버에 전송
-						uploadPath = uploadPath + "/" + fileName;
-						out = new FileOutputStream(new File(uploadPath));
-						out.write(bytes);
 
 						// 클라이언트에 이벤트 추가
 						printWriter = response.getWriter();
 						response.setContentType("text/html");
 
 						// 파일이 연결되는 Url 주소 설정
-						String fileUrl = request.getContextPath() + "/resources/ckUpload/" + fileName;
+						String fileUrl =  uploadPath;
 
 						// 생성된 jason 객체를 이용해 파일 업로드 + 이름 + 주소를 CkEditor에 전송
 						json.addProperty("uploaded", 1);
