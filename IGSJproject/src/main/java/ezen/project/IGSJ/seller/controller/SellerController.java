@@ -49,18 +49,31 @@ public class SellerController {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 
+	// 메인페이지
 	@RequestMapping(value = "/mainpage", method = RequestMethod.GET)
 	public void getMain() throws Exception {
 	}
 
+	// 상품 등록 페이지 접속
+	@RequestMapping(value = "/productRegister", method = RequestMethod.GET)
+	public void sellerRegisterPage() throws Exception {
+		
+		logger.info("판매자 상품 등록 페이지 접속");
+	}
+
+	// 카테고리 불러오기 ajax
+	@ResponseBody
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public void getRegister(Model model) throws Exception {
+	public JSONArray getRegister() throws Exception {
 
 		List<CategoryDTO> category = null;
 		category = sellerService.getCategory();
-		model.addAttribute("category", JSONArray.fromObject(category));
+		/*model.addAttribute("category", JSONArray.fromObject(category));*/
+
+		return JSONArray.fromObject(category);
 	}
 
+	// aws s3 상품 업로드
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String postRegister(ProductDTO product, ProductFileDTO productFile, @RequestParam("product_img") MultipartFile file,
 			HttpServletRequest request) throws Exception {
