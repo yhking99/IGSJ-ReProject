@@ -46,14 +46,35 @@ public class MemberController {
 		memberService.signUpMember(memberDTO);
 
 	}
-	
+
 	// 로그인
 	@PostMapping("/memberLogin")
 	@ResponseBody
 	public MemberDTO memberLogin(@RequestBody MemberDTO memberDTO) throws Exception {
 		
-		return memberService.memberLogin(memberDTO);
+		logger.info("로그인 memberLogin - Controller {}", memberDTO);
 		
+		 String inputPwd = memberDTO.getUserPwd();
+			
+		 System.out.println("사용자 입력 비밀번호 =>" + inputPwd); 
+		 // DB에있는 비밀번호(bcrypt값이므로 변환이 필요함)  
+		 // matches(사용자 입력값, 암호화 비밀번호값) 
+		 String realPwd = memberService.getPwd(memberDTO.getUserId()); 
+		 
+		 System.out.println("암호화 비밀번호 =>" + realPwd); 
+		 boolean passMatch = passEncoder.matches(inputPwd, realPwd);
+		 System.out.println("검증 결과 ==> " + passMatch); 
+		 
+		 if(passMatch == true) { 
+			 
+			 memberDTO.setUserPwd(realPwd);
+			 
+			 return memberService.memberLogin(memberDTO); 
+		 } else {
+			 
+			 return null;
+		 }
+
 	} // memberLogin()
 
 	// 회원가입 아이디 중복 체크
@@ -117,25 +138,25 @@ public class MemberController {
 	@PostMapping("/passVerify")
 	public int passVerify(@RequestBody MemberDTO memberDTO) throws Exception {
 
-		  logger.info("수정,삭제용 비밀번호 검증 passVerify - Controller {}", memberDTO);
-		 // 요청자(클라이언트)가 입력한 비밀번호
-		  String inputPwd = memberDTO.getUserPwd();
-		
-		 System.out.println("사용자 입력 비밀번호 =>" + inputPwd); 
-		 // DB에있는 비밀번호(bcrypt값이므로 변환이 필요함)  
-		 // matches(사용자 입력값, 암호화 비밀번호값) 
-		 String realPwd = memberService.getPwd(memberDTO.getUserId()); 
-		 
-		 System.out.println("암호화 비밀번호 =>" + realPwd); 
-		 boolean passMatch = passEncoder.matches(inputPwd, realPwd);
-		 System.out.println("검증 결과 ==> " + passMatch); 
-		 if(passMatch == true) { 
-			 
-			 return 1;
-			 
-		 }  else {  
-			 
-			 return 0;
-		 } 				
+		logger.info("수정,삭제용 비밀번호 검증 passVerify - Controller {}", memberDTO);
+		// 요청자(클라이언트)가 입력한 비밀번호
+		String inputPwd = memberDTO.getUserPwd();
+
+		System.out.println("사용자 입력 비밀번호 =>" + inputPwd);
+		// DB에있는 비밀번호(bcrypt값이므로 변환이 필요함)
+		// matches(사용자 입력값, 암호화 비밀번호값)
+		String realPwd = memberService.getPwd(memberDTO.getUserId());
+
+		System.out.println("암호화 비밀번호 =>" + realPwd);
+		boolean passMatch = passEncoder.matches(inputPwd, realPwd);
+		System.out.println("검증 결과 ==> " + passMatch);
+		if (passMatch == true) {
+
+			return 1;
+
+		} else {
+
+			return 0;
+		}
 	}
 }
