@@ -1,6 +1,5 @@
 package ezen.project.IGSJ.admin.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.admin.service.AdminService;
@@ -29,7 +29,6 @@ import ezen.project.IGSJ.product.domain.ProductDTO;
 import ezen.project.IGSJ.productFile.domain.ProductFileDTO;
 import ezen.project.IGSJ.seller.service.SellerService;
 import ezen.project.IGSJ.utils.AwsS3;
-import ezen.project.IGSJ.utils.UploadFileUtils;
 import ezen.project.IGSJ.utils.pagination.PageIngredient;
 import net.sf.json.JSONArray;
 
@@ -217,6 +216,9 @@ public class AdminController {
 			InputStream is = file.getInputStream();
 
 			s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
+			
+			logger.info("파일 업로드 위치 : {}", s3ObjectUrl);
+			
 			if( productDTO.getOriginalFileName() != s3ObjectUrl) {
 				awsS3.delete(productDTO.getOriginalFileName());
 			}
@@ -232,6 +234,55 @@ public class AdminController {
 
 
 		return "redirect:/admin/productDetail?pno=" + productDTO.getPno();
+	}
+	
+	// 관리자, 판매자 로그인 페이지 진입
+	@RequestMapping(value = "/admin/managerLoginPage", method = RequestMethod.GET)
+	public String managerLoginPage() throws Exception {
+		
+		logger.info("매니저 로그인 페이지 접속");
+		
+		return "/admin/managerLoginPage";
+	}
+	
+	// 관리자, 판매자 로그인 메소드
+	@RequestMapping(value = "/admin/managerLogin", method = RequestMethod.POST)
+	public String managerLogin(MemberDTO memberDTO, RedirectAttributes rda, HttpServletRequest req) throws Exception {
+			
+		logger.info("매니저 로그인 페이지 접속");
+		
+		// 세션 객체 생성
+		HttpSession managerSession = req.getSession();
+		
+		MemberDTO manager = adminService.managerLogin(memberDTO);
+		
+		if (manager == null) {
+			
+			rda.addFlashAttribute("managerLoginFalse", false);
+			logger.info("관리자 로그인 실패");
+			
+			return "redirect:/admin/managerLoginPage";
+			
+		} else {
+
+			if (manager.getUserVerify() == 5) {
+				managerSession.setAttribute("managerInfo", manager);
+				logger.info("판매 인증 회원 로그인 : {}", managerSession.getAttribute("managerInfo"));
+
+			} else if (manager.getUserVerify() == 128) {
+				managerSession.setAttribute("managerInfo", manager);
+				logger.info("관리자 로그인 : {}", managerSession.getAttribute("managerInfo"));
+
+			} else {
+				logger.info("일반 회원 로그인 차단");
+				
+				rda.addFlashAttribute("blockNomalMember" , false);
+				
+				return "redirect:/admin/managerLoginPage";
+			}
+		}
+		
+		return "/admin/mainpage";
 	}
 
 }
