@@ -136,4 +136,14 @@ public class AdminDAOImpl implements AdminDAO {
 		sqlSession.update(NAME_SPACE + ".adminProductModify", productDTO);
 		sqlSession.update(NAME_SPACE + ".adminProductFileModify", productFileDTO);
 	}
+	
+	// ***************************************그 외***************************************
+	// 관리자, 판매자 로그인
+	@Override
+	public MemberDTO managerLogin(MemberDTO memberDTO) throws Exception {
+		
+		logger.info("매니저 로그인 DAO");
+		
+		return sqlSession.selectOne(NAME_SPACE + ".managerLogin", memberDTO);
+	}
 }
