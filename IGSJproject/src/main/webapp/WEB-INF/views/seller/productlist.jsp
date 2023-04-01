@@ -80,7 +80,7 @@ th, td {
 								<img alt="상품 이미지 로딩 실패" src="${sellerProductList.storedFileRootName}" width="100" height="100">
 							</td>
 							<td align="right">
-								<a href="${contextPath}/product/productDetail?pno=${sellerProductList.pno}">${adminProductList.product_name}</a>
+								<a href="${contextPath}/product/productDetail?pno=${sellerProductList.pno}">${sellerProductList.product_name}</a>
 							</td>
 							<td align="right">${sellerProductList.product_price}</td>
 							<td align="right">${sellerProductList.product_stock}</td>
@@ -146,7 +146,7 @@ th, td {
 			</div>
 			<!-- 페이징 끝 -->
 				<div align="right">
-				<a href="/seller/register">상품등록</a>
+				<a href="/seller/productRegister">상품등록</a>
 				</div>
 			</div>
 		</div>
