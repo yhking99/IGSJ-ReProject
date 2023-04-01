@@ -3,19 +3,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>관리자 페이지</title>
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
 </head>
 <body>
 	<div>
 		<ul>
-			<li><a href="/admin/memberlist?pageNum=1">회원관리페이지</a></li>
+			<li>
+				<a href="/admin/memberlist?pageNum=1">회원관리페이지</a>
+			</li>
 		</ul>
 		<ul>
-			<li><a href="/admin/productlist?pageNum=1">상품관리페이지</a></li>
+			<li>
+				<a href="/admin/productlist?pageNum=1">관리자상품관리페이지</a>
+			</li>
 		</ul>
 		<ul>
-			<li><a href="/seller/register">상품등록페이지</a></li>
+			<li>
+				<a href="/seller/productlist?pageNum=1">상품목록</a>
+			</li>
 		</ul>
 	</div>
 </body>
