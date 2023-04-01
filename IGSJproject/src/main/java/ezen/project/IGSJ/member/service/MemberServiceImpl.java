@@ -80,5 +80,5 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDAO.getPwd(userId);
 
-
+	}
 }
