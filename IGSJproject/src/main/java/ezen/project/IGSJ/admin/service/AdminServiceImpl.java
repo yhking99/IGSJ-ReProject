@@ -109,4 +109,14 @@ public class AdminServiceImpl implements AdminService {
 		
 		adminDAO.adminProductModify(productDTO, productFileDTO);
 	}
+	
+	// ***************************************그 외***************************************
+	// 관리자, 판매자 로그인
+	@Override
+	public MemberDTO managerLogin(MemberDTO memberDTO) throws Exception {
+		
+		logger.info("매니저 로그인 : {}", memberDTO.getUserId());
+		
+		return adminDAO.managerLogin(memberDTO);
+	}
 }

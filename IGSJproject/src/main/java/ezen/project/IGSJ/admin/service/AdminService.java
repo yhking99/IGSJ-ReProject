@@ -38,4 +38,8 @@ public interface AdminService {
 	
 	// 관리자 상품 수정
 	public void adminProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception;
+	
+	// *************************그 외*************************
+	// 관리자, 판매자 로그인
+	public MemberDTO managerLogin(MemberDTO memberDTO) throws Exception;
 }
