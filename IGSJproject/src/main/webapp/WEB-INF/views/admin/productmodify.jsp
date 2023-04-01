@@ -152,11 +152,18 @@
 
 					<div class="admin-btn-box" align="right">
 						<button class="admin-pro-btn pro-modify">
-							<b>상품정보수정</b>
+							<b>수정완료</b>
 						</button>
+						&emsp;
 						<a href="/admin/productDetail?pno=${productInfo.pno }">
 							<button type="button" class="admin-pro-btn pro-del">
 								<b>이전으로</b>
+							</button>
+						</a>
+						&emsp;
+						<a href="/admin/productlist?pageNum=1">
+							<button type="button" class="admin-pro-btn pro-back">
+								<b>목록으로돌아가기</b>
 							</button>
 						</a>
 					</div>
