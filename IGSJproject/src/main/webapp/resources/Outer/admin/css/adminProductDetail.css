@@ -103,6 +103,14 @@ ul {
 	background: #E6749D;
 }
 
+.pro-back {
+	background: #429F6B;
+}
+
+.pro-back:hover {
+	background: #5AD18F;
+}
+
 .product-description-detail {
 	resize: none;
 }
