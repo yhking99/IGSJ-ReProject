@@ -53,6 +53,14 @@ public class AdminController {
 		logger.info("관리자 페이지 입장");
 
 	}
+	
+	// 관리자 페이지 입장
+	@RequestMapping(value = "/admin/admindetail", method = RequestMethod.GET)
+	public void adminDetailPage() throws Exception {
+		
+		logger.info("관리자 메뉴 페이지 입장");
+		
+	}
 
 	// 전체 회원 불러오기
 	@RequestMapping(value = "/admin/memberlist", method = RequestMethod.GET)
