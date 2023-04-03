@@ -129,6 +129,12 @@
 							<b>상품삭제</b>
 						</button>
 					</a>
+					&emsp;
+					<a href="/admin/productlist?pageNum=1">
+						<button class="admin-pro-btn pro-back">
+							<b>상품목록으로</b>
+						</button>
+					</a>
 				</div>
 			</div>
 		</div>
