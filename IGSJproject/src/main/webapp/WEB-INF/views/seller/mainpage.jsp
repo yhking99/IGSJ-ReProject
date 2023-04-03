@@ -11,6 +11,12 @@
 		<ul>
 			<li><a href="/seller/productlist?pageNum=1">상품목록</a></li>
 		</ul>
+		<ul>
+			<li><a href="#">아직미정</a></li>
+		</ul>
+		<ul>
+			<li><a href="#">아직미정</a></li>
+		</ul>
 	</div>
 </body>
 </html>
