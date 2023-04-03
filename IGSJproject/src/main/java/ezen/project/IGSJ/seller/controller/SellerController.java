@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.google.gson.JsonObject;
 
 import ezen.project.IGSJ.category.domain.CategoryDTO;
+import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.product.domain.ProductDTO;
 import ezen.project.IGSJ.productFile.domain.ProductFileDTO;
 import ezen.project.IGSJ.seller.service.SellerService;
@@ -78,7 +80,10 @@ public class SellerController {
 
 		AwsS3 awsS3 = AwsS3.getInstance();
 		String s3ObjectUrl = null;
+		HttpSession session = request.getSession();
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
 
+		
 		try {
 			// Upload file to S3 bucket
 			String fileName = file.getOriginalFilename();
@@ -90,7 +95,7 @@ public class SellerController {
 			String rs = RandomStringUtils.randomAlphanumeric(20);
 			product.setPno(rs);
 			productFile.setPno(rs);
-			product.setUserId("1111");
+			product.setUserId(member.getUserId());
 			productFile.setOriginalFileName(fileName);
 			productFile.setStoredFileRootName(s3ObjectUrl);
 
@@ -173,7 +178,7 @@ public class SellerController {
 	}
 
 	// 전체 상품 목록 불러오기
-	@RequestMapping(value = "/seller/productlist", method = RequestMethod.GET)
+	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
 			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
@@ -199,9 +204,78 @@ public class SellerController {
 
 	}
 
-	// 판매자 상품 조회
-	@RequestMapping(value = "/seller/productview", method = RequestMethod.GET)
-	public void methodName() throws Exception {
+	// 관리자 상품 정보 조회
+	@RequestMapping(value = "/productDetail", method = RequestMethod.GET)
+	public String adminProductViewPage(@RequestParam("pno") String pno, ProductDTO productDTO, Model model) throws Exception {
 
+		logger.info("관리자 회원 정보 수정 페이지 접속");
+
+		productDTO = sellerService.sellerProductViewPage(pno);
+
+		model.addAttribute("productInfo", productDTO);
+
+		return "/seller/productdetail";
 	}
+
+	// 관리자 상품 정보 수정 페이지 진입
+	@RequestMapping(value = "/productmodify", method = RequestMethod.GET)
+	public String adminProductModifyPage(@RequestParam("pno") String pno, ProductDTO productDTO, Model model) throws Exception {
+
+		logger.info("관리자 상품 정보 수정 페이지 접속");
+
+		List<CategoryDTO> category = null;
+
+		category = sellerService.getCategory();
+
+		model.addAttribute("category", JSONArray.fromObject(category));
+
+		productDTO = sellerService.sellerProductViewPage(pno);
+
+		model.addAttribute("productInfo", productDTO);
+
+		return "/seller/productmodify";
+	}
+
+	// 관리자 상품 정보 수정
+	@RequestMapping(value = "/productmodify", method = RequestMethod.POST)
+	public String sellerProductModify(ProductDTO productDTO, ProductFileDTO productFile,
+			@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+
+		logger.info("관리자 상품 정보 수정 시작 controller");
+		AwsS3 awsS3 = AwsS3.getInstance();
+		String s3ObjectUrl = null;
+
+		try {
+			// Upload file to S3 bucket
+			String fileName = file.getOriginalFilename();
+			InputStream is = file.getInputStream();
+
+			s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
+			
+			logger.info("파일 업로드 위치 : {}", s3ObjectUrl);
+			
+			if( productDTO.getOriginalFileName() != s3ObjectUrl) {
+				awsS3.delete(productDTO.getOriginalFileName());
+			}
+			productFile.setOriginalFileName(fileName);
+			productFile.setStoredFileRootName(s3ObjectUrl);
+
+			sellerService.sellerProductModify(productDTO, productFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		logger.info("제품 이미지까지 수정 완료");
+
+
+		return "redirect:/seller/productDetail?pno=" + productDTO.getPno();
+	}
+	
+	// 상품 정보 삭제
+	@RequestMapping(value="productDelete" , method = RequestMethod.POST)
+	public void sellerProductDelete(@RequestParam("pno") String pno) throws Exception {
+		
+		
+	}
+	
 }

@@ -50,6 +50,21 @@ public class SellerServiceImpl implements SellerService{
 		
 		return sellerDAO.searchProduct(searchType, keyword);
 	}
+
+
+	@Override
+	public ProductDTO sellerProductViewPage(String pno) throws Exception {
+		
+		return sellerDAO.sellerProductViewPage(pno);
+	}
+
+
+	@Override
+	public void sellerProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception {
+			sellerDAO.sellerProductModify(productDTO, productFileDTO);
+	}
+	
+	
 	
 	
 }
