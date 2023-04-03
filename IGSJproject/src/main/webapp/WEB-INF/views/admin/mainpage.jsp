@@ -24,7 +24,7 @@
 				<a href="/admin/managerLoginPage">관리자모드 로그인</a>
 			</li>
 			<li>
-				<a href="/admin/mainpage">관리자 페이지</a>
+				<a href="/admin/admindetail">관리자 페이지</a>
 			</li>
 			<li>
 				<a href="/seller/mainpage">판매자 페이지</a>
