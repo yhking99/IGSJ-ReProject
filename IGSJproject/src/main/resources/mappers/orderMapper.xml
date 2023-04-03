@@ -2,61 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.orderMapper">
 
-	<!-- 
-	orderNum varchar(50) PK 
-	userId varchar(20) PK 
-	order_date datetime 
-	post_address varchar(20) 
-	detail_address varchar(50) 
-	detail_address2 varchar(50) 
-	recipient varchar(10) 
-	recipient_phone varchar(15)
-	 -->
-	<!-- 
-	orderDetailNum int PK 
-	orderNum varchar(50) PK 
-	pno varchar(200) 
-	productCnt int
-	productPrice int 
-	paymentStatus varchar(10)
-	-->
+	<resultMap type="ezen.project.IGSJ.order.domain.OrderDTO" id="mapping_orderDTO">
+		<result property="userId" column="userId"/>
+		<result property="userName" column="userName"/>
+		<result property="userPhoneNumber" column="userPhoneNumber"/>
+		<result property="postAddress" column="postAddress"/>
+		<result property="address" column="address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="detailAddress" column="detailAddress" jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap>
+	<!-- 주문 페이지 불러오기 -->
+	<!-- 1.배송지정보에 회원테이블(MemberDTO),회원주소테이블(MemberAddressDTO - userID로) 가져오기 
+		[아이디(userId), 이름(userName), 전화번호(userPhoneNumber), 우편번호(postAddress), 주소(address), 
+		상세주소(detailAddress)] -->
+	<select id="getOrderPage"
+		resultMap="mapping_orderDTO"
+		parameterType="String"
+		resultType="hashmap"
+		>
+		SELECT me.userId, userName, userPhoneNumber, postAddress, address, detailAddress
+		FROM MemberDTO me, MemberAddressDTO ma
+		WHERE me.userId = ma.userId
+		AND me.userId = #{userId}
+	</select>
+
+<!-- 	<select id="getOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
+		select me.userId, userName, userPhoneNumber, postAddress,
+		address, detailAddress
+		From MemberDTO me
+		inner join MemberAddressDTO ma
+		on me.userId = ma.userId
+		where me.userId = #{userId}
+	</select> -->
+
 
 
 	<!-- 주문 등록 -->
 	<insert id="orderInsert">
-		INSERT	INTO	OrderDTO
-				(orderNum,		userId,		orderDate,	postAddress,	detailAddress,		recipient,		recipientPhone)
-		VALUES	(#{orderNum},	#{userId},	NOW(),		#{postAddress},	#{detailAddress},	#{recipient},	#{recipientPhone},)
+		INSERT INTO OrderDTO
+		(orderNum, userId, orderDate,
+		postAddress, detailAddress, recipient,
+		recipientPhone)
+		VALUES
+		(#{orderNum}, #{userId}, NOW(), #{postAddress},
+		#{detailAddress},
+		#{recipient}, #{recipientPhone},)
 	</insert>
-	
-	<!-- 주문 상세 등록 -->
+
+	<!-- 주문 상세 등록 --><!-- orderDetailNum 어케해야하지... -->
 	<insert id="orderDetailInsert">
-		INSERT	INTO	OrderDetailDTO
-				(orderDetailNum,	orderNum,		pno,	productCnt,		productPrice,		paymentStatus)
-		VALUES	(#{orderDetailNum},	#{orderNum},	#{pno},	#{productCnt},	#{productPrice},	#{paymentStatus})
+		INSERT INTO OrderDetailDTO
+		(orderNum, pno, productCnt,
+		productPrice, paymentStatus)
+		VALUES (#{orderNum},
+		#{pno}, #{productCnt},
+		#{productPrice}, #{paymentStatus})
 	</insert>
-	
-	<!-- orderPage -->
-	<!-- 1.배송지정보에 회원테이블(MemberDTO),회원주소테이블(MemberAddressDTO) 가져오기
-		[이름(userName), 전화번호(userPhoneNumber), 우편번호(postAddress), 주소(address), 상세주소(detailAddress)]-->
 
 
-	<!-- 2.상품정보에 장바구니테이블(CartDTO) 가져오기
-		[제품이름(product_name), 제품주문수량(productCnt), 제품가격(product_price)]-->
+
+	<!-- 2.상품정보에 장바구니테이블(CartDTO) 가져오기 [제품이름(product_name), 제품주문수량(productCnt), 
+		제품가격(product_price)] -->
 
 	<!-- 3.결제버튼 눌렀을 때 (paymentMapper) -->
-	
-	
 
-	<!-- orderFinish -->	
-	<!-- 결제정보에 개인결제정보테이블(paymentDTO) 가져오기
-		[결제방법(payset), 결제총금액(payMoney)]-->
 
-	<!-- 상품정보에 결제후상품정보출력테이블(OrderDetailDTO)가져오기
-		[제품이름(product_name), 상품개수(productCnt), 상품가격(product_price)]-->
-	
-	<!-- 배송지정보에 배송정보테이블(PostInformationDTO)가져오기
-		[수령인(recipient), 수령인전화번호(recipient_phone), 우편번호(post_address), 상세주소1(detail_address), 상세주소2(detail_address2)]-->
-	
+
+	<!-- orderFinish -->
+	<!-- 결제정보에 개인결제정보테이블(paymentDTO) 가져오기 [결제방법(payset), 결제총금액(payMoney)] -->
+
+	<!-- 상품정보에 결제후상품정보출력테이블(OrderDetailDTO)가져오기 [제품이름(product_name), 상품개수(productCnt), 
+		상품가격(product_price)] -->
+
+	<!-- 배송지정보에 배송정보테이블(PostInformationDTO)가져오기 [수령인(recipient), 수령인전화번호(recipient_phone), 
+		우편번호(post_address), 상세주소1(detail_address), 상세주소2(detail_address2)] -->
+
 
 </mapper>
