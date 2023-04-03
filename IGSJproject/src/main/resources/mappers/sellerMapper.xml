@@ -71,5 +71,53 @@
 		</if>
 
 	</select>
+	
+	<!-- 판매자 상품 조회 -->
+	<select id="sellerProductViewPage" parameterType="String" resultType="ezen.project.IGSJ.product.domain.ProductDTO">
+		select
+
+			product.pno,
+			pft.originalFileName,
+			pft.storedFileRootName,
+			pft.storedThumbNailName,
+			cno,
+			product_name,
+			product_price,
+			product_stock,
+			product_description,
+			product_regDate,
+			userId
+
+		from ProductDTO as product
+		left outer join ProductFileDTO as pft
+		on product.pno = pft.pno
+		where product.pno = #{pno}
+		
+	</select>
+	
+	<!-- 판매자 상품 수정 -->
+	<update id="sellerProductModify" parameterType="ezen.project.IGSJ.product.domain.ProductDTO">
+		update ProductDTO
+			set
+				cno = #{cno},
+				product_name = #{product_name},
+				product_price = #{product_price},
+				product_stock = #{product_stock},
+				product_description = #{product_description}
+		where pno = #{pno}
+	</update>
+	<!-- 이미지 수정 -->
+	<update id="sellerProductFileModify" parameterType="ezen.project.IGSJ.productFile.domain.ProductFileDTO">
+		update ProductFileDTO
+			set
+				originalFileName	=	 #{originalFileName},
+				storedFileRootName  =    #{storedFileRootName},
+				storedThumbNailName =    #{storedThumbNailName}
+		where pno = #{pno}
+	</update>
+	<!-- //판매자 상품 수정 -->
+	<delete id = "sellerProductDelete" parameterType="String">
+		delete ProductDTO
+	</delete>
 
 </mapper>
