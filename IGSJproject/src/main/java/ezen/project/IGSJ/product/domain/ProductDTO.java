@@ -17,7 +17,6 @@ public class ProductDTO {
 	private String originalFileName;
 	private String storedFileRootName;
 	private String storedThumbNailName;
-	private String thumb;
 	private String image;
 
 	public String getPno() {
@@ -108,14 +107,6 @@ public class ProductDTO {
 		this.storedThumbNailName = storedThumbNailName;
 	}
 
-	public String getThumb() {
-		return thumb;
-	}
-
-	public void setThumb(String thumb) {
-		this.thumb = thumb;
-	}
-
 	public String getImage() {
 		return image;
 	}
@@ -129,7 +120,7 @@ public class ProductDTO {
 		return "ProductDTO [pno=" + pno + ", cno=" + cno + ", product_name=" + product_name + ", product_price=" + product_price + ", product_stock="
 				+ product_stock + ", product_description=" + product_description + ", product_regDate=" + product_regDate + ", userId=" + userId
 				+ ", originalFileName=" + originalFileName + ", storedFileRootName=" + storedFileRootName + ", storedThumbNailName="
-				+ storedThumbNailName + ", thumb=" + thumb + ", image=" + image + "]";
+				+ storedThumbNailName + ", image=" + image + "]";
 	}
 
 }
