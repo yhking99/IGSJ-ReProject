@@ -26,4 +26,7 @@ public interface SellerService {
 	// 판매자 상품 수정
 	public void sellerProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception;
 	
+	// 판매자 상품 삭제
+	public void sellerRemoveProduct(String pno) throws Exception;
+	
 }
