@@ -7,17 +7,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class BoardDTO {
 	
-	private int bno;
+	private int pno;
 	private String writer;
 	private String title;
 	private String content;
 	private Date reg_date;
 	
-	public int getBno() {
-		return bno;
+	public int getPno() {
+		return pno;
 	}
-	public void setBno(int bno) {
-		this.bno = bno;
+	public void setPno(int bno) {
+		this.pno = bno;
 	}
 	public String getWriter() {
 		return writer;
@@ -46,7 +46,7 @@ public class BoardDTO {
 	
 	@Override
 	public String toString() {
-		return "BoardDTO [bno=" + bno + ", writer=" + writer + ", title=" + title + ", content=" + content
+		return "BoardDTO [bno=" + pno + ", writer=" + writer + ", title=" + title + ", content=" + content
 				+ ", reg_date=" + reg_date + "]";
 	}
 	
