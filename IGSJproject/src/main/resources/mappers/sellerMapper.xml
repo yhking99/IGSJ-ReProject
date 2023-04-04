@@ -115,9 +115,21 @@
 				storedThumbNailName =    #{storedThumbNailName}
 		where pno = #{pno}
 	</update>
-	<!-- //판매자 상품 수정 -->
-	<delete id = "sellerProductDelete" parameterType="String">
-		delete ProductDTO
+	
+	<!-- 판매자 상품 삭제 -->
+	<delete id="sellerRemoveProduct" parameterType="String">
+		delete 
+		from ProductDTO
+		where pno = #{pno}
 	</delete>
+	
+	<!-- 판매자 상품 이미지 삭제 -->
+	<delete id="sellerRemoveProductFile" parameterType="String">
+		delete 
+		from ProductFileDTO
+		where pno = #{pno}
+	</delete>
+	
+	
 
 </mapper>
