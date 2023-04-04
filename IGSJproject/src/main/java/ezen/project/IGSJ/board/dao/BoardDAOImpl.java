@@ -20,6 +20,7 @@ public class BoardDAOImpl implements BoardDAO{
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 공지사항 목록 불러오기
 	@Override
 	public List<BoardDTO> getBoardList() throws Exception {
 		
@@ -28,4 +29,23 @@ public class BoardDAOImpl implements BoardDAO{
 		return sqlSession.selectList(NAME_SPACE + ".getBoardList");
 	}
 	
+	// 공지사항 등록하기
+	@Override
+	public int noticeWrite(BoardDTO boardDTO) throws Exception {
+		
+		logger.info("vue에서 넘어온 데이터 공지사항 등록하기 DAO : {}", boardDTO);
+		
+		int result = sqlSession.insert(NAME_SPACE + ".noticeWrite", boardDTO);
+
+		return result;
+	}
+	
+	// 공지사항 조회하기
+	@Override
+	public BoardDTO noticeView(int bno) throws Exception {
+		
+		logger.info("vue - {} 번 게시글 조회하기", bno);
+		
+		return sqlSession.selectOne(NAME_SPACE + ".noticeView", bno);
+	}
 }
