@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ezen.project.IGSJ.board.domain.BoardDTO;
@@ -41,8 +43,42 @@ public class BoardController {
 	}
 	
 	// 공지사항 작성
+	@ResponseBody
+	@RequestMapping(value = "/notice/NoticeWrite", method = RequestMethod.POST)
+	public boolean noticeWrite(@RequestBody BoardDTO boardDTO) throws Exception {
+		
+		logger.info("vue 공지사항 작성 CONTROLLER : {}", boardDTO);
+		
+		int result = boardService.noticeWrite(boardDTO);
+		
+		if (result == 1) {
+			
+			return true;
+			
+		} else {
+			
+			return false;
+		}
+		
+	}
+	
+	// 공지사항 조회
+	@ResponseBody
+	@RequestMapping(value = "/notice/NoticeView", method = RequestMethod.GET)
+	public BoardDTO noticeView(@RequestParam int bno) throws Exception {
+		
+		logger.info("vue의 {} 번 공지사항 조회", bno);
+		
+		return boardService.noticeView(bno);
+		
+	}
 	
 	// 공지사항 수정
+	@ResponseBody
+	@RequestMapping(value = "/notice/NoticeModify", method = RequestMethod.POST)
+	public void noticeModify() throws Exception {
+
+	}
 	
 	// 공지사항 삭제
 

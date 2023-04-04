@@ -8,4 +8,10 @@ public interface BoardDAO {
 	
 	// 공지사항 리스트 가져오기
 	public List<BoardDTO> getBoardList() throws Exception;
+	
+	// 공지사항 등록하기
+	public int noticeWrite(BoardDTO boardDTO) throws Exception;
+	
+	// 공지사항 조회하기
+	public BoardDTO noticeView(int bno) throws Exception;
 }
