@@ -18,11 +18,32 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardDAO boardDAO;
 	
+	// 공지사항 목록 불러오기
 	@Override
 	public List<BoardDTO> getBoardList() throws Exception {
 		
 		logger.info("공지사항 리스트 가져오기 vue - service");
 		
 		return boardDAO.getBoardList();
+	}
+	
+	// 공지사항 작성
+	@Override
+	public int noticeWrite(BoardDTO boardDTO) throws Exception {
+		
+		logger.info("vue에서 넘어온 데이터 공지사항 등록하기 SERVICE : {}", boardDTO);
+		
+		int result = boardDAO.noticeWrite(boardDTO);
+		
+		return result;
+	}
+	
+	// 공지사항 조회
+	@Override
+	public BoardDTO noticeView(int bno) throws Exception {
+		
+		logger.info("vue에서 넘어온 {} 번 게시글 조회", bno);
+		
+		return boardDAO.noticeView(bno);
 	}
 }

@@ -9,9 +9,23 @@
 		reg_date	datetime
 	 -->
 	 
+	 <!-- 공지사항 목록 불러오기 -->
 	 <select id="getBoardList" resultType="ezen.project.IGSJ.board.domain.BoardDTO">
 	 	select bno, writer, title, content, reg_date
 	 		from BoardDTO
 	 	order by bno desc;
+	 </select>
+	 
+	 <!-- 공지사항 등록하기 -->
+	 <insert id="noticeWrite" parameterType="ezen.project.IGSJ.board.domain.BoardDTO">
+	 	insert into BoardDTO (writer, title, content)
+	 		values (#{writer}, #{title}, #{content})
+	 </insert>
+	 
+	 <!-- 공지사항 조회하기 -->
+	 <select id="noticeView" parameterType="ezen.project.IGSJ.board.domain.BoardDTO" resultType="ezen.project.IGSJ.board.domain.BoardDTO">
+	 	select bno, writer, title, content, reg_date
+	 		from BoardDTO
+	 	where bno = #{bno}
 	 </select>
 </mapper>
