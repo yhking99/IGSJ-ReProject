@@ -69,5 +69,31 @@ public class SellerDAOImpl implements SellerDAO{
 
 		return sqlSession.selectOne(Namespace + ".searchProduct", searchData);
 	}
+
+
+	@Override
+	public ProductDTO sellerProductViewPage(String pno) throws Exception {
+	
+		return sqlSession.selectOne(Namespace + ".sellerProductViewPage", pno);
+	}
+
+	@Override
+	public void sellerProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception {
+		
+		sqlSession.update(Namespace + ".sellerProductModify", productDTO);
+		sqlSession.update(Namespace + ".sellerProductFileModify", productFileDTO);
+		
+	}
+	
+	// 판매자 상품 삭제
+	@Override
+	public void sellerRemoveProduct(String pno) throws Exception {
+		sqlSession.delete(Namespace+".sellerRemoveProductFile",pno);
+		sqlSession.delete(Namespace+".sellerRemoveProduct",pno);
+	}
+	
+	
+	
+	
 	
 }
