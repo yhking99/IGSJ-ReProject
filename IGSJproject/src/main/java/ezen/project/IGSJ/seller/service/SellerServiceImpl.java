@@ -63,6 +63,14 @@ public class SellerServiceImpl implements SellerService{
 	public void sellerProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception {
 			sellerDAO.sellerProductModify(productDTO, productFileDTO);
 	}
+
+	// 판매자 상품 삭제
+	@Override
+	public void sellerRemoveProduct(String pno) throws Exception {
+		sellerDAO.sellerRemoveProduct(pno);
+	}
+	
+	
 	
 	
 	

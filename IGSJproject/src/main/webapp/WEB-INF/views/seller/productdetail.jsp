@@ -124,8 +124,8 @@
 						</button>
 					</a>
 					&emsp;
-					<a href="javascript:forceRemoveProduct()">
-						<button class="admin-pro-btn pro-del">
+					<a href="javascript:RemoveProduct('${productInfo.pno }')">
+						<button class="admin-pro-btn pro-del" >
 							<b>상품삭제</b>
 						</button>
 					</a>
