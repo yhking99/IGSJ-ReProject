@@ -272,10 +272,14 @@ public class SellerController {
 	}
 	
 	// 상품 정보 삭제
-	@RequestMapping(value="productDelete" , method = RequestMethod.POST)
-	public void sellerProductDelete(@RequestParam("pno") String pno) throws Exception {
+	@ResponseBody
+	@RequestMapping(value="/removeProduct" , method = RequestMethod.POST)
+	public boolean sellerProductDelete(@RequestParam("pno") String pno) throws Exception {
 		
+		logger.info("pno=>"+pno);
+		sellerService.sellerRemoveProduct(pno);
 		
+		return true;
 	}
 	
 }

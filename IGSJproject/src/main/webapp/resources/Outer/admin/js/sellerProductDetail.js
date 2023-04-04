@@ -31,3 +31,42 @@ ClassicEditor
 	.catch(error => {
 		console.error(error);
 	});
+
+// 상품 삭제	
+function RemoveProduct(pno) {
+	
+	let removeYN = confirm("상품을 삭제하시겠습니까?");
+	
+	if(removeYN){
+			
+		
+		$.ajax({
+			url : "/seller/removeProduct",
+			type : "post",
+			data : {
+				"pno" : pno
+			},
+			dataType : "json",
+			success : function(result){
+				if(result == true){
+	
+					alert("상품 삭제가 완료되었습니다.");	
+					location.href = "/seller/productlist?pageNum=1";
+					
+				}			
+			},
+			error : function(error){
+				
+				alert("알 수 없는 오류로 상품 삭제에 실패하였습니다.");
+				
+
+			}
+		})
+		
+		
+	} else {
+		alert("상품 삭제가 취소되었습니다.");
+		
+		return false;
+	}
+}
