@@ -2,66 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.orderMapper">
 
-	<resultMap type="ezen.project.IGSJ.order.domain.OrderDTO" id="mapping_orderDTO">
-		<result property="userId" column="userId"/>
-		<result property="userName" column="userName"/>
-		<result property="userPhoneNumber" column="userPhoneNumber"/>
-		<result property="postAddress" column="postAddress"/>
-		<result property="address" column="address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-		<result property="detailAddress" column="detailAddress" jdbcType="VARCHAR" javaType="java.lang.String"/>
-	</resultMap>
 	<!-- 주문 페이지 불러오기 -->
-	<!-- 1.배송지정보에 회원테이블(MemberDTO),회원주소테이블(MemberAddressDTO - userID로) 가져오기 
-		[아이디(userId), 이름(userName), 전화번호(userPhoneNumber), 우편번호(postAddress), 주소(address), 
-		상세주소(detailAddress)] -->
 	<select id="getOrderPage"
-		resultMap="mapping_orderDTO"
-		parameterType="String"
-		resultType="hashmap"
-		>
-		SELECT me.userId, userName, userPhoneNumber, postAddress, address, detailAddress
-		FROM MemberDTO me, MemberAddressDTO ma
-		WHERE me.userId = ma.userId
-		AND me.userId = #{userId}
-	</select>
-
-<!-- 	<select id="getOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
+		resultType="ezen.project.IGSJ.order.domain.OrderDTO">
 		select me.userId, userName, userPhoneNumber, postAddress,
 		address, detailAddress
 		From MemberDTO me
 		inner join MemberAddressDTO ma
 		on me.userId = ma.userId
 		where me.userId = #{userId}
-	</select> -->
+	</select>
 
+	<!-- 카트에 담긴 상품 정보 불러오기 -->
+	<select id="getProductOrderPage"
+		resultType="ezen.project.IGSJ.order.domain.OrderDTO"
+		parameterType="String">
+		select cd.userId, storedFileRootName, product_name, product_price, productCnt
+		from CartDTO cd
+		inner join ProductDTO pd
+		on
+		cd.pno = pd.pno
+		join ProductFileDTO pfd
+		on cd.pno = pfd.pno
+		where cd.userId = #{userId}
+	</select>
 
-
-	<!-- 주문 등록 -->
-	<insert id="orderInsert">
-		INSERT INTO OrderDTO
-		(orderNum, userId, orderDate,
-		postAddress, detailAddress, recipient,
-		recipientPhone)
-		VALUES
-		(#{orderNum}, #{userId}, NOW(), #{postAddress},
-		#{detailAddress},
-		#{recipient}, #{recipientPhone},)
+	<!-- 수령인정보 등록하기(orderDTO) -->
+	<insert id="writeRecipientInfo"
+		parameterType="ezen.project.IGSJ.order.domain.OrderDTO">
+		INSERT INTO OrderDTO (orderNum, userId, order_date, post_address, detail_address, detail_address2, recipient, recipient_phone)
+		VALUES (CONCAT(DATE_FORMAT(NOW(),'%y%m%d'),'_', ''), #{userId}, current_timestamp(), #{post_address}, #{detail_address}, #{detail_address2}, #{recipient}, #{recipient_phone})
 	</insert>
 
-	<!-- 주문 상세 등록 --><!-- orderDetailNum 어케해야하지... -->
-	<insert id="orderDetailInsert">
-		INSERT INTO OrderDetailDTO
-		(orderNum, pno, productCnt,
-		productPrice, paymentStatus)
-		VALUES (#{orderNum},
-		#{pno}, #{productCnt},
-		#{productPrice}, #{paymentStatus})
+	<!-- 주문제품정보 등록하기(orderDetailDTO) -->
+	<insert id="writeProductInfo"
+		parameterType="ezen.project.IGSJ.order.domain.OrderDetailDTO">
+		INSERT INTO OrderDetailDTO (orderDetailNum, orderNum, pno, productCnt, productPrice, paymentStatus)
+		VALUES (orderDetailNum, (SELECT orderNum FROM orderDTO), #{pno}, #{productCnt}, #{productPrice}, '결제대기')
 	</insert>
+	
+	
+
+	<!-- 카트에 담긴 상품 정보 불러오기 -->
+	<!-- <select id="getProductOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO" 
+		parameterType="String"> select md.userId,storedFileRootName, product_name, 
+		product_price, productCnt from CartDTO cd inner join ProductDTO pd on cd.pno 
+		= pd.pno join ProductFileDTO pfd on cd.pno = pfd.pno join MemberDTO md on 
+		SUBSTRING_INDEX(cd.cartNum, '_', 1) = md.userId where md.userId = #{userId}; 
+		</select> -->
 
 
 
-	<!-- 2.상품정보에 장바구니테이블(CartDTO) 가져오기 [제품이름(product_name), 제품주문수량(productCnt), 
-		제품가격(product_price)] -->
+
+
 
 	<!-- 3.결제버튼 눌렀을 때 (paymentMapper) -->
 
