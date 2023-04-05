@@ -27,11 +27,11 @@ public class InquireController {
 	// 제품 문의 목록
 	@ResponseBody // json으로 데이터를 보낼때 사용
 	@RequestMapping(value = "/inquire/InquireList", method = RequestMethod.GET)
-	public List<InquireDTO> inquireList(int pno) throws Exception {
+	public List<InquireDTO> inquireList() throws Exception {
 		
 		logger.info("vue 문의사항 전송");
 		
-		List<InquireDTO> inpList = inquireService.InquireList(pno);
+		List<InquireDTO> inpList = inquireService.InquireList();
 		
 		return inpList;
 		
