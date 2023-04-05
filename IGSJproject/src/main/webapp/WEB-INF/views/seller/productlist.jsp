@@ -56,7 +56,6 @@ th, td {
 						<th style="width: fit-content;">제품등록일</th>
 						<th style="width: fit-content;">제품등록자</th>
 						<th style="width: fit-content;">카테고리</th>
-						<th style="width: fit-content;">관리</th>
 					</tr>
 				</thead>
 				<tbody style="text-align: center; vertical-align: middle;">
@@ -80,7 +79,7 @@ th, td {
 								<img alt="상품 이미지 로딩 실패" src="${sellerProductList.storedFileRootName}" width="100" height="100">
 							</td>
 							<td align="right">
-								<a href="${contextPath}/product/productDetail?pno=${sellerProductList.pno}">${sellerProductList.product_name}</a>
+								<a href="${contextPath}/seller/productDetail?pno=${sellerProductList.pno}">${sellerProductList.product_name}</a>
 							</td>
 							<td align="right">${sellerProductList.product_price}</td>
 							<td align="right">${sellerProductList.product_stock}</td>
@@ -89,11 +88,6 @@ th, td {
 							</td>
 							<td align="right">${sellerProductList.userId}</td>
 							<td align="right">${sellerProductList.cno}</td>
-							<td>
-								<a href="/seller/productmodifypage">[수정]</a>
-								<br>
-								<a href="/seller/productdelete">[삭제]</a>
-							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -158,7 +152,6 @@ th, td {
 		<!-- 게시글 검색기능 -->
 		<div>
 			<select class="searchType" name="searchType" onchange="changeInputTag()">
-				<option value="userId" <%=pageIngredient.getSearchType().equals("userId") ? "selected" : ""%>>등록자</option>
 				<option value="product_name" <%=pageIngredient.getSearchType().equals("product_name") ? "selected" : ""%>>제품이름</option>
 				<option value="cno" <%=pageIngredient.getSearchType().equals("cno") ? "selected" : ""%>>카테고리</option>
 			</select>
