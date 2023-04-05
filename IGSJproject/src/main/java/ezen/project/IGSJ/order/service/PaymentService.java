@@ -7,6 +7,6 @@ import ezen.project.IGSJ.order.domain.PaymentDTO;
 public interface PaymentService {
 
 	//결제
-	public void pay(String userId, OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception;
+	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception;
 	
 }

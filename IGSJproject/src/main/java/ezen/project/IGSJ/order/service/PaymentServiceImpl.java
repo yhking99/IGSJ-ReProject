@@ -20,11 +20,11 @@ public class PaymentServiceImpl implements PaymentService{
 	
 	//결제
 	@Override
-	public void pay(String userId, OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
+	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
 		
 		logger.info("결제 pay - paymentService");
 		
-		paymentDAO.pay(userId, orderDTO, orderDetailDTO, paymentDTO);
+		paymentDAO.pay(orderDTO, orderDetailDTO, paymentDTO);
 	}
 	
 }

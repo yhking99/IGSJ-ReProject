@@ -24,7 +24,7 @@ public class PaymentDAOImpl implements PaymentDAO{
 	
 	// 결제
 	@Override
-	public void pay(String userId, OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
+	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
 		
 		logger.info("결제 pay - paymentDAO");
 		

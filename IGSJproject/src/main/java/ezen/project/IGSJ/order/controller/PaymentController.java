@@ -26,16 +26,16 @@ public class PaymentController {
 	private PaymentService paymentService;
 	
 	// 결제하기 - 수령인정보, 주문품목정보, 개인결제정보
-//	@ResponseBody
-//	@RequestMapping(value="/pay/{userId}", method=RequestMethod.POST)
-//	public String pay(@PathVariable("userId") String userId, OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
-//		
-//		logger.info("결제 pay - paymentController");
-//		
-//		
-//		
-//		paymentService.pay(userId, orderDTO, orderDetailDTO, paymentDTO);
-//		
-//	}
+	@ResponseBody
+	@RequestMapping( method=RequestMethod.POST)
+	public String pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception{
+		
+		logger.info("결제 pay - paymentController");
+		
+		
+		
+		paymentService.pay(orderDTO, orderDetailDTO, paymentDTO);
+		
+	}
 	
 }
