@@ -55,4 +55,13 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardDAO.noticeModify(boardDTO);
 	}
+	
+	// 공지사항 삭제하기
+	@Override
+	public int noticeDel(int bno) throws Exception {
+		
+		logger.info("{} 번 공지사항 삭제 SERVICE", bno);
+		
+		return boardDAO.noticeDel(bno);
+	}
 }
