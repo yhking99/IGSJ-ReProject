@@ -135,12 +135,10 @@ public class SellerController {
 						// 파일 이름 설정
 						String fileName = file.getOriginalFilename();
 						InputStream is = file.getInputStream();
-						// 바이트 타입설정
-						byte[] bytes;
-						// 파일을 바이트 타입으로 변경
-						bytes = file.getBytes();
+						
 						// 파일이 실제로 저장되는 경로
 						uploadPath = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
+						
 						// 저장되는 파일에 경로 설정
 						File uploadFile = new File(uploadPath);
 						if (!uploadFile.exists()) {
@@ -181,8 +179,13 @@ public class SellerController {
 	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
-
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model
+			,HttpServletRequest request,String userId) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		userId = member.getUserId();
+		logger.info("userId===============================>>>>>>"+userId);
 		// 파라미터 순서 int contentNum , int maxPageNum, int selectContent
 		page = new PageIngredient(5, 5, 5);
 
@@ -192,10 +195,10 @@ public class SellerController {
 		page.setSearchTypeAndKeyword(searchType, keyword);
 
 		// 게시글 총 갯수를 구한다. 단 검색타입과 키워드에 맞춘 결과에 대한 총 갯수를 출력해야한다.
-		page.setTotalContent(sellerService.searchProduct(searchType, keyword));
+		page.setTotalContent(sellerService.searchProduct(searchType, keyword,userId));
 
 		List<ProductDTO> sellerProductList = null;
-		sellerProductList = sellerService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword);
+		sellerProductList = sellerService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword,userId);
 		model.addAttribute("sellerProductList", sellerProductList);
 		model.addAttribute("page", page);
 
