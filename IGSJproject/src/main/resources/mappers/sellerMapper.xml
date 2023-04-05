@@ -38,15 +38,14 @@
 		from ProductDTO as product
 		left outer join ProductFileDTO as pft
 		on product.pno = pft.pno
+		where userId = #{userId} 
 
-		<if test="searchType.equals('userId')">
-			where userId like concat('%', #{keyword}, '%')
-		</if>
+
 		<if test="searchType.equals('product_name')">
-			where product_name like concat('%', #{keyword}, '%')
+			and product_name like concat('%', #{keyword}, '%')
 		</if>
 		<if test="searchType.equals('cno')">
-			where cno between #{keyword} and #{keyword} + 100
+			and cno between #{keyword} and #{keyword} + 100
 		</if>
 
 		order by product_name <!-- 검색결과 가나다순 정리 -->
@@ -59,15 +58,14 @@
 
 		select count(*)
 		from ProductDTO
+		where userId = #{userId}
 
-		<if test="searchType.equals('userId')">
-			where userId like concat('%', #{keyword}, '%')
-		</if>
+
 		<if test="searchType.equals('product_name')">
-			where product_name like concat('%', #{keyword}, '%')
+			and product_name like concat('%', #{keyword}, '%')
 		</if>
 		<if test="searchType.equals('cno')">
-			where cno between #{keyword} and #{keyword} + 100
+			and cno between #{keyword} and #{keyword} + 100
 		</if>
 
 	</select>

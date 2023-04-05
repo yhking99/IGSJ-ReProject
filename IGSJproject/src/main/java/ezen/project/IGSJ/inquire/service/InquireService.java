@@ -7,7 +7,7 @@ import ezen.project.IGSJ.inquire.domain.InquireDTO;
 public interface InquireService {
 	
 	// 제품 문의 목록
-	public List<InquireDTO> InquireList(int pno) throws Exception;
+	public List<InquireDTO> InquireList() throws Exception;
 	
 	// 제품 문의 조회
 	public InquireDTO inquireView(int inquireNum) throws Exception;
