@@ -23,13 +23,11 @@
 
 </select>
 
-
-</select>
 <!-- 장바구니 삭제 -->
 <delete id = "cartDelete" parameterType = "ezen.project.IGSJ.cart.domain.CartDTO">
 	
 	DELETE FROM CartDTO
-	WHERE userId = #{cartId}
+	WHERE userId = #{userId}
 	AND pno = #{pno}
 
 </delete>
