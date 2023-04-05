@@ -55,21 +55,19 @@ public class MemberController {
 		logger.info("로그인 memberLogin - Controller {}", memberDTO);
 		
 		 String inputPwd = memberDTO.getUserPwd();
-			
-		 System.out.println("사용자 입력 비밀번호 =>" + inputPwd); 
+			System.out.println("사용자 입력 비밀번호 =>" + inputPwd); 
 		 // DB에있는 비밀번호(bcrypt값이므로 변환이 필요함)  
 		 // matches(사용자 입력값, 암호화 비밀번호값) 
 		 String realPwd = memberService.getPwd(memberDTO.getUserId()); 
+		 	System.out.println("암호화 비밀번호 =>" + realPwd); 
 		 
-		 System.out.println("암호화 비밀번호 =>" + realPwd); 
 		 boolean passMatch = passEncoder.matches(inputPwd, realPwd);
-		 System.out.println("검증 결과 ==> " + passMatch); 
+		 	System.out.println("검증 결과 ==> " + passMatch); 
 		 
 		 if(passMatch == true) { 
-			 
 			 memberDTO.setUserPwd(realPwd);
-			 
 			 return memberService.memberLogin(memberDTO); 
+			 
 		 } else {
 			 
 			 return null;
