@@ -10,11 +10,11 @@
 	<div>
 		<h1>
 			<c:choose>
-				<c:when test="${managerInfo == null }">
+				<c:when test="${member == null }">
 					관리자 로그인이 되어있지 않은 상태입니다.
 				</c:when>
 				<c:otherwise>
-					관리자 ${managerInfo.userId } 님이 로그인중입니다.
+					관리자 ${member.userId } 님이 로그인중입니다.
 				</c:otherwise>
 			</c:choose>
 		</h1>

@@ -48,7 +48,7 @@ public class AdminController {
 
 	// 관리자 페이지 입장
 	@RequestMapping(value = "/admin/mainpage", method = RequestMethod.GET)
-	public void adminMainPage() throws Exception {
+	public void adminMainPage(HttpServletRequest req) throws Exception {
 
 		logger.info("관리자 페이지 입장");
 
@@ -56,10 +56,10 @@ public class AdminController {
 	
 	// 관리자 페이지 입장
 	@RequestMapping(value = "/admin/admindetail", method = RequestMethod.GET)
-	public void adminDetailPage() throws Exception {
+	public void adminDetailPage(HttpServletRequest req) throws Exception {
 		
 		logger.info("관리자 메뉴 페이지 입장");
-		
+
 	}
 
 	// 전체 회원 불러오기
@@ -245,26 +245,23 @@ public class AdminController {
 	}
 	
 	// 관리자, 판매자 로그인 페이지 진입
-	@RequestMapping(value = "/admin/managerLoginPage", method = RequestMethod.GET)
-	public String managerLoginPage() throws Exception {
+	@RequestMapping(value = "/managerLoginPage", method = RequestMethod.GET)
+	public void managerLoginPage() throws Exception {
 		
 		logger.info("매니저 로그인 페이지 접속");
 		
-		return "/admin/managerLoginPage";
 	}
 	
 	// 관리자, 판매자 로그인 메소드
-	@RequestMapping(value = "/admin/managerLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "/managerLogin", method = RequestMethod.POST)
 	public String managerLogin(MemberDTO memberDTO, RedirectAttributes rda, HttpServletRequest req) throws Exception {
 			
 		logger.info("매니저 로그인 페이지 접속");
+		logger.info("memberDTO.getUserId()"+memberDTO.getUserId());
+		MemberDTO member = adminService.managerLogin(memberDTO);
+		HttpSession session = req.getSession();
 		
-		// 세션 객체 생성
-		HttpSession managerSession = req.getSession();
-		
-		MemberDTO manager = adminService.managerLogin(memberDTO);
-		
-		if (manager == null) {
+		if (member == null) {
 			
 			rda.addFlashAttribute("managerLoginFalse", false);
 			logger.info("관리자 로그인 실패");
@@ -272,25 +269,21 @@ public class AdminController {
 			return "redirect:/admin/managerLoginPage";
 			
 		} else {
-
-			if (manager.getUserVerify() == 5) {
-				managerSession.setAttribute("managerInfo", manager);
-				logger.info("판매 인증 회원 로그인 : {}", managerSession.getAttribute("managerInfo"));
-
-			} else if (manager.getUserVerify() == 128) {
-				managerSession.setAttribute("managerInfo", manager);
-				logger.info("관리자 로그인 : {}", managerSession.getAttribute("managerInfo"));
-
-			} else {
-				logger.info("일반 회원 로그인 차단");
-				
-				rda.addFlashAttribute("blockNomalMember" , false);
-				
-				return "redirect:/admin/managerLoginPage";
-			}
+		if(member.getUserVerify() == 128) {
+			session.setAttribute("member", member);
+			return "redirect:/admin/mainpage";			
+		} else if(member.getUserVerify() == 5) {
+			session.setAttribute("member", member);
+			return "redirect:/seller/mainpage";
+		} else {
+			logger.info("일반 회원 로그인 차단");
+			
+			rda.addFlashAttribute("blockNomalMember" , false);
+			
+			return "redirect:/";
 		}
 		
-		return "/admin/mainpage";
+		}
 	}
 
 }

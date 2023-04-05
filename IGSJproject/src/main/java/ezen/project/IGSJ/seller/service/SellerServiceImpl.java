@@ -35,21 +35,45 @@ public class SellerServiceImpl implements SellerService{
 	}
 	// 상품 목록 불러오기
 	@Override
-	public List<ProductDTO> getProductList(int displayTotalContent, int pageContent, String searchType, String keyword) throws Exception {
+	public List<ProductDTO> getProductList(int displayTotalContent, int pageContent, String searchType, String keyword,String userId) throws Exception {
 		
 		logger.info("관리자 페이지 전체 상품 목록 불러오기 service");
-		
-		return sellerDAO.getProductList(displayTotalContent, pageContent, searchType, keyword);
+		logger.info("userId===============================>>>>>>"+userId);
+
+		return sellerDAO.getProductList(displayTotalContent, pageContent, searchType, keyword,userId);
 	}
 	
 	// 검색 결과에 따른 상품 불러오기
 	@Override
-	public int searchProduct(String searchType, String keyword) throws Exception {
+	public int searchProduct(String searchType, String keyword, String userId) throws Exception {
 		
 		logger.info("관리자 페이지 검색결과에 따른 상품 수 출력");
 		
-		return sellerDAO.searchProduct(searchType, keyword);
+		return sellerDAO.searchProduct(searchType, keyword, userId);
 	}
+
+
+	@Override
+	public ProductDTO sellerProductViewPage(String pno) throws Exception {
+		
+		return sellerDAO.sellerProductViewPage(pno);
+	}
+
+
+	@Override
+	public void sellerProductModify(ProductDTO productDTO, ProductFileDTO productFileDTO) throws Exception {
+			sellerDAO.sellerProductModify(productDTO, productFileDTO);
+	}
+
+	// 판매자 상품 삭제
+	@Override
+	public void sellerRemoveProduct(String pno) throws Exception {
+		sellerDAO.sellerRemoveProduct(pno);
+	}
+	
+	
+	
+	
 	
 	
 }
