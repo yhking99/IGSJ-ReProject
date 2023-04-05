@@ -43,22 +43,24 @@ public class SellerDAOImpl implements SellerDAO{
 	
 	// 전체 상품 목록 불러오기
 	@Override
-	public List<ProductDTO> getProductList(int displayTotalContent, int pageContent, String searchType, String keyword) throws Exception {
+	public List<ProductDTO> getProductList(int displayTotalContent, int pageContent, String searchType, String keyword,String userId) throws Exception {
 
 		logger.info("관리자 페이지 전체상품 불러오기 DAO");
+		logger.info("userId===============================>>>>>>"+userId);
 
 		HashMap<String, Object> productPageData = new HashMap<>();
 		productPageData.put("displayTotalContent", displayTotalContent);
 		productPageData.put("pageContent", pageContent);
 		productPageData.put("searchType", searchType);
 		productPageData.put("keyword", keyword);
+		productPageData.put("userId", userId);
 
 		return sqlSession.selectList(Namespace + ".getProductList", productPageData);
 	}
 
 	// 검색 결과에 따른 상품 목록 불러오기
 	@Override
-	public int searchProduct(String searchType, String keyword) throws Exception {
+	public int searchProduct(String searchType, String keyword, String userId) throws Exception {
 
 		logger.info("관리자 페이지 검색결과에 따른 상품 출력");
 
@@ -66,6 +68,7 @@ public class SellerDAOImpl implements SellerDAO{
 
 		searchData.put("searchType", searchType);
 		searchData.put("keyword", keyword);
+		searchData.put("userId", userId);
 
 		return sqlSession.selectOne(Namespace + ".searchProduct", searchData);
 	}
