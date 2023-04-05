@@ -15,10 +15,10 @@ public class InquireDAOImpl implements InquireDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(InquireDAOImpl.class);
 	
+	private static final String NAME_SPACE = "mappers.inquireMapper";
+	
 	@Autowired
 	private SqlSession sqlSession;
-	
-	private static final String NAME_SPACE = "mappers.inquireMapper";
 
 	// 제품 문의 목록
 	@Override
