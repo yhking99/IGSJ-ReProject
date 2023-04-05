@@ -20,7 +20,7 @@ public class InquireServiceImpl implements InquireService {
 	
 	// 상품 문의 목록
 	@Override
-	public List<InquireDTO> InquireList() throws Exception {
+	public List<InquireDTO> inquireList() throws Exception {
 		
 		logger.info("상품 문의 목록 - Service");
 		
