@@ -4,7 +4,7 @@
 	
 	<!-- 제품 문의 목록 -->
 	<select id="inquireList" resultType="ezen.project.IGSJ.inquire.domain.InquireDTO">
-		SELECT inquireNum, userId, inquireTitle, inquireContent, inquireRegDate
+		SELECT inquireNum, userId, inquireTitle, inquireContent, inquireRegDate, pno
 		FROM InquireDTO
 	</select>
 	
