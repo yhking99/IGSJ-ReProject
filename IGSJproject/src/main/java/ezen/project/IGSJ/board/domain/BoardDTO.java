@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BoardDTO {
+
 //	bno	int
 //	writer	varchar(20)
 //	title	varchar(50)
@@ -18,12 +19,14 @@ public class BoardDTO {
 	private String content;
 	private Date reg_date;
 
+
 	public int getBno() {
 		return bno;
 	}
 
 	public void setBno(int bno) {
 		this.bno = bno;
+
 	}
 
 	public String getWriter() {
@@ -60,7 +63,9 @@ public class BoardDTO {
 
 	@Override
 	public String toString() {
+
 		return "BoardDTO [bno=" + bno + ", writer=" + writer + ", title=" + title + ", content=" + content + ", reg_date=" + reg_date + "]";
+
 	}
 
 }
