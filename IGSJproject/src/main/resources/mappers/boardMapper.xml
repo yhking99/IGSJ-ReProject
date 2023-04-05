@@ -28,4 +28,13 @@
 	 		from BoardDTO
 	 	where bno = #{bno}
 	 </select>
+	 
+	 <!-- 공지사항 수정하기	-->
+	 <update id="noticeModify" parameterType="ezen.project.IGSJ.board.domain.BoardDTO">
+	 	update BoardDTO
+	 		set
+	 			title = #{title},
+	 			content = #{content}
+	 	where bno = #{bno}
+	 </update>
 </mapper>

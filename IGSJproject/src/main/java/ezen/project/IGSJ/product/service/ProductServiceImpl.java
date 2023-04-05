@@ -31,4 +31,17 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO getProductInfo(String pno) throws Exception {
 		return productDAO.getProductInfo(pno);
 	} // getProductInfo()
+
+	// 모든 상품 => 주문량 상위 10종목으로 수정하기
+	@Override
+	public List<ProductDTO> allProductInfo() throws Exception {
+		return productDAO.allProductInfo();
+	} // allProductInfo()
+
+	// 신상품 10개 추출
+	@Override
+	public List<ProductDTO> newProductInfo() throws Exception {
+		return productDAO.newProductInfo();
+	} // newProductInfo()
+	
 } // public class ProductServiceImpl()

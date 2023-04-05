@@ -23,9 +23,10 @@ public class PaymentDTO {
 	private int payMoney;
 	private Date payRegDate;
 	private String payBank;
+
 	
 	public PaymentDTO() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public PaymentDTO(int paymentNum, int orderDetailNum, String paySet, String payCompany, int payMoney,
