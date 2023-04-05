@@ -152,7 +152,6 @@ th, td {
 		<!-- 게시글 검색기능 -->
 		<div>
 			<select class="searchType" name="searchType" onchange="changeInputTag()">
-				<option value="userId" <%=pageIngredient.getSearchType().equals("userId") ? "selected" : ""%>>등록자</option>
 				<option value="product_name" <%=pageIngredient.getSearchType().equals("product_name") ? "selected" : ""%>>제품이름</option>
 				<option value="cno" <%=pageIngredient.getSearchType().equals("cno") ? "selected" : ""%>>카테고리</option>
 			</select>
