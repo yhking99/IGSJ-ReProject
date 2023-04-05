@@ -57,4 +57,13 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.update(NAME_SPACE + ".noticeModify", boardDTO);
 	}
+	
+	// 공지사항 삭제하기
+	@Override
+	public int noticeDel(int bno) throws Exception {
+		
+		logger.info("{}번 공지사항 삭제 DAO", bno);
+		
+		return sqlSession.delete(NAME_SPACE + ".noticeDel", bno);
+	}
 }
