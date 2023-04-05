@@ -44,8 +44,17 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public BoardDTO noticeView(int bno) throws Exception {
 		
-		logger.info("vue - {} 번 게시글 조회하기", bno);
+		logger.info("vue - {} 번 게시글 조회하기 DAO", bno);
 		
 		return sqlSession.selectOne(NAME_SPACE + ".noticeView", bno);
+	}
+	
+	// 공지사항 수정하기
+	@Override
+	public int noticeModify(BoardDTO boardDTO) throws Exception {
+		
+		logger.info("{}번 공지사항 수정 DAO", boardDTO.getBno());
+		
+		return sqlSession.update(NAME_SPACE + ".noticeModify", boardDTO);
 	}
 }
