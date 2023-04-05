@@ -62,12 +62,12 @@ public class BoardController {
 		
 	}
 	
-	// 공지사항 조회
+	// 공지사항 조회, 수정페이지 입장. 수정시에도 로그엔 조회로 뜸 주의할것.
 	@ResponseBody
 	@RequestMapping(value = "/notice/NoticeView", method = RequestMethod.GET)
 	public BoardDTO noticeView(@RequestParam int bno) throws Exception {
 		
-		logger.info("vue의 {} 번 공지사항 조회", bno);
+		logger.info("vue의 {} 번 공지사항 조회 CONTROLLER", bno);
 		
 		return boardService.noticeView(bno);
 		
@@ -76,11 +76,24 @@ public class BoardController {
 	// 공지사항 수정
 	@ResponseBody
 	@RequestMapping(value = "/notice/NoticeModify", method = RequestMethod.POST)
-	public void noticeModify() throws Exception {
-
+	public boolean noticeModify(@RequestBody BoardDTO boardDTO) throws Exception {
+		
+		logger.info("vue의 {} 번 공지사항 수정 실행 CONTROLLER", boardDTO.getBno());
+		
+		int result = boardService.noticeModify(boardDTO);
+		
+		if (result == 1) {
+			
+			return true;
+			
+		} else {
+			
+			return false;
+			
+		}
 	}
 	
 	// 공지사항 삭제
-
+	
 
 }

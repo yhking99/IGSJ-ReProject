@@ -14,4 +14,7 @@ public interface BoardDAO {
 	
 	// 공지사항 조회하기
 	public BoardDTO noticeView(int bno) throws Exception;
+	
+	// 공지사항 수정하기
+	public int noticeModify(BoardDTO boardDTO) throws Exception;
 }

@@ -4,12 +4,6 @@ import java.util.Date;
 
 public class OrderDTO {
 
-	/*
-	 * orderNum varchar(50) PK userId varchar(20) PK order_date datetime
-	 * post_address varchar(20) detail_address varchar(50) detail_address2
-	 * varchar(50) recipient varchar(10) recipient_phone varchar(15)
-	 */
-
 	private int orderNum;
 	private String userId;
 	private Date order_date;
@@ -23,14 +17,18 @@ public class OrderDTO {
 	private String address;
 	private String detailAddress;
 	
+	private String storedFileRootName;
+	private String product_name;
+	private int product_price;
+	private int productCnt;
+	
 	public OrderDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* using field */
 	public OrderDTO(int orderNum, String userId, Date order_date, String postAddress, String detail_address,
 			String recipient, String recipient_phone, String userName, String userPhoneNumber, String address,
-			String detailAddress) {
+			String detailAddress, String storedFileRootName, String product_name, int product_price, int productCnt) {
 		super();
 		this.orderNum = orderNum;
 		this.userId = userId;
@@ -43,8 +41,12 @@ public class OrderDTO {
 		this.userPhoneNumber = userPhoneNumber;
 		this.address = address;
 		this.detailAddress = detailAddress;
+		this.storedFileRootName = storedFileRootName;
+		this.product_name = product_name;
+		this.product_price = product_price;
+		this.productCnt = productCnt;
 	}
-	
+
 
 	public int getOrderNum() {
 		return orderNum;
@@ -107,6 +109,7 @@ public class OrderDTO {
 		return userName;
 	}
 	
+	
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -133,16 +136,49 @@ public class OrderDTO {
 	public void setDetailAddress(String detailAddress) {
 		this.detailAddress = detailAddress;
 	}
+	
+	
+	public String getStoredFileRootName() {
+		return storedFileRootName;
+	}
+
+	public void setStoredFileRootName(String storedFileRootName) {
+		this.storedFileRootName = storedFileRootName;
+	}
+	
+	public String getProduct_name() {
+		return product_name;
+	}
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+	public int getProduct_price() {
+		return product_price;
+	}
+
+	public void setProduct_price(int product_price) {
+		this.product_price = product_price;
+	}
+
+	public int getProductCnt() {
+		return productCnt;
+	}
+
+	public void setProductCnt(int productCnt) {
+		this.productCnt = productCnt;
+	}
+
 
 	@Override
 	public String toString() {
 		return "OrderDTO [orderNum=" + orderNum + ", userId=" + userId + ", order_date=" + order_date + ", postAddress="
 				+ postAddress + ", detail_address=" + detail_address + ", recipient=" + recipient + ", recipient_phone="
 				+ recipient_phone + ", userName=" + userName + ", userPhoneNumber=" + userPhoneNumber + ", address="
-				+ address + ", detailAddress=" + detailAddress + "]";
+				+ address + ", detailAddress=" + detailAddress + ", storedFileRootName=" + storedFileRootName
+				+ ", product_name=" + product_name + ", product_price=" + product_price + ", productCnt=" + productCnt
+				+ "]";
 	}
-
-	
-
 
 }

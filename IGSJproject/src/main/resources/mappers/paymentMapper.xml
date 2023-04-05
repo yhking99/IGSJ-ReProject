@@ -14,14 +14,12 @@ payRegDate datetime
 payBank varchar(50)
  -->
  
+ <!-- 결제정보 등록하기(paymentDTO) -->
+ <insert id="writePaymentInfo">
+ 	INSERT INTO PaymentDTO (paymentNum, orderDetailNum, paySet, payCompany, payMoney, payRegDate, payBank)
+	VALUES (paymentNum, (SELECT orderDetailNum FROM orderDetailDTO), #{paySet}, #{payCompany}, #{payMoney}, current_timestamp(), #{payBank});
+ </insert>
  
-	<!-- 결제 등록 -->
-	<insert id="paymentInsert">
-		INSERT INTO PaymentDTO
-				(paymentNum,	orderDetailNum,		paySet,		payCompany,		payMoney,		payRegDate,	payBank)
-		VALUES	(#{paymentNum},	#{orderDetailNum},	#{paySet},	#{payCompany},	#{payMoney},	NOW(),		#{payBank})
-	</insert>
-
 <!-- 계좌이체: 개인결제정보테이블(paymentDTO)에 
 	[결제번호(paymentNum), 상세주문번호(orderDetailNum), 결제방법(paySet), 결제총금액(payMoney), 결제승인일시(payRegDate), 결제시거래은행(payBank)] 보내기-->
 	
