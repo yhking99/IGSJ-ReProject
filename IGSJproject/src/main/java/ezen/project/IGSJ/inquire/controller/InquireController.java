@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ezen.project.IGSJ.board.domain.BoardDTO;
 import ezen.project.IGSJ.inquire.domain.InquireDTO;
 import ezen.project.IGSJ.inquire.service.InquireService;
 
@@ -28,12 +26,12 @@ public class InquireController {
 	@Autowired
 	private InquireService inquireService;
 
-	// 제품 문의 목록
+	// 제품 문의
 	@ResponseBody
 	@RequestMapping(value = "/inquire/InquireList", method = RequestMethod.GET)
 	public List<InquireDTO> inquireList() throws Exception {
 
-		logger.info("vue 문의사항 전송");
+		logger.info("vue 문의사항 목록 불러오기");
 
 		List<InquireDTO> inpList = inquireService.inquireList();
 
@@ -97,22 +95,21 @@ public class InquireController {
 	@ResponseBody
 	@RequestMapping(value = "/inquire/InquireDelete/{inquireNum}", method = RequestMethod.POST)
 	public boolean inquireDelete(@PathVariable int inquireNum) throws Exception {
-	 
+
 		logger.info("vue의 {} 번 문의사항 삭제 실행 CONTROLLER", inquireNum);
-		  
+
 		int result = inquireService.inquireDelete(inquireNum);
-		  
+
 		if (result == 1) {
-		 
-		return true;
-		  
+
+			return true;
+
 		} else {
-		 
-		return false;
-		  
-		} 
-	
+
+			return false;
+
+		}
+
 	}
-	 
 
 }
