@@ -28,6 +28,25 @@ public class CartServcieImpl implements CartService {
 		return cartDAO.cartWrite(cartDTO);
 		
 	}
+	
+	// 장바구니 중복 확인
+	@Override
+	public int cartSelect(CartDTO cartDTO) throws Exception {
+		
+		logger.info("장바구니 중복확인 cartSelect - Service");
+		
+		return cartDAO.cartSelect(cartDTO);
+	}
+	
+	// 장바구니 중복 수량 증가
+	@Override
+	public int cartUpdate(CartDTO cartDTO) throws Exception {
+		
+		logger.info("장바구니 중복 수량 증가 cartUpdate - Service");
+		
+		return cartDAO.cartUpdate(cartDTO);
+	}
+	
 	//장바구니 목록
 	@Override
 	public List<CartDTO> cartList(String userId) throws Exception {
@@ -49,4 +68,12 @@ public class CartServcieImpl implements CartService {
 		return cartDAO.cartDelete(cartDTO);
 	}
 	
+	//장바구니 수량 수정
+	@Override
+	public int modifyCart(CartDTO cartDTO) throws Exception {
+
+		logger.info("장바구니 수정 modifyCart - Service");
+		
+		return cartDAO.modifyCart(cartDTO);
+	}
 }
