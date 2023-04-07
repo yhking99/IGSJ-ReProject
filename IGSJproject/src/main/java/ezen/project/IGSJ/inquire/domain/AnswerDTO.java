@@ -4,11 +4,10 @@ import java.util.Date;
 
 public class AnswerDTO {
 
-	private int 	ansNum; 		// 응답번호
-	private int 	inquireNum; 	// 제품문의번호
-	private String 	ansTitle; 	// 응답제목
-	private String 	ansContent; 	// 응답내용
-	private Date 	ansRegDate; 	// 응답일자
+	private int ansNum; // 응답번호
+	private int inquireNum; // 제품문의번호
+	private String ansContent; // 응답내용
+	private Date ansRegDate; // 응답일자
 
 	public int getAnsNum() {
 		return ansNum;
@@ -24,14 +23,6 @@ public class AnswerDTO {
 
 	public void setInquireNum(int inquireNum) {
 		this.inquireNum = inquireNum;
-	}
-
-	public String getAnsTitle() {
-		return ansTitle;
-	}
-
-	public void setAnsTitle(String ansTitle) {
-		this.ansTitle = ansTitle;
 	}
 
 	public String getAnsContent() {
@@ -52,8 +43,7 @@ public class AnswerDTO {
 
 	@Override
 	public String toString() {
-		return "AnswerDTO [ansNum=" + ansNum + ", inquireNum=" + inquireNum + ", ansTitle=" + ansTitle + ", ansContent=" + ansContent
-				+ ", ansRegDate=" + ansRegDate + "]";
+		return "AnswerDTO [ansNum=" + ansNum + ", inquireNum=" + inquireNum + ", ansContent=" + ansContent + ", ansRegDate=" + ansRegDate + "]";
 	}
 
 }
