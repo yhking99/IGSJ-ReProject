@@ -6,13 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ezen.project.IGSJ.inquire.controller.AnswerController;
 import ezen.project.IGSJ.inquire.domain.AnswerDTO;
 
 @Repository
 public class AnswerDAOImpl implements AnswerDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(AnswerController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AnswerDAOImpl.class);
 
 	private static final String NAME_SPACE = "mappers.answerMapper";
 
@@ -35,6 +34,15 @@ public class AnswerDAOImpl implements AnswerDAO {
 		logger.info("{}번 문의사항에 답변 남기기", answerDTO);
 
 		return sqlSession.insert(NAME_SPACE + ".answerWrite", answerDTO);
+	}
+	
+	// 답변 갯수 1개 이상이면 빠꾸
+	@Override
+	public int answerCount(AnswerDTO answerDTO) throws Exception {
+		
+		logger.info("{}번 문의사항 답변 갯수 체크 DAO", answerDTO.getInquireNum());
+		
+		return sqlSession.selectOne(NAME_SPACE + ".answerCount", answerDTO);
 	}
 
 }
