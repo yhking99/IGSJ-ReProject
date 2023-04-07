@@ -33,11 +33,7 @@ public class InquireServiceImpl implements InquireService {
 		
 		logger.info("상품 문의 작성 - Service");
 		
-		inquireDAO.inquireWrite(inquireDTO);
-		
-		int result = inquireDAO.inquireWrite(inquireDTO);
-		
-		return result;
+		return inquireDAO.inquireWrite(inquireDTO);
 		
 	}
 

@@ -75,7 +75,7 @@ public class InquireController {
 
 	// 제품문의 수정
 	@ResponseBody
-	@RequestMapping(value = "/inquire/InquireUpdate", method = RequestMethod.POST)
+	@RequestMapping(value = "/inquire/InquireModify", method = RequestMethod.POST)
 	public boolean inquireUpdate(@RequestBody InquireDTO inquireDTO) throws Exception {
 
 		logger.info("vue의 {} 번 문의사항 수정 실행 CONTROLLER", inquireDTO.getInquireNum());
@@ -94,26 +94,25 @@ public class InquireController {
 	}
 
 	// 제품문의 삭제
-	/*
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value = "/inquire/InquireDel/{bno}", method =
-	 * RequestMethod.POST) public boolean noticeDel(@PathVariable int bno) throws
-	 * Exception {
-	 * 
-	 * logger.info("vue의 {} 번 공지사항 삭제 실행 CONTROLLER", bno);
-	 * 
-	 * int result = inquireService.noticeDel(bno);
-	 * 
-	 * if (result == 1) {
-	 * 
-	 * return true;
-	 * 
-	 * } else {
-	 * 
-	 * return false;
-	 * 
-	 * } }
-	 */
+	@ResponseBody
+	@RequestMapping(value = "/inquire/InquireDelete/{inquireNum}", method = RequestMethod.POST)
+	public boolean inquireDelete(@PathVariable int inquireNum) throws Exception {
+	 
+		logger.info("vue의 {} 번 문의사항 삭제 실행 CONTROLLER", inquireNum);
+		  
+		int result = inquireService.inquireDelete(inquireNum);
+		  
+		if (result == 1) {
+		 
+		return true;
+		  
+		} else {
+		 
+		return false;
+		  
+		} 
+	
+	}
+	 
 
 }
