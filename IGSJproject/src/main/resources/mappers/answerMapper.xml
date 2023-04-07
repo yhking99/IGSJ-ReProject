@@ -16,4 +16,12 @@
 		insert into AnswerDTO (inquireNum, ansContent)
 		values (#{inquireNum}, #{ansContent})
 	</insert>
+	
+	<!-- 답변 갯수 체크 -->
+	<select id="answerCount" resultType="Integer" parameterType="ezen.project.IGSJ.inquire.domain.AnswerDTO">
+		select count(*)
+			from AnswerDTO
+		where inquireNum = #{inquireNum}
+	</select>
+	
 </mapper>

@@ -9,4 +9,7 @@ public interface AnswerService {
 	
 	// 답변하기
 	public int answerWrite(AnswerDTO answerDTO) throws Exception;
+	
+	// 답변 갯수 1개 이상이면 빠꾸
+	public int answerCount(AnswerDTO answerDTO) throws Exception;
 }
