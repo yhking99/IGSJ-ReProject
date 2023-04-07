@@ -20,11 +20,21 @@ public class InquireServiceImpl implements InquireService {
 	
 	// 상품 문의 목록
 	@Override
-	public List<InquireDTO> InquireList() throws Exception {
+	public List<InquireDTO> inquireList() throws Exception {
 		
 		logger.info("상품 문의 목록 - Service");
 		
 		return inquireDAO.inquireList();
+	}
+
+	// 상품 문의 작성 
+	@Override
+	public int inquireWrite(InquireDTO inquireDTO) throws Exception {
+		
+		logger.info("상품 문의 작성 - Service");
+		
+		return inquireDAO.inquireWrite(inquireDTO);
+		
 	}
 
 	// 상품 문의 조회 
@@ -36,32 +46,22 @@ public class InquireServiceImpl implements InquireService {
 		return inquireDAO.inquireView(inquireNum);
 	}
 
-	// 상품 문의 작성 
-	@Override
-	public void inquireWrite(InquireDTO inquireDTO) throws Exception {
-		
-		logger.info("상품 문의 작성 - Service");
-		
-		inquireDAO.inquireWrite(inquireDTO);
-
-	}
-
 	// 상품 문의 수정 
 	@Override
-	public void inquireUpdate(InquireDTO inquireDTO) throws Exception {
+	public int inquireUpdate(InquireDTO inquireDTO) throws Exception {
 
 		logger.info("상품 문의 수정 - Service");
 
-		inquireDAO.inquireUpdate(inquireDTO);
+		return inquireDAO.inquireUpdate(inquireDTO);
 	}
 
 	// 상품 문의 삭제 
 	@Override
-	public void inquireDelete(int inquireNum) throws Exception {
+	public int inquireDelete(int inquireNum) throws Exception {
 
 		logger.info("상품 문의 삭제 - Service");
 		
-		inquireDAO.inquireDelete(inquireNum);
+		return inquireDAO.inquireDelete(inquireNum);
 	}
 	
 }

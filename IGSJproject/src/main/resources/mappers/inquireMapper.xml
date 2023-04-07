@@ -4,38 +4,37 @@
 	
 	<!-- 제품 문의 목록 -->
 	<select id="inquireList" resultType="ezen.project.IGSJ.inquire.domain.InquireDTO">
-		SELECT inquireNum, userId, inquireTitle, inquireContent, inquireRegDate
+		SELECT inquireNum, userId, inquireTitle, inquireContent, inquireRegDate, pno
 		FROM InquireDTO
+		order by inquireNum desc
 	</select>
 	
-<!-- 	제품 문의 조회 -->
-<!-- 	<select id="inquireView" parameterType="hashMap" resultType="ezen.project.IGSJ.inquire.domain.InquireDTO"> -->
-<!-- 		SELECT inquireNum, pno, inquireTitle, inquireContent, inquireRegDate -->
-<!-- 		FROM InquireDTO -->
-<!-- 		WHERE userId = #{userId}; -->
-<!-- 	</select> -->
+	<!-- 제품 문의 등록 -->
+	<insert id="inquireWrite" parameterType="ezen.project.IGSJ.inquire.domain.InquireDTO">
+		INSERT INTO InquireDTO(userId, inquireTitle, inquireContent)
+		values (#{userId}, #{inquireTitle}, #{inquireContent})
+	</insert>
 	
-<!-- 	 제품 문의 등록 -->
-<!-- 	<insert id="inquireWrite" parameterType="ezen.project.IGSJ.inquire.domain.InquireDTO"> -->
-<!-- 		INSERT INTO InquireDTO(pno, inquireTitle, inquireContent) -->
-<!-- 		values (#{pno}, #{inquireTitle}, #{inquireContent}) -->
-<!-- 	</insert> -->
-
-<!-- 	 제품 문의 수정 -->
-<!-- 	<update id=""> -->
-<!-- 		update InquireDTO  -->
-<!-- 		set inquireTitle = #{inquireTitle}, -->
-<!-- 		inquireContent = #{inquireContent} -->
-<!-- 		where userId = #{userId} -->
-<!-- 	</update> -->
+	<!-- 문의 조회 -->
+	<select id="inquireView" parameterType="int" resultType="ezen.project.IGSJ.inquire.domain.InquireDTO">
+		select *
+		FROM InquireDTO
+		WHERE inquireNum = #{inquireNum}
+	</select>
 	
+	<!-- 문의내역 수정 -->
+	<update id="inquireModify" parameterType="ezen.project.IGSJ.inquire.domain.InquireDTO">
+		update InquireDTO
+		set 
+			inquireTitle = #{inquireTitle},
+			inquireContent = #{inquireContent}
+		WHERE inquireNum = #{inquireNum}
+	</update>
 	
-<!-- 	제품 문의 삭제 -->
-<!-- 	<delete id=""> -->
-<!-- 		DELETE FROM InquireDTO -->
-<!-- 		WHERE userId = #{userId} -->
-<!-- 	</delete> -->
-	
-	
+	<!-- 문의내역 삭제 -->
+	<delete id="inquireDelete" parameterType="int">
+		DELETE FROM InquireDTO
+		WHERE inquireNum = #{inquireNum}
+	</delete>
 	
 </mapper>

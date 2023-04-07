@@ -37,4 +37,10 @@
 	 			content = #{content}
 	 	where bno = #{bno}
 	 </update>
+	 
+	 <!-- 공지사항 삭제하기 -->
+	 <delete id="noticeDel" parameterType="int">
+	 	delete from BoardDTO
+	 	where bno = #{bno}
+	 </delete>
 </mapper>
