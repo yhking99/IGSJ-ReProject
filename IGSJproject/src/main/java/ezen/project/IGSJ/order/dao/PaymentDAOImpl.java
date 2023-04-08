@@ -32,4 +32,5 @@ public class PaymentDAOImpl implements PaymentDAO{
 		sqlSession.insert(NAME_SPACE + ".writeProductInfo", orderDetailDTO);	//주문제품정보
 		sqlSession.insert(NAME_SPACE2 + ".writePaymentInfo", paymentDTO);		//개인결제정보
 	}
+
 }
