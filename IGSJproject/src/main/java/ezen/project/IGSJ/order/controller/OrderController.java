@@ -37,10 +37,10 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping(value="/orderPage/{userId}", method=RequestMethod.GET)
 	public OrderDTO orderPage(@PathVariable("userId") String userId) throws Exception{
-		
+
 		logger.info("주문 페이지 불러오기 orderPage - Controller");
 		OrderDTO orderDTO = orderService.orderPage(userId);
-		
+
 		return orderDTO;
 	}
 
@@ -48,13 +48,12 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping(value="/productOrderPage/{userId}", method=RequestMethod.GET)
 	public List<OrderDTO> productOrderPage(@PathVariable("userId") String userId) throws Exception {
-		
+
 		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - Controller");
 		return orderService.productOrderPage(userId);
-		
+
 	}
-	
-	
+
 	// orderNum 만들기
 	@ResponseBody
 	@RequestMapping(value="/orderNum", method=RequestMethod.POST)
@@ -63,42 +62,42 @@ public class OrderController {
         SimpleDateFormat format = new SimpleDateFormat("yymmdd");
         String str = format.format(date);
         int str2 = Integer.parseInt(str);
-        
+
 		String rn = RandomStringUtils.randomNumeric(6);
 		int num6 = Integer.parseInt(rn);
-		
-		orderDTO.setOrderNum(str2 + "_" + num6);			
+
+		orderDTO.setOrderNum(str2 + "_" + num6);
 		orderDetailDTO.setOrderNum(str2 + "_" + num6);
-		
+
 		List<ProductDTO> productList = orderDTO.getProductList();
 		productList.equals("pno");
-		
-		
+
+
 		String rnn = RandomStringUtils.randomNumeric(9);
 		int num9 = Integer.parseInt(rnn);
 		orderDetailDTO.setOrderDetailNum(str2 + num9);
 		paymentDTO.setOrderDetailNum(str2 + num9);
-		
+
         paymentDTO.setPaymentNum(str2 + num6);
-        
+
         //orderDetailDTO
 //        orderDetailDTO.setPno(productList.ge);
 //        orderDetailDTO.setProductCnt(orderDTO.getProductCnt());
 //        orderDetailDTO.setProductPrice(orderDTO.getProduct_price());
         orderDetailDTO.setPaymentStatus("1561");
         orderDetailDTO.setProductList(productList);
-        
+
         //paymentDTO
         paymentDTO.setPaySet(orderDTO.getPaySet());
         paymentDTO.setPayCompany(orderDTO.getPayCompany());
         paymentDTO.setPayMoney(orderDTO.getPayMoney());
         paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
         paymentDTO.setPayBank(orderDTO.getPayBank());
-        
+
         orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
 		return "";
 	}
-	
+
 	// 주문내역조회페이지 불러오기
 	@ResponseBody
 	@RequestMapping(value="/orderListPage/{userId}" , method=RequestMethod.GET)
@@ -107,41 +106,41 @@ public class OrderController {
 		List<OrderDTO> orderDTO =  orderService.orderListPage(userId);
 		return orderDTO;
 	}
-	
+
 	// 주문상세내역조회페이지 불러오기
 	@ResponseBody
 	@RequestMapping(value="/orderDetailPage", method=RequestMethod.GET)
 	public OrderDTO orderDetailPage(@RequestParam String orderNum) throws Exception{
-		
+
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - Controller");
 		OrderDTO orderDTO = orderService.orderDetailPage(orderNum);
 		return orderDTO;
-		
+
 	}
-	
+
 	// 결제완료페이지 불러오기
 	@ResponseBody
 	@RequestMapping(value="/orderFinishPage", method=RequestMethod.GET)
 	public OrderDTO orderFinishPage(@RequestParam String orderNum) throws Exception{
-		
+
 		logger.info("결제완료페이지 불러오기 orderFinishPage - Controller");
 		OrderDTO orderDTO = orderService.orderFinishPage(orderNum);
 		return orderDTO;
 
-		
+
 	}
-	
+
 	// 카트에 담긴 상품 정보 불러오기
 //		@ResponseBody
 //		@RequestMapping(value="/productOrderPage/{userId}", method=RequestMethod.GET)
 //		public List<OrderDTO> productOrderPage(@PathVariable("userId") String userId) throws Exception {
-//			
+//
 //			logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - Controller");
 //			return orderService.productOrderPage(userId);
-//			
-//		}	
-	
-	
+//
+//		}
+
+
 //	// orderDetailNum 만들기
 //		@ResponseBody
 //		@RequestMapping(value="/orderDetailNum", method=RequestMethod.POST)
@@ -151,14 +150,16 @@ public class OrderController {
 //	        SimpleDateFormat format = new SimpleDateFormat("yymmdd");
 //	        String str = format.format(date);
 //	        int str2 = Integer.parseInt(str);
-//			
+//
 //			String rnn = RandomStringUtils.randomNumeric(10);
 //			int num10 = Integer.parseInt(rnn);
-//			
+//
 //			orderDetailDTO.setOrderDetailNum(str2 + num10);
-//			
+//
 //			return "";
 //		}
-	
-	
+
+
 }
+
+

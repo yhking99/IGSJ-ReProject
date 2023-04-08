@@ -22,19 +22,19 @@ public class OrderDAOImpl implements OrderDAO {
 	private SqlSession sqlSession;
 
 	private static final String NAME_SPACE = "mappers.orderMapper";
-	
+
 	// 주문 페이지 불러오기
 	@Override
 	public OrderDTO orderPage(String userId) throws Exception {
-		
+
 		logger.info("주문 페이지 불러오기 orderPage - OrderDAO");
 		return sqlSession.selectOne(NAME_SPACE + ".getOrderPage" , userId);
 	}
-	
+
 	// 카트에 담긴 상품 정보 불러오기
 	@Override
 	public List<OrderDTO> productOrderPage(String userId) throws Exception {
-		
+
 		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - OrderDAO");
 		return sqlSession.selectList(NAME_SPACE + ".getProductOrderPage", userId);
 	}
@@ -42,7 +42,7 @@ public class OrderDAOImpl implements OrderDAO {
 	//주문정보 등록하기(수령인정보)
 	@Override
 	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception {
-		
+
 		logger.info("주문정보 등록하기(수령인정보) writeRecipientInfo - OrderDAO");
 		sqlSession.insert(NAME_SPACE + ".writeRecipientInfo", orderDTO);
 		sqlSession.insert(NAME_SPACE + ".writeProductInfo", orderDetailDTO);
@@ -52,7 +52,7 @@ public class OrderDAOImpl implements OrderDAO {
 	// 주문내역조회페이지 불러오기
 	@Override
 	public List<OrderDTO> orderListPage(String userId) throws Exception {
-		
+
 		logger.info("주문내역조회페이지 불러오기 orderListPage - OrderDAO");
 		return sqlSession.selectList(NAME_SPACE + ".getOrderListPage", userId);
 	}
@@ -60,7 +60,7 @@ public class OrderDAOImpl implements OrderDAO {
 	// 주문상세내역조회페이지 불러오기
 	@Override
 	public OrderDTO orderDetailPage(String orderNum) throws Exception {
-		
+
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - OrderDAO");
 		return sqlSession.selectOne(NAME_SPACE + ".getOrderDetailPage", orderNum);
 	}
@@ -71,9 +71,7 @@ public class OrderDAOImpl implements OrderDAO {
 
 		logger.info("결제완료페이지 불러오기 orderFinishPage - OrderDAO");
 		return sqlSession.selectOne(NAME_SPACE + ".getOrderFinishPage", orderNum);
-	
+
 	}
-	
-	
-	
+
 }
