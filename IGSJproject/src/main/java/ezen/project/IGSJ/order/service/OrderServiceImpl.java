@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ezen.project.IGSJ.order.service.OrderServiceImpl;
 import ezen.project.IGSJ.order.dao.OrderDAO;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
@@ -69,5 +68,6 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.orderFinishPage(orderNum);
 
 	}
+	
 
 }
