@@ -1,8 +1,12 @@
 package ezen.project.IGSJ.cart.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,114 +28,106 @@ import ezen.project.IGSJ.cart.service.CartService;
 public class CartController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
-	
+
 	@Autowired
 	private CartService cartService;
-	
-	//장바구니 등록
+
+	// 장바구니 등록
 	@ResponseBody
 	@PostMapping("/cartWrite")
-	public boolean cartWrite(@RequestBody CartDTO cartDTO) throws Exception{
+	public boolean cartWrite(@RequestBody CartDTO cartDTO) throws Exception {
 		
-		logger.info("장바구니 등록 cartWrite - Controller {}", cartDTO);
+		logger.info("장바구니 등록 CONTROLLER : {}", cartDTO);
 		
-		System.out.println("사용자 아이디 ==> " + cartDTO.getUserId());
+		// 1) List<CartDTO> 생성
+		JSONParser parser = new JSONParser();
+		JSONObject sizeAndCount = (JSONObject) parser.parse(cartDTO.getSize());
+		String userId = cartDTO.getUserId();
+		String pno = cartDTO.getPno();
+
+		Set<String> sizes = sizeAndCount.keySet();
 		
-		int cartSelect = cartService.cartSelect(cartDTO);
+		String[] sizeArr = new String[sizes.size()];
 		
-		if(cartSelect == 1) {
+		int n = 0;
+		
+		for (String size : sizes) {
+			sizeArr[n++] = size;
+		}
+
+		List<CartDTO> prdToCart = new ArrayList<>(sizeArr.length);
+		
+		for (int i = 0; i < sizeArr.length; i++) {
 			
-			System.out.println("중복이 됩니다.");
+			String rs = RandomStringUtils.randomNumeric(6);
+			String cartNum = userId + "_" + rs;
+			String size = sizeArr[i];
 			
-			cartService.cartUpdate(cartDTO);
+			int productCnt = Integer.parseInt(sizeAndCount.get(size).toString());
 			
-			return true;
+			if (productCnt != 0) {
+				
+				prdToCart.add(new CartDTO(cartNum, userId, pno, productCnt, size));
+				
+			}
+		}
+
+		// 2) List<CartDTO>를 파라미터로 받는 메서드(CartService) 실행
+		return cartService.cartWrite(prdToCart) == 0 ? false : true;
 		
-		} else {
-			
-		String rs = RandomStringUtils.randomNumeric(6);
-		
-		String cartNum = cartDTO.getUserId() + "_" + rs;
-		
-		cartDTO.setCartNum(cartNum);
-		
-		int cartWrite  = cartService.cartWrite(cartDTO);
-		
-		if(cartWrite == 1) {
-			
-			return true;
-			
-		} else {
-			
-			return false;
-		}	
-	}
-}
-	
+	} // cartWrite()
+
 	// 장바구니 목록
 	@ResponseBody
 	@GetMapping("/cartList/{userId}")
 	public List<CartDTO> cartList(@PathVariable String userId) throws Exception {
-		
+
 		logger.info("장바구니 목록 cartList - Controller");
-		
+
 		List<CartDTO> cartList = cartService.cartList(userId);
-	
+
 		return cartList;
 	}
 
-	
 	// 장바구니 삭제
 	@ResponseBody
 	@PostMapping("/cartDelete")
 	public boolean cartDelete(@RequestBody CartDTO cartDTO) throws Exception {
-		
+
 		logger.info("장바구니 삭제 cartDelete - Controller");
-		
+
 		int cartDelete = cartService.cartDelete(cartDTO);
-		
-		if(cartDelete == 1) {
+
+		if (cartDelete == 1) {
+
+			return true;
 			
-			return true;	
 		} else {
-			
+
 			return false;
 		}
 	}
-	
-	//장바구니 수량 수정
+
+	// 장바구니 수량 수정
 	@ResponseBody
 	@PostMapping("/modifyCart")
 	public boolean modifyCart(@RequestBody CartDTO cartDTO) throws Exception {
-		
+
 		logger.info("장바구니 수정 modifyCart - Controller");
-		
+
 		System.out.println("수정에 대한 앞단에서 넘어오는 getProductCnt ===>>>" + cartDTO.getProductCnt());
 		System.out.println("수정에 대한 앞단에서 넘어오는 getPno =====>>" + cartDTO.getPno());
-		
+
 		int modifyCart = cartService.modifyCart(cartDTO);
-		
-		if(modifyCart == 1) {
+
+		if (modifyCart == 1) {
+			
 			return true;
+			
 		} else {
+			
 			return false;
+			
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

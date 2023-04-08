@@ -9,6 +9,9 @@ public interface MemberService {
 
 	// 로그인 기능
 	public MemberDTO memberLogin(MemberDTO memberDTO) throws Exception;
+	
+	// 카카오API 활용 로그인
+	public MemberDTO KakaoLogin(MemberDTO memberDTO) throws Exception;
 
 	// 회원가입 아이디 중복 체크
 	public int memberIdCheck(MemberDTO memberDTO) throws Exception;
