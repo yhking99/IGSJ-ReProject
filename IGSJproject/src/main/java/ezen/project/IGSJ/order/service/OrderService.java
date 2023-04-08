@@ -21,9 +21,12 @@ public interface OrderService {
 	public List<OrderDTO> orderListPage(String userId) throws Exception;
 
 	// 주문상세내역조회페이지 불러오기
-	public OrderDTO orderDetailPage(String orderNum) throws Exception;
+	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception;
 
 	// 결제완료페이지 불러오기
 	public OrderDTO orderFinishPage(String orderNum) throws Exception;
+	
+	// 결제 완료 후 장바구니 전체 삭제
+	public int cartAllDelete (OrderDTO orderDTO)throws Exception;
 
 }

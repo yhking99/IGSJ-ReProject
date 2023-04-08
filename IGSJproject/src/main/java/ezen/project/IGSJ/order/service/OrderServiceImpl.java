@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
 	// 주문상세내역조회페이지 불러오기
 	@Override
-	public OrderDTO orderDetailPage(String orderNum) throws Exception {
+	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception {
 
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - OrderService");
 		return orderDAO.orderDetailPage(orderNum);
@@ -73,6 +73,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.orderFinishPage(orderNum);
 
 	}
+	// 결제 완료 후 장바구니 전체 삭제
+
+	@Override
+	public int cartAllDelete(OrderDTO orderDTO) throws Exception {
+		return orderDAO.cartAllDelete(orderDTO);
+	}
+	
 	
 
 }

@@ -114,5 +114,12 @@
       VALUES (#{paymentNum}, #{orderDetailNum}, #{paySet}, #{payCompany}, #{payMoney}, #{payBank})
    
    </insert>
+   
+   	<!-- 장바구니 전부 삭제 -->
+	<delete id = "deleteAll" parameterType="ezen.project.IGSJ.order.domain.OrderDTO">
+		delete 
+		from CartDTO
+		where userId = #{userId}
+	</delete>
 
 </mapper>

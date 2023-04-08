@@ -1,6 +1,7 @@
 package ezen.project.IGSJ.order.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ezen.project.IGSJ.cart.service.CartService;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
 import ezen.project.IGSJ.order.domain.PaymentDTO;
@@ -32,6 +34,7 @@ public class OrderController {
 
 	@Autowired(required = false)
 	private OrderService orderService;
+	
 
 	// 주문 페이지 불러오기
 	@ResponseBody
@@ -92,8 +95,19 @@ public class OrderController {
         paymentDTO.setPayMoney(orderDTO.getPayMoney());
         paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
         paymentDTO.setPayBank(orderDTO.getPayBank());
+
+        boolean order = orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
         
-		return   orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
+        if(order == true) {
+        	
+        	orderService.cartAllDelete(orderDTO);
+        	
+        	return true;
+        } else {
+        	
+        	return false; 
+        }
+        
 	}
 
 	// 주문내역조회페이지 불러오기
@@ -108,11 +122,12 @@ public class OrderController {
 	// 주문상세내역조회페이지 불러오기
 	@ResponseBody
 	@RequestMapping(value="/orderDetailPage", method=RequestMethod.GET)
-	public OrderDTO orderDetailPage(@RequestParam String orderNum) throws Exception{
+	public List<OrderDTO> orderDetailPage(@RequestParam String orderNum) throws Exception{
 
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - Controller");
-		OrderDTO orderDTO = orderService.orderDetailPage(orderNum);
-		return orderDTO;
+		List<OrderDTO> order = new ArrayList<>();
+		order = orderService.orderDetailPage(orderNum);
+		return order;
 
 	}
 
@@ -124,8 +139,6 @@ public class OrderController {
 		logger.info("결제완료페이지 불러오기 orderFinishPage - Controller");
 		OrderDTO orderDTO = orderService.orderFinishPage(orderNum);
 		return orderDTO;
-
-
 	}
 
 	// 카트에 담긴 상품 정보 불러오기

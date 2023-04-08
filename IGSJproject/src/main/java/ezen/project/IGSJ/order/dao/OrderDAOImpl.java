@@ -69,10 +69,10 @@ public class OrderDAOImpl implements OrderDAO {
 
 	// 주문상세내역조회페이지 불러오기
 	@Override
-	public OrderDTO orderDetailPage(String orderNum) throws Exception {
+	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception {
 
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - OrderDAO");
-		return sqlSession.selectOne(NAME_SPACE + ".getOrderDetailPage", orderNum);
+		return sqlSession.selectList(NAME_SPACE + ".getOrderDetailPage", orderNum);
 	}
 
 	// 결제완료페이지 불러오기
@@ -81,7 +81,12 @@ public class OrderDAOImpl implements OrderDAO {
 
 		logger.info("결제완료페이지 불러오기 orderFinishPage - OrderDAO");
 		return sqlSession.selectOne(NAME_SPACE + ".getOrderFinishPage", orderNum);
+	}
 
+	// 결제완료 후 장바구니 전체 삭제
+	@Override
+	public int cartAllDelete(OrderDTO orderDTO) throws Exception {
+		return sqlSession.delete(NAME_SPACE+".deleteAll",orderDTO);
 	}
 
 }
