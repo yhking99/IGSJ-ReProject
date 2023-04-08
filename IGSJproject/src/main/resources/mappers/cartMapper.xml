@@ -24,7 +24,7 @@
 </select>
 
 
-</select>
+
 <!-- 장바구니 삭제 -->
 <delete id = "cartDelete" parameterType = "ezen.project.IGSJ.cart.domain.CartDTO">
 	
