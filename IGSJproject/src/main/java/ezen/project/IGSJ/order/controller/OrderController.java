@@ -1,6 +1,7 @@
 package ezen.project.IGSJ.order.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ezen.project.IGSJ.cart.service.CartService;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
 import ezen.project.IGSJ.order.domain.PaymentDTO;
@@ -32,6 +34,7 @@ public class OrderController {
 
 	@Autowired(required = false)
 	private OrderService orderService;
+	
 
 	// 주문 페이지 불러오기
 	@ResponseBody
@@ -54,10 +57,14 @@ public class OrderController {
 
 	}
 
-	// orderNum 만들기
+	// 결제 하기
 	@ResponseBody
 	@RequestMapping(value="/orderNum", method=RequestMethod.POST)
-	public String pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
+	public boolean pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
+		
+		logger.info(" 결제 하기 시작");
+		logger.info("fdsjajksnklcvbjkadsfjklewewrjkldsfadsfuioewmnkladsfnkladsf ="+orderDTO.getPaySet());
+		// OrderNum 부여
 		Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yymmdd");
         String str = format.format(date);
@@ -69,33 +76,38 @@ public class OrderController {
 		orderDTO.setOrderNum(str2 + "_" + num6);
 		orderDetailDTO.setOrderNum(str2 + "_" + num6);
 
-		List<ProductDTO> productList = orderDTO.getProductList();
-		productList.equals("pno");
-
-
+		// OrderDetailNum 부여
 		String rnn = RandomStringUtils.randomNumeric(9);
 		int num9 = Integer.parseInt(rnn);
+
 		orderDetailDTO.setOrderDetailNum(str2 + num9);
 		paymentDTO.setOrderDetailNum(str2 + num9);
-
+		
+		orderDetailDTO.setPaymentStatus("배송 준비");
+		
+		// PaymentNum 부여
         paymentDTO.setPaymentNum(str2 + num6);
-
-        //orderDetailDTO
-//        orderDetailDTO.setPno(productList.ge);
-//        orderDetailDTO.setProductCnt(orderDTO.getProductCnt());
-//        orderDetailDTO.setProductPrice(orderDTO.getProduct_price());
-        orderDetailDTO.setPaymentStatus("1561");
-        orderDetailDTO.setProductList(productList);
 
         //paymentDTO
         paymentDTO.setPaySet(orderDTO.getPaySet());
+        logger.info("fdsklajfdsiouiormnmndsfauioewfjkadsfjkldsfjkl="+paymentDTO.getPaySet());
         paymentDTO.setPayCompany(orderDTO.getPayCompany());
         paymentDTO.setPayMoney(orderDTO.getPayMoney());
         paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
         paymentDTO.setPayBank(orderDTO.getPayBank());
 
-        orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
-		return "";
+        boolean order = orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
+        
+        if(order == true) {
+        	
+        	orderService.cartAllDelete(orderDTO);
+        	
+        	return true;
+        } else {
+        	
+        	return false; 
+        }
+        
 	}
 
 	// 주문내역조회페이지 불러오기
@@ -110,11 +122,12 @@ public class OrderController {
 	// 주문상세내역조회페이지 불러오기
 	@ResponseBody
 	@RequestMapping(value="/orderDetailPage", method=RequestMethod.GET)
-	public OrderDTO orderDetailPage(@RequestParam String orderNum) throws Exception{
+	public List<OrderDTO> orderDetailPage(@RequestParam String orderNum) throws Exception{
 
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - Controller");
-		OrderDTO orderDTO = orderService.orderDetailPage(orderNum);
-		return orderDTO;
+		List<OrderDTO> order = new ArrayList<>();
+		order = orderService.orderDetailPage(orderNum);
+		return order;
 
 	}
 
@@ -126,8 +139,6 @@ public class OrderController {
 		logger.info("결제완료페이지 불러오기 orderFinishPage - Controller");
 		OrderDTO orderDTO = orderService.orderFinishPage(orderNum);
 		return orderDTO;
-
-
 	}
 
 	// 카트에 담긴 상품 정보 불러오기
