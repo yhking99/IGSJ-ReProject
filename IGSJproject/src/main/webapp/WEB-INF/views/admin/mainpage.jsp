@@ -5,10 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
+<style type="text/css">
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.admin-menu{
+	min-height: 601px;
+}
+</style>
 </head>
 <body>
-	<div>
-		<h1>
+	<div class="admin-menu">
+		<h1 align="right">
 			<c:choose>
 				<c:when test="${member == null }">
 					관리자 로그인이 되어있지 않은 상태입니다.
@@ -21,15 +31,13 @@
 
 		<ul>
 			<li>
-				<a href="/admin/managerLoginPage">관리자모드 로그인</a>
-			</li>
-			<li>
-				<a href="/admin/admindetail">관리자 페이지</a>
-			</li>
-			<li>
-				<a href="/seller/mainpage">판매자 페이지</a>
+				<a href="/admin/admindetail">
+					<img src="/resources/pageImg/adminLogo.png" alt="관리자페이지로고" width="500" height="500">
+				</a>
 			</li>
 		</ul>
 	</div>
+	
+	<jsp:include page="../pageIngredient/footer.jsp"></jsp:include>
 </body>
 </html>
