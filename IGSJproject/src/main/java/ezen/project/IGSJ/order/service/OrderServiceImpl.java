@@ -1,5 +1,6 @@
 package ezen.project.IGSJ.order.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -38,10 +39,14 @@ public class OrderServiceImpl implements OrderService {
 
 	//주문정보 등록하기(수령인정보)
 	@Override
-	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception {
-
+	public boolean pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception {
 		logger.info("주문정보 등록하기(수령인정보) writeRecipientInfo - OrderService");
-		orderDAO.pay(orderDTO, orderDetailDTO, paymentDTO);
+		 List<OrderDTO> orders = orderDAO.productOrderPage(orderDTO.getUserId());
+	      List<OrderDetailDTO> orderDetails = new ArrayList<>();
+	      orders.forEach(o -> orderDetails.add(new OrderDetailDTO(orderDetailDTO.getOrderDetailNum(), orderDTO.getOrderNum(), o.getPno()
+	    		  												, o.getProductCnt(), o.getProduct_price(), orderDetailDTO.getPaymentStatus())));
+	      logger.info("dfdkjsafldskfjadsiofjewiojfads"+orderDetails);
+	      return orderDAO.pay(orderDTO, orderDetails, paymentDTO);
 	}
 
 	// 주문내역조회페이지 불러오기
@@ -54,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
 	// 주문상세내역조회페이지 불러오기
 	@Override
-	public OrderDTO orderDetailPage(String orderNum) throws Exception {
+	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception {
 
 		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - OrderService");
 		return orderDAO.orderDetailPage(orderNum);
@@ -68,6 +73,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.orderFinishPage(orderNum);
 
 	}
+	// 결제 완료 후 장바구니 전체 삭제
+
+	@Override
+	public int cartAllDelete(OrderDTO orderDTO) throws Exception {
+		return orderDAO.cartAllDelete(orderDTO);
+	}
+	
 	
 
 }
