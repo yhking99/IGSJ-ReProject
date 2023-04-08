@@ -29,7 +29,8 @@ public class AnswerController {
 	public AnswerDTO answerList(@RequestParam int inquireNum) throws Exception {
 
 		logger.info("vue 답글 불러오기");
-
+		
+		// 재국, 예희 : 문의에 대한 답변은 하나만 작성이 가능하게 핢으로 List가 아닌 DTO로 설정.
 		AnswerDTO ansList = answerService.answerList(inquireNum);
 
 		return ansList;
@@ -43,7 +44,8 @@ public class AnswerController {
 		logger.info("답변 작성 CONTROLLER", answerDTO);
 		
 		int answerCount = answerService.answerCount(answerDTO);
-
+		
+		// 재국,예희 : 답변 갯수가 0개면 등록, 아니면 안내메세지 (vue단) 출력.
 		if (answerCount == 0) {
 			
 			answerService.answerWrite(answerDTO);
