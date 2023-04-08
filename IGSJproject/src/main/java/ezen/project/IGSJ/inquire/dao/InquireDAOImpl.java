@@ -29,6 +29,17 @@ public class InquireDAOImpl implements InquireDAO {
 		return sqlSession.selectList(NAME_SPACE + ".inquireList");
 	}
 
+	// 제품 문의 작성
+	@Override
+	public int inquireWrite(InquireDTO inquireDTO) throws Exception {
+		
+		logger.info("제품 문의 작성 - DAO");
+		
+		
+		
+		return sqlSession.insert(NAME_SPACE + ".inquireWrite", inquireDTO);
+	}
+
 	// 제품 문의 조회
 	@Override
 	public InquireDTO inquireView(int inquireNum) throws Exception {
@@ -38,32 +49,23 @@ public class InquireDAOImpl implements InquireDAO {
 		return sqlSession.selectOne(NAME_SPACE + ".inquireView", inquireNum);
 	}
 
-	// 제품 문의 작성
-	@Override
-	public void inquireWrite(InquireDTO inquireDTO) throws Exception {
-
-		logger.info("제품 문의 작성 - DAO");
-		
-		sqlSession.insert(NAME_SPACE + ".inquireWrite", inquireDTO);
-		
-	}
 
 	// 제품 문의 수정
 	@Override
-	public void inquireUpdate(InquireDTO inquireDTO) throws Exception {
+	public int inquireUpdate(InquireDTO inquireDTO) throws Exception {
 
 		logger.info("제품 문의 수정 - DAO");
 		
-		sqlSession.update(NAME_SPACE + ".inquireUpdate", inquireDTO);
+		return sqlSession.update(NAME_SPACE + ".inquireModify", inquireDTO);
 	}
 
 	// 제품 문의 삭제
 	@Override
-	public void inquireDelete(int inquireNum) throws Exception {
+	public int inquireDelete(int inquireNum) throws Exception {
 		
-		logger.info("제품 문의 삭제 - DAO");
+		logger.info("{}번 문의 삭제 - DAO", inquireNum);
 		
-		sqlSession.delete(NAME_SPACE + ".inquireDelete", inquireNum);
+		return sqlSession.delete(NAME_SPACE + ".inquireDelete", inquireNum);
 	}
 	
 
