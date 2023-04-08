@@ -1,6 +1,8 @@
 package ezen.project.IGSJ.order.domain;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 import java.util.List;
 
 import ezen.project.IGSJ.product.domain.ProductDTO;
