@@ -15,7 +15,7 @@ public interface OrderService {
 	public List<OrderDTO> productOrderPage(String userId) throws Exception;
 
 	// 결제하기
-	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception;
+	public boolean pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception;
 
 	// 주문내역조회페이지 불러오기
 	public List<OrderDTO> orderListPage(String userId) throws Exception;

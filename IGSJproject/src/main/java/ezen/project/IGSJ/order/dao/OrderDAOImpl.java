@@ -28,7 +28,7 @@ public class OrderDAOImpl implements OrderDAO {
 	public OrderDTO orderPage(String userId) throws Exception {
 
 		logger.info("주문 페이지 불러오기 orderPage - OrderDAO");
-		return sqlSession.selectOne(NAME_SPACE + ".getOrderPage" , userId);
+		return sqlSession.selectOne(NAME_SPACE + ".getOrderPage", userId);
 	}
 
 	// 카트에 담긴 상품 정보 불러오기
@@ -39,14 +39,24 @@ public class OrderDAOImpl implements OrderDAO {
 		return sqlSession.selectList(NAME_SPACE + ".getProductOrderPage", userId);
 	}
 
-	//주문정보 등록하기(수령인정보)
+	// 주문정보 등록하기(수령인정보)
 	@Override
-	public void pay(OrderDTO orderDTO, OrderDetailDTO orderDetailDTO, PaymentDTO paymentDTO) throws Exception {
+	public boolean pay(OrderDTO orderDTO, List<OrderDetailDTO> orderDetails, PaymentDTO paymentDTO) throws Exception {
 
-		logger.info("주문정보 등록하기(수령인정보) writeRecipientInfo - OrderDAO");
-		sqlSession.insert(NAME_SPACE + ".writeRecipientInfo", orderDTO);
-		sqlSession.insert(NAME_SPACE + ".writeProductInfo", orderDetailDTO);
-		sqlSession.insert(NAME_SPACE + ".writePaymentInfo", paymentDTO);
+		int result1 = sqlSession.insert(NAME_SPACE + ".payOrder", orderDTO);
+
+		for (OrderDetailDTO orderDetail : orderDetails) {
+
+			int result2 = sqlSession.insert(NAME_SPACE + ".payOrderDetail", orderDetail);
+		}
+
+		int result3 = sqlSession.insert(NAME_SPACE + ".payPayment", paymentDTO);
+
+		if (result1 == 1 && result3 == 1) {
+			return true;
+		} else
+			return false;
+
 	}
 
 	// 주문내역조회페이지 불러오기

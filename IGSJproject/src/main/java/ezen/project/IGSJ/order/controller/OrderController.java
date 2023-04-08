@@ -54,10 +54,14 @@ public class OrderController {
 
 	}
 
-	// orderNum 만들기
+	// 결제 하기
 	@ResponseBody
 	@RequestMapping(value="/orderNum", method=RequestMethod.POST)
-	public String pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
+	public boolean pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
+		
+		logger.info(" 결제 하기 시작");
+		logger.info("fdsjajksnklcvbjkadsfjklewewrjkldsfadsfuioewmnkladsfnkladsf ="+orderDTO.getPaySet());
+		// OrderNum 부여
 		Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yymmdd");
         String str = format.format(date);
@@ -69,33 +73,27 @@ public class OrderController {
 		orderDTO.setOrderNum(str2 + "_" + num6);
 		orderDetailDTO.setOrderNum(str2 + "_" + num6);
 
-		List<ProductDTO> productList = orderDTO.getProductList();
-		productList.equals("pno");
-
-
+		// OrderDetailNum 부여
 		String rnn = RandomStringUtils.randomNumeric(9);
 		int num9 = Integer.parseInt(rnn);
+
 		orderDetailDTO.setOrderDetailNum(str2 + num9);
 		paymentDTO.setOrderDetailNum(str2 + num9);
-
+		
+		orderDetailDTO.setPaymentStatus("배송 준비");
+		
+		// PaymentNum 부여
         paymentDTO.setPaymentNum(str2 + num6);
-
-        //orderDetailDTO
-//        orderDetailDTO.setPno(productList.ge);
-//        orderDetailDTO.setProductCnt(orderDTO.getProductCnt());
-//        orderDetailDTO.setProductPrice(orderDTO.getProduct_price());
-        orderDetailDTO.setPaymentStatus("1561");
-        orderDetailDTO.setProductList(productList);
 
         //paymentDTO
         paymentDTO.setPaySet(orderDTO.getPaySet());
+        logger.info("fdsklajfdsiouiormnmndsfauioewfjkadsfjkldsfjkl="+paymentDTO.getPaySet());
         paymentDTO.setPayCompany(orderDTO.getPayCompany());
         paymentDTO.setPayMoney(orderDTO.getPayMoney());
         paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
         paymentDTO.setPayBank(orderDTO.getPayBank());
-
-        orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
-		return "";
+        
+		return   orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
 	}
 
 	// 주문내역조회페이지 불러오기
