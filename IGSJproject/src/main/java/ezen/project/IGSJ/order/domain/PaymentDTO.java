@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class PaymentDTO {
 
-	
 	private int paymentNum;
 	private int orderDetailNum;
 	private String paySet;
