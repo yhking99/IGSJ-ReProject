@@ -161,7 +161,6 @@ th, td {
 		<!-- 게시글 검색기능 끝 -->
 
 	</div>
-
-	<script src="/resources/seller/sellerProductList.js"></script>
+<script src="/resources/seller/sellerProductList.js"></script>
 </body>
 </html>

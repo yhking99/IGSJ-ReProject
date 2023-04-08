@@ -1,5 +1,9 @@
 package ezen.project.IGSJ.order.domain;
 
+import java.util.List;
+
+import ezen.project.IGSJ.product.domain.ProductDTO;
+
 public class OrderDetailDTO {
 
 	/*
@@ -18,26 +22,31 @@ public class OrderDetailDTO {
 	private int productPrice;
 	private String paymentStatus;
 	
+	private List<ProductDTO> productList;
+	
 	public OrderDetailDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	
 	//Generate Constructor using Fields (생성자생성)
+	
+
+	public int getOrderDetailNum() {
+		return orderDetailNum;
+	}
+
 	public OrderDetailDTO(int orderDetailNum, String orderNum, String pno, int productCnt, int productPrice,
-			String paymentStatus) {
-		super();
+			String paymentStatus, List<ProductDTO> productList) {
 		this.orderDetailNum = orderDetailNum;
 		this.orderNum = orderNum;
 		this.pno = pno;
 		this.productCnt = productCnt;
 		this.productPrice = productPrice;
 		this.paymentStatus = paymentStatus;
+		this.productList = productList;
 	}
 
-	public int getOrderDetailNum() {
-		return orderDetailNum;
-	}
 
 	public void setOrderDetailNum(int orderDetailNum) {
 		this.orderDetailNum = orderDetailNum;
@@ -84,11 +93,23 @@ public class OrderDetailDTO {
 	}
 
 
+	public List<ProductDTO> getProductList() {
+		return productList;
+	}
+
+
+	public void setProductList(List<ProductDTO> productList) {
+		this.productList = productList;
+	}
+
+
 	@Override
 	public String toString() {
 		return "OrderDetailDTO [orderDetailNum=" + orderDetailNum + ", orderNum=" + orderNum + ", pno=" + pno
 				+ ", productCnt=" + productCnt + ", productPrice=" + productPrice + ", paymentStatus=" + paymentStatus
-				+ "]";
+				+ ", productList=" + productList + "]";
 	}
+
+
 	
 }
