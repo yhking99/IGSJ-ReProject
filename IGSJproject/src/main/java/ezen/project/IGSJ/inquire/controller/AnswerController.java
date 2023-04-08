@@ -40,18 +40,19 @@ public class AnswerController {
 	@RequestMapping(value = "/answer/AnswerWrite", method = RequestMethod.POST)
 	public boolean answerWrite(@RequestBody AnswerDTO answerDTO) throws Exception {
 
-		logger.info("답변 작성", answerDTO);
+		logger.info("답변 작성 CONTROLLER", answerDTO);
+		
+		int answerCount = answerService.answerCount(answerDTO);
 
-		int result = answerService.answerWrite(answerDTO);
-
-		if (result == 1) {
-
+		if (answerCount == 0) {
+			
+			answerService.answerWrite(answerDTO);
+			
 			return true;
-
+			
 		} else {
-
+			
 			return false;
-
 		}
 
 	}
