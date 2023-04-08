@@ -7,12 +7,8 @@ import ezen.project.IGSJ.product.domain.ProductDTO;
 public class OrderDetailDTO {
 
 	/*
-	 * orderDetailNum int PK 
-	 * orderNum varchar(50) PK 
-	 * pno varchar(200) 
-	 * productCnt int
-	 * productPrice int 
-	 * paymentStatus varchar(10)
+	 * orderDetailNum int PK orderNum varchar(50) PK pno varchar(200) productCnt int
+	 * productPrice int paymentStatus varchar(10)
 	 */
 
 	private int orderDetailNum;
@@ -21,32 +17,25 @@ public class OrderDetailDTO {
 	private int productCnt;
 	private int productPrice;
 	private String paymentStatus;
-	
-	private List<ProductDTO> productList;
-	
+
 	public OrderDetailDTO() {
-		// TODO Auto-generated constructor stub
 	}
-
-	
-	//Generate Constructor using Fields (생성자생성)
-	
-
-	public int getOrderDetailNum() {
-		return orderDetailNum;
-	}
+	// Generate Constructor using Fields (생성자생성)
 
 	public OrderDetailDTO(int orderDetailNum, String orderNum, String pno, int productCnt, int productPrice,
-			String paymentStatus, List<ProductDTO> productList) {
+			String paymentStatus) {
+
 		this.orderDetailNum = orderDetailNum;
 		this.orderNum = orderNum;
 		this.pno = pno;
 		this.productCnt = productCnt;
 		this.productPrice = productPrice;
 		this.paymentStatus = paymentStatus;
-		this.productList = productList;
 	}
 
+	public int getOrderDetailNum() {
+		return orderDetailNum;
+	}
 
 	public void setOrderDetailNum(int orderDetailNum) {
 		this.orderDetailNum = orderDetailNum;
@@ -92,24 +81,11 @@ public class OrderDetailDTO {
 		this.paymentStatus = paymentStatus;
 	}
 
-
-	public List<ProductDTO> getProductList() {
-		return productList;
-	}
-
-
-	public void setProductList(List<ProductDTO> productList) {
-		this.productList = productList;
-	}
-
-
 	@Override
 	public String toString() {
 		return "OrderDetailDTO [orderDetailNum=" + orderDetailNum + ", orderNum=" + orderNum + ", pno=" + pno
 				+ ", productCnt=" + productCnt + ", productPrice=" + productPrice + ", paymentStatus=" + paymentStatus
-				+ ", productList=" + productList + "]";
+				+ "]";
 	}
 
-
-	
 }
