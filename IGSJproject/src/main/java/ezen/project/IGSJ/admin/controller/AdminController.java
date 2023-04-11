@@ -66,7 +66,9 @@ public class AdminController {
 	@RequestMapping(value = "/admin/memberlist", method = RequestMethod.GET)
 	public void getAllUsers(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "userId") String searchType,
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+			PageIngredient page, 
+			Model model) throws Exception {
 
 		logger.info("관리자 페이지 - 회원 목록 출력 getAllUsers - controller");
 
@@ -150,7 +152,9 @@ public class AdminController {
 	@RequestMapping(value = "/admin/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+			PageIngredient page, 
+			Model model) throws Exception {
 
 		logger.info("관리자 페이지 - 상품 목록 출력 getProductList - controller");
 
@@ -238,7 +242,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 
-		logger.info("제품 이미지까지 수정 완료");
+		logger.info("제품 이미지 수정 완료");
 
 		return "redirect:/admin/productDetail?pno=" + productDTO.getPno();
 	}
@@ -255,8 +259,8 @@ public class AdminController {
 	@RequestMapping(value = "/managerLogin", method = RequestMethod.POST)
 	public String managerLogin(MemberDTO memberDTO, RedirectAttributes rda, HttpServletRequest req) throws Exception {
 
-		logger.info("매니저 로그인 페이지 접속");
-		logger.info("memberDTO.getUserId()" + memberDTO.getUserId());
+		logger.info("매니저 로그인 페이지 접속 : {}", memberDTO.getUserId());
+		
 		MemberDTO member = adminService.managerLogin(memberDTO);
 		HttpSession session = req.getSession();
 
@@ -271,6 +275,7 @@ public class AdminController {
 			if (member.getUserVerify() == 128) {
 				session.setAttribute("member", member);
 				return "redirect:/admin/mainpage";
+				
 			} else if (member.getUserVerify() == 5) {
 				session.setAttribute("member", member);
 				return "redirect:/seller/mainpage";
