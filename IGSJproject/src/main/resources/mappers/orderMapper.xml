@@ -70,6 +70,24 @@
 		on odd.orderDetailNum = pmd.orderDetailNum
 		Where od.orderNum = #{orderNum}
 	</select>
+	
+	<!-- 주문 상세 내역 조회페이지(selectOne) 불러오기 -->
+   <select id = "orderDetailOne" resultType = "ezen.project.IGSJ.order.domain.OrderDTO">
+
+      SELECT   odd.pno, od.orderNum, order_date, storedFileRootName, product_name, product_price, paymentStatus, recipient, recipient_phone, post_address, detail_address, detail_address2, payMoney, paySet
+      FROM   OrderDTO od
+      INNER join   OrderDetailDTO odd
+      on      od.orderNum = odd.orderNum
+      join   ProductDTO pd
+      on      odd.pno = pd.pno
+      join   ProductFileDTO pfd
+      on      pd.pno = pfd.pno
+      join   PaymentDTO pmd
+      on      odd.orderDetailNum = pmd.orderDetailNum
+      Where   od.orderNum = #{orderNum}
+      GROUP BY od.orderNum;
+
+    </select>
 
 	<!-- 결제완료페이지 불러오기 -->
 	<select id="getOrderFinishPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">

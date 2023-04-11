@@ -37,6 +37,16 @@ public class OrderDAOImpl implements OrderDAO {
 		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - OrderDAO");
 		return sqlSession.selectList(NAME_SPACE + ".getProductOrderPage", userId);
 	}
+	
+	// 주문상세내역조회페이지(selelctOne) 불러오기
+	   @Override
+	   public OrderDTO orderDetailOne(String orderNum) throws Exception {
+
+	      logger.info("주문상세내역조회페이지(selelctOne) 불러오기 orderDetailOne - OrderDAO");
+
+	      return sqlSession.selectOne(NAME_SPACE + ".orderDetailOne", orderNum);
+	   }
+	
 
 	// 주문정보 등록하기(수령인정보)
 	@Override
