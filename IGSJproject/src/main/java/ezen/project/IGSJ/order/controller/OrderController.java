@@ -129,6 +129,16 @@ public class OrderController {
 		return order;
 
 	}
+	
+	//주문상세내역조회페이지(selelctOne) 불러오기
+	   @ResponseBody
+	   @RequestMapping(value = "/orderDetailOne", method = RequestMethod.GET)
+	   public OrderDTO orderDetailOne(@RequestParam String orderNum) throws Exception {
+
+	      logger.info("주문상세내역조회페이지(selectOne) 불러오기 orderDetailOne - Controller", orderNum);
+
+	      return orderService.orderDetailOne(orderNum);
+	   }
 
 	// 결제완료페이지 불러오기
 	@ResponseBody
