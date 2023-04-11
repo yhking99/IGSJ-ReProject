@@ -19,6 +19,9 @@ public interface OrderService {
 
 	// 주문내역조회페이지 불러오기
 	public List<OrderDTO> orderListPage(String userId) throws Exception;
+	
+	// 주문상세내역조회페이지(selelctOne) 불러오기
+	public OrderDTO orderDetailOne(String orderNum) throws Exception;
 
 	// 주문상세내역조회페이지 불러오기
 	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception;
