@@ -52,6 +52,7 @@
 
 	<beans:bean id="AdminInterceptor" class="ezen.project.IGSJ.utils.interceptor.AdminInterceptor" />
 	<beans:bean id="SellerInterceptor" class="ezen.project.IGSJ.utils.interceptor.SellerInterceptor" />
+	<beans:bean id="LoggerInterceptor" class="ezen.project.IGSJ.utils.interceptor.LoggerInterceptor" />
 
 	<interceptors>
 		<interceptor>
@@ -61,6 +62,11 @@
 		<interceptor>
 			<mapping path="/seller/*" />
 			<beans:ref bean="SellerInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/resources/**"/>
+			<beans:ref bean="LoggerInterceptor"/>
 		</interceptor>
 	</interceptors>
 
