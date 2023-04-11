@@ -83,7 +83,6 @@ public class SellerController {
 		HttpSession session = request.getSession();
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 
-		
 		try {
 			// Upload file to S3 bucket
 			String fileName = file.getOriginalFilename();
@@ -113,7 +112,11 @@ public class SellerController {
 	// --------------------------------------------------------------------------
 	@ResponseBody
 	@RequestMapping(value = "/register/ckUpload", method = RequestMethod.POST)
-	public String fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
+	public String fileUpload(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			MultipartHttpServletRequest multiFile
+			) throws IOException {
 
 		// Json 객체 생성
 		JsonObject json = new JsonObject();

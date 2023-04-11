@@ -5,7 +5,6 @@
 	<!-- 관리자 : 전체 회원 불러오기 -->
 	<select id="getAllUsers" parameterType="hashMap" resultType="ezen.project.IGSJ.member.domain.MemberDTO">
 		select
-
 			userId,
 			userPwd,
 			userName,
@@ -14,7 +13,6 @@
 			userJoinDate,
 			userVerify,
 			userBirth
-
 		from MemberDTO
 
 		<if test="searchType.equals('userId')">
@@ -53,7 +51,6 @@
 	<!-- 관리자 : 전체 상품 불러오기 -->
 	<select id="getProductList" parameterType="hashMap" resultType="ezen.project.IGSJ.product.domain.ProductDTO">
 		select
-
 			product.pno,
 			pft.storedFileRootName,
 			cno,
@@ -63,7 +60,6 @@
 			product_description,
 			product_regDate,
 			userId
-
 		from ProductDTO as product
 		left outer join ProductFileDTO as pft
 		on product.pno = pft.pno

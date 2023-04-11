@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class PageIngredient {
-	// BoardController 부분의 페이징이 매우 복잡하다. 그냥 클래스로 하나 만들어서 관리하자.
 
 	private static final Logger logger = LoggerFactory.getLogger(PageIngredient.class);
 	
@@ -25,11 +24,12 @@ public class PageIngredient {
 	private String keyword;
 	private String searchTypeAndKeyword;
 	
-	// 생성자를 이용하여 기본값을 설정해준다.
+	// 생성자 오버로딩 활용 시 기본생성자는 따로 생성되지 않아 필수적으로 만들어주어야 한다.
 	public PageIngredient() {
 		
 	}
 	
+	// 생성자 오버로딩으로 출력할 갯수와, 최대 페이지, 페이지당 출력할 갯수를 필요 로직별로 설정할 수 있게 만듬.
 	public PageIngredient(int contentNum , int maxPageNum, int selectContent) {
 		this.contentNum = contentNum;
 		this.maxPageNum = maxPageNum;
@@ -158,14 +158,14 @@ public class PageIngredient {
 		if (endPage > correctLastPage) {
 			endPage = correctLastPage;
 		}
-
+		
 		// 이전버튼 : 시작페이지가 10 이상일때.
 		if (startPage > maxPageNum) {
 			prevPage = true;
 		} else {
 			prevPage = false;
 		}
-
+		
 		// 다음버튼 : 해당 화면의 끝 페이지가 "전체 페이지 수"보다 작으면 활성화
 		if (endPage < totalPageNum) {
 			nextPage = true;
@@ -179,17 +179,17 @@ public class PageIngredient {
 		return searchTypeAndKeyword;
 	}
 	
-	// 검색기능에 대한 결과 출력 (쿼리스트링의 파라미터로 보낼 값을 메소드로)
+	// 검색기능에 대한 결과 출력 (쿼리스트링으로 보낼 값을 메소드로)
 	public void setSearchTypeAndKeyword(String searchType, String keyword) {
-		// 검색타입이나 검색어가 없다면 그냥 없음을 리턴시켜버리고 있다면 그 값을 쿼리스트링의 형태로 보내주자.
 		
+		// 검색타입이나 검색어가 없다면 공란을 리턴시켜버리고 있다면 그 값을 쿼리스트링의 형태로 보냄.
 		if (searchType.equals("") || keyword.equals("")) {
 			searchTypeAndKeyword = "";
-			logger.info("검색타입과 검색어를 쿼리파라미터로 전달(-아무것도 입력하지 않음-)");
+			logger.info("검색타입과 검색어를 쿼리스트링으로 전달(-아무것도 입력하지 않음-)");
+			
 		} else {
-			// &searchType=writer&keyword=33
 			searchTypeAndKeyword =  "&searchType=" + searchType + "&keyword=" + keyword;
-			logger.info("검색타입과 검색어를 쿼리파라미터로 전달(-검색타입과 검색어가 들어옴-)");
+			logger.info("검색타입과 검색어를 쿼리스트링으로 전달(-검색타입과 검색어가 들어옴-)");
 		}
 		
 	}
