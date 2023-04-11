@@ -23,14 +23,23 @@ public class CartDAOImpl implements CartDAO {
 	// 장바구니 등록
 	@Override
 	public int cartWrite(List<CartDTO> cartDTO) throws Exception {
-		
+
 		int numOfAdded = 0;
-		
+
 		for (int i = 0; i < cartDTO.size(); i++) {
-			
+
 			logger.info("장바구니 등록 - DAO");
-			
-			numOfAdded += sqlSession.insert(NAME_SPACE + ".cartWrite", cartDTO.get(i));
+
+			// 1) cartSelect(장바구니 내 중복 내용 확인) 실행
+			int cartCheck = sqlSession.selectOne(NAME_SPACE + ".cartSelect", cartDTO.get(i));
+			// 2) 있으면 cartUpdate(장바구니 내 상품 수량 증가) 실행
+			if (cartCheck == 1) {
+				numOfAdded += sqlSession.update(NAME_SPACE + ".cartUpdate", cartDTO.get(i));
+			}
+			// 3) 없으면 cartWrite(장바구니 내 새 상품 등록) 실행
+			else {
+				numOfAdded += sqlSession.insert(NAME_SPACE + ".cartWrite", cartDTO.get(i));
+			}
 		}
 		return numOfAdded;
 	} // cartWrite()

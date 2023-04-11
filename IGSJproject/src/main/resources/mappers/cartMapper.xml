@@ -10,35 +10,31 @@
 	</insert>
 
 	<!-- 장바구니 중복 확인 -->
-	<select id="cartSelect" resultType="int">
-
+	<select id="cartSelect" parameterType="ezen.project.IGSJ.cart.domain.CartDTO" resultType="int">
 		SELECT COUNT(*)
 		FROM CartDTO
 		WHERE userId = #{userId}
 		AND pno = #{pno}
-
+		AND size = #{size};
 	</select>
 
 	<!-- 장바구니 중복 수량 증가 -->
 	<update id="cartUpdate" parameterType="ezen.project.IGSJ.cart.domain.CartDTO">
-
 		UPDATE CartDTO
 		SET productCnt = productCnt + #{productCnt}
-		WHERE pno = #{pno}
-		AND userId = #{userId}
-
+		WHERE userId = #{userId}
+		AND pno = #{pno}
+		AND size = #{size};
 	</update>
 
 
 	<!-- 장바구니 목록 -->
 	<select id="cartList" parameterType="String" resultType="ezen.project.IGSJ.cart.domain.CartDTO">
-
-		SELECT cartNum, c.userId, c.pno, p.product_name, p.product_price, productCnt
-		FROM CartDTO as c
-		INNER JOIN ProductDTO as p
-		ON c.pno = p.pno
-		WHERE c.userId = #{userId}
-
+		SELECT ct.cartNum, ct.userId, ct.pno, CONCAT(prd.product_name, " (", ct.size, ")") product_name, prd.product_price, ct.productCnt
+		FROM CartDTO ct
+		INNER JOIN ProductDTO prd
+		ON ct.pno = prd.pno
+		WHERE ct.userId = #{userId};
 	</select>
 
 
