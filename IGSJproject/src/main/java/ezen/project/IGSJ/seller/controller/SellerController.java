@@ -83,7 +83,6 @@ public class SellerController {
 		HttpSession session = request.getSession();
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 
-		
 		try {
 			// Upload file to S3 bucket
 			String fileName = file.getOriginalFilename();
@@ -113,7 +112,11 @@ public class SellerController {
 	// --------------------------------------------------------------------------
 	@ResponseBody
 	@RequestMapping(value = "/register/ckUpload", method = RequestMethod.POST)
-	public String fileUpload(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multiFile) throws IOException {
+	public String fileUpload(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			MultipartHttpServletRequest multiFile
+			) throws IOException {
 
 		// Json 객체 생성
 		JsonObject json = new JsonObject();
@@ -201,7 +204,6 @@ public class SellerController {
 		sellerProductList = sellerService.getProductList(page.getSelectContent(), page.getContentNum(), searchType, keyword,userId);
 		model.addAttribute("sellerProductList", sellerProductList);
 		model.addAttribute("page", page);
-
 		// 현재 페이지가 몇페이지인지 쉽게 구분하기위한 구분자를 넘겨주자
 		model.addAttribute("selectedPageNum", pageNum);
 

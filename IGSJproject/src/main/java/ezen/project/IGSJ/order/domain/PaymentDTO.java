@@ -4,18 +4,6 @@ import java.util.Date;
 
 public class PaymentDTO {
 
-	/*
-	Table: paymentDTO
-	Columns:
-	paymentNum int PK 
-	orderDetailNum int 
-	paySet varchar(20) 
-	payCompany varchar(20) 
-	payMoney int 
-	payRegDate datetime 
-	payBank varchar(50)
-	*/
-	
 	private int paymentNum;
 	private int orderDetailNum;
 	private String paySet;
@@ -23,14 +11,14 @@ public class PaymentDTO {
 	private int payMoney;
 	private Date payRegDate;
 	private String payBank;
+
 	
 	public PaymentDTO() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public PaymentDTO(int paymentNum, int orderDetailNum, String paySet, String payCompany, int payMoney,
 			Date payRegDate, String payBank) {
-		super();
 		this.paymentNum = paymentNum;
 		this.orderDetailNum = orderDetailNum;
 		this.paySet = paySet;

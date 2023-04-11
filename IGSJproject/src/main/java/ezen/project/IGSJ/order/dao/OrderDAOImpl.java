@@ -1,8 +1,6 @@
 package ezen.project.IGSJ.order.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -10,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ezen.project.IGSJ.address.domain.MemberAddressDTO;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
+import ezen.project.IGSJ.order.domain.PaymentDTO;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO {
@@ -23,64 +21,75 @@ public class OrderDAOImpl implements OrderDAO {
 	private SqlSession sqlSession;
 
 	private static final String NAME_SPACE = "mappers.orderMapper";
-	
-	//주문 페이지 불러오기
+
+	// 주문 페이지 불러오기
 	@Override
 	public OrderDTO orderPage(String userId) throws Exception {
-		
-		return sqlSession.selectOne(NAME_SPACE+ ".getOrderPage" , userId);
-		
-	}
-	
-	// 주문 등록
-	@Override
-	public void orderWrite(OrderDTO orderDTO) throws Exception {
 
-		logger.info("주문등록 orderWrite - OrderDAO");
-
-		sqlSession.insert(NAME_SPACE + ".orderWrite", orderDTO);
+		logger.info("주문 페이지 불러오기 orderPage - OrderDAO");
+		return sqlSession.selectOne(NAME_SPACE + ".getOrderPage", userId);
 	}
 
-	// 회원 정보 조회
+	// 카트에 담긴 상품 정보 불러오기
 	@Override
-	public MemberAddressDTO memberAddress(String userId) throws Exception {
+	public List<OrderDTO> productOrderPage(String userId) throws Exception {
 
-		logger.info("회원 정보 조회 memberAddress - orderDAO");
-
-		return sqlSession.selectOne(NAME_SPACE + "memberAddress", userId);
+		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - OrderDAO");
+		return sqlSession.selectList(NAME_SPACE + ".getProductOrderPage", userId);
 	}
 
-	// 주문 조회
+	// 주문정보 등록하기(수령인정보)
 	@Override
-	public OrderDTO orderView(int orderNum, String userId) throws Exception {
-		
-		logger.info("주문 조회 orderView - orderDAO");
-		
-		//HashMap
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("orderNum", orderNum);
-		map.put("userId", userId);
-		
-		return sqlSession.selectOne(NAME_SPACE + ".orderView", map);
+	public boolean pay(OrderDTO orderDTO, List<OrderDetailDTO> orderDetails, PaymentDTO paymentDTO) throws Exception {
+
+		int result1 = sqlSession.insert(NAME_SPACE + ".payOrder", orderDTO);
+
+		for (OrderDetailDTO orderDetail : orderDetails) {
+
+			sqlSession.insert(NAME_SPACE + ".payOrderDetail", orderDetail);
+		}
+
+		int result3 = sqlSession.insert(NAME_SPACE + ".payPayment", paymentDTO);
+
+		if (result1 == 1 && result3 == 1) {
+
+			return true;
+
+		} else {
+
+			return false;
+			
+		}
 	}
 
-	// 주문 목록
+	// 주문내역조회페이지 불러오기
 	@Override
-	public List<OrderDTO> orderList(OrderDTO orderDTO) throws Exception {
+	public List<OrderDTO> orderListPage(String userId) throws Exception {
 
-		logger.info("주문 목록 orderList - orderDAO");
-
-		return sqlSession.selectList(NAME_SPACE + ".orderList", orderDTO);
+		logger.info("주문내역조회페이지 불러오기 orderListPage - OrderDAO");
+		return sqlSession.selectList(NAME_SPACE + ".getOrderListPage", userId);
 	}
 
-	// 주문 상세 목록
+	// 주문상세내역조회페이지 불러오기
 	@Override
-	public List<OrderDetailDTO> orderDetailList(OrderDetailDTO orderDetailDTO) throws Exception {
+	public List<OrderDTO> orderDetailPage(String orderNum) throws Exception {
 
-		logger.info("주문 상세 목록 orderDetailList - orderDAO");
+		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - OrderDAO");
+		return sqlSession.selectList(NAME_SPACE + ".getOrderDetailPage", orderNum);
+	}
 
-		return sqlSession.selectList(NAME_SPACE + ".orderDetailList", orderDetailDTO);
+	// 결제완료페이지 불러오기
+	@Override
+	public OrderDTO orderFinishPage(String orderNum) throws Exception {
 
+		logger.info("결제완료페이지 불러오기 orderFinishPage - OrderDAO");
+		return sqlSession.selectOne(NAME_SPACE + ".getOrderFinishPage", orderNum);
+	}
+
+	// 결제완료 후 장바구니 전체 삭제
+	@Override
+	public int cartAllDelete(OrderDTO orderDTO) throws Exception {
+		return sqlSession.delete(NAME_SPACE + ".deleteAll", orderDTO);
 	}
 
 }

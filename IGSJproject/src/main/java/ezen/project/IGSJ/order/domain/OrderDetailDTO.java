@@ -1,14 +1,14 @@
 package ezen.project.IGSJ.order.domain;
 
+import java.util.List;
+
+import ezen.project.IGSJ.product.domain.ProductDTO;
+
 public class OrderDetailDTO {
 
 	/*
-	 * orderDetailNum int PK 
-	 * orderNum varchar(50) PK 
-	 * pno varchar(200) 
-	 * productCnt int
-	 * productPrice int 
-	 * paymentStatus varchar(10)
+	 * orderDetailNum int PK orderNum varchar(50) PK pno varchar(200) productCnt int
+	 * productPrice int paymentStatus varchar(10)
 	 */
 
 	private int orderDetailNum;
@@ -17,16 +17,14 @@ public class OrderDetailDTO {
 	private int productCnt;
 	private int productPrice;
 	private String paymentStatus;
-	
-	public OrderDetailDTO() {
-		// TODO Auto-generated constructor stub
-	}
 
-	
-	//Generate Constructor using Fields (생성자생성)
+	public OrderDetailDTO() {
+	}
+	// Generate Constructor using Fields (생성자생성)
+
 	public OrderDetailDTO(int orderDetailNum, String orderNum, String pno, int productCnt, int productPrice,
 			String paymentStatus) {
-		super();
+
 		this.orderDetailNum = orderDetailNum;
 		this.orderNum = orderNum;
 		this.pno = pno;
@@ -83,12 +81,11 @@ public class OrderDetailDTO {
 		this.paymentStatus = paymentStatus;
 	}
 
-
 	@Override
 	public String toString() {
 		return "OrderDetailDTO [orderDetailNum=" + orderDetailNum + ", orderNum=" + orderNum + ", pno=" + pno
 				+ ", productCnt=" + productCnt + ", productPrice=" + productPrice + ", paymentStatus=" + paymentStatus
 				+ "]";
 	}
-	
+
 }

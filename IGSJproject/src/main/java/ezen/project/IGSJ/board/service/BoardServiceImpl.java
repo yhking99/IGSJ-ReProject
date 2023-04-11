@@ -42,8 +42,26 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public BoardDTO noticeView(int bno) throws Exception {
 		
-		logger.info("vue에서 넘어온 {} 번 게시글 조회", bno);
+		logger.info("vue에서 넘어온 {} 번 게시글 조회 SERVICE", bno);
 		
 		return boardDAO.noticeView(bno);
+	}
+	
+	// 공지사항 수정하기
+	@Override
+	public int noticeModify(BoardDTO boardDTO) throws Exception {
+		
+		logger.info("{} 번 공지사항 수정 SERVICE", boardDTO.getBno());
+		
+		return boardDAO.noticeModify(boardDTO);
+	}
+	
+	// 공지사항 삭제하기
+	@Override
+	public int noticeDel(int bno) throws Exception {
+		
+		logger.info("{} 번 공지사항 삭제 SERVICE", bno);
+		
+		return boardDAO.noticeDel(bno);
 	}
 }
