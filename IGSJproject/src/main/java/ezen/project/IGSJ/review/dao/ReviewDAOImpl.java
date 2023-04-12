@@ -13,7 +13,7 @@ import ezen.project.IGSJ.review.dto.ReviewDTO;
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {
 
-	@Autowired
+	@Autowired(required = false)
 	private SqlSession sqlSession;
 
 	private static final String NAME_SPACE = "mappers.reviewMapper";
