@@ -21,7 +21,7 @@ public class ReviewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private ReviewService reviewService;
 
 	// 리뷰 목록 불러오기

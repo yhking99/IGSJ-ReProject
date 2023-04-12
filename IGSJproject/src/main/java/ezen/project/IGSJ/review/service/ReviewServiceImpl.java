@@ -13,7 +13,7 @@ import ezen.project.IGSJ.review.dto.ReviewDTO;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-	@Autowired
+	@Autowired(required = false)
 	private ReviewDAO reviewDAO;
 
 	private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
