@@ -19,62 +19,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 -->
 <style>
-/*헤더*/
-* {
-	margin: 0;
-}
-
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	height: 30px;
-	background: black;
-	padding: 20px;
-}
-
-.header_container {
-	display: flex;
-	justify-content: left;
-	align-items: center;
-	padding: 0;
-}
-
-.logo span {
-	color: white;
-	font-size: 40px;
-	margin-right: 20px;
-	text-decoration: none;
-}
-
-.login_info p {
-	color: white;
-	font-size: 20px;
-	margin-left: 20px;
-	text-decoration: none;
-}
-
-.menu {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-right: 40px;
-}
-
-.menu ul {
-	list-style: none;
-	padding-left: 30px;
-}
-
-.menu a {
-	text-decoration: none;
-	color: white;
-	font-size: 16px;
-	font-weight: bold;
-	cursor: pointer;
-}
-
 /*상품목록*/
 span {
 	padding: 10px;
@@ -133,6 +77,9 @@ span {
 .paging {
 	margin-top: 20px;
 }
+.paging span{
+	padding: 10px;
+}
 
 .paging b {
 	font-size: 22px;
@@ -189,29 +136,7 @@ span {
 </style>
 </head>
 <body>
-	<!-- 헤더 -->
-	<div class="header">
-		<div class="header_container">
-			<div class="logo">
-				<span>IGSJ</span>
-			</div>
-			<div class="login_info">
-				<p>판매자 seller 님이 로그인중입니다.</p>
-			</div>
-		</div>
-		<div class="menu">
-			<ul>
-				<li><a href="/seller/productlist?pageNum=1">상품목록</a></li>
-			</ul>
-			<ul>
-				<li><a href="#">아직미정</a></li>
-			</ul>
-			<ul>
-				<li><a href="#">아직미정</a></li>
-			</ul>
-		</div>
-	</div>
-
+	<jsp:include page="../pageIngredient/header.jsp"></jsp:include>
 	<!-- 상품 목록 -->
 	<div class="container" align="center">
 		<div class="listWrap">
@@ -266,9 +191,9 @@ span {
 				</tbody>
 			</table>
 
+			<!-- 페이징 시작 -->
 			<div>
 				<div class="paging" align="center">
-					<!-- 페이징 시작 -->
 					<%
 					PageIngredient pageIngredient = (PageIngredient) request.getAttribute("page");
 
