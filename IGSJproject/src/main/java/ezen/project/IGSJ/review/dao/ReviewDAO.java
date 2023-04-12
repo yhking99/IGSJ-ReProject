@@ -7,7 +7,7 @@ import ezen.project.IGSJ.review.dto.ReviewDTO;
 public interface ReviewDAO {
 
 	// 리뷰 목록 불러오기
-	public List<ReviewDTO> getReviewList() throws Exception;
+	public List<ReviewDTO> getReviewList(String pno) throws Exception;
 
 	// 리뷰 작성하기
 	public int writeReview(ReviewDTO reviewDTO) throws Exception;

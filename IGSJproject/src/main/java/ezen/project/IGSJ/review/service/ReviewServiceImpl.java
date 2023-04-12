@@ -20,11 +20,11 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// 리뷰 목록 불러오기
 	@Override
-	public List<ReviewDTO> getReviewList() throws Exception {
-
+	public List<ReviewDTO> getReviewList(String pno) throws Exception {
+		
 		logger.info("리뷰 목록 불러오기 service");
 
-		return reviewDAO.getReviewList();
+		return reviewDAO.getReviewList(pno);
 	}
 
 	// 리뷰 작성하기

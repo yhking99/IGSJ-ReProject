@@ -5,9 +5,10 @@
 	<!-- rvno pno rvContent rvWriter rvRegDate -->
 
 	<!-- 리뷰 목록 불러오기 -->
-	<select id="getReviewList" resultType="ezen.project.IGSJ.review.dto.ReviewDTO">
+	<select id="getReviewList" parameterType="String" resultType="ezen.project.IGSJ.review.dto.ReviewDTO">
 		select *
 		from ReviewDTO
+		where pno = #{pno}
 	</select>
 
 	<!-- 리뷰 작성하기 -->

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,11 +27,11 @@ public class ReviewController {
 	// 리뷰 목록 불러오기
 	@ResponseBody
 	@RequestMapping
-	public List<ReviewDTO> getReviewList() throws Exception {
+	public List<ReviewDTO> getReviewList(@PathVariable String pno) throws Exception {
 
 		logger.info("리뷰 목록 불러오기 controller");
 
-		List<ReviewDTO> getReviewList = reviewService.getReviewList();
+		List<ReviewDTO> getReviewList = reviewService.getReviewList(pno);
 
 		return getReviewList;
 
