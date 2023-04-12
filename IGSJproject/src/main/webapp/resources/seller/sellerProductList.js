@@ -51,7 +51,7 @@ function searchingActivate() {
 	
 	/* select 태그의 value인 searchType에 관한 option태그의 값과
 	input태그에 들어간 keyword 값을 쿼리스트링으로 보내 첫페이지를 출력한다. */
-	location.href = "/admin/productlist?pageNum=1" + "&searchType="
+	location.href = "/seller/productlist?pageNum=1" + "&searchType="
 		+ searchType + "&keyword=" + keyword;
 	
 }

@@ -1,23 +1,26 @@
 package ezen.project.IGSJ.order.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import ezen.project.IGSJ.address.domain.MemberAddressDTO;
-import ezen.project.IGSJ.member.domain.MemberDTO;
 import ezen.project.IGSJ.order.domain.OrderDTO;
+import ezen.project.IGSJ.order.domain.OrderDetailDTO;
+import ezen.project.IGSJ.order.domain.PaymentDTO;
 import ezen.project.IGSJ.order.service.OrderService;
 
 @Controller("orderController")
@@ -29,85 +32,154 @@ public class OrderController {
 
 	@Autowired(required = false)
 	private OrderService orderService;
+	
 
 	// 주문 페이지 불러오기
+	@ResponseBody
 	@RequestMapping(value="/orderPage/{userId}", method=RequestMethod.GET)
 	public OrderDTO orderPage(@PathVariable("userId") String userId) throws Exception{
-		
+
 		logger.info("주문 페이지 불러오기 orderPage - Controller");
 		OrderDTO orderDTO = orderService.orderPage(userId);
-		
+
 		return orderDTO;
 	}
 
-	
-	/*
-	 * // 주문서 작성 페이지(OrderPage)
-	 * 
-	 * @RequestMapping(value = "/orderPage", method = RequestMethod.GET) public
-	 * String orderWritePage(HttpServletRequest req, String userId, MemberAddressDTO
-	 * memberAddressDTO, CartDTO cartDTO, Model model) throws Exception {
-	 * 
-	 * logger.info("주문서 작성 페이지 orderWritePage - OrderController");
-	 * 
-	 * 
-	 * MemberDTO memberLoginSession = (MemberDTO)
-	 * session.getAttribute("memberInfo");
-	 * 
-	 * if (memberLoginSession != null) { // 해당 아이디의 회원이름, 번호, 주소를 가져온다 // 해당 아이디의
-	 * 장바구니에 담긴 제품의 정보를 가져온다 MemberAddressDTO memberAddress =
-	 * orderService.memberAddress(memberLoginSession.getUserId());
-	 * 
-	 * cartDTO.setUserId(memberLoginSession.getUserId());
-	 * 
-	 * List<CartDTO> cartList = cartService.cartList(cartDTO);
-	 * 
-	 * model.addAttribute("cartList", cartList);
-	 * 
-	 * model.addAttribute("memberAddress", memberAddress);
-	 * 
-	 * return "/orderPage"; } else { return "/orderPage"; } }
-	 */
+	// 카트에 담긴 상품 정보 불러오기
+	@ResponseBody
+	@RequestMapping(value="/productOrderPage/{userId}", method=RequestMethod.GET)
+	public List<OrderDTO> productOrderPage(@PathVariable("userId") String userId) throws Exception {
 
-	
-	// 주문 내역 조회(OrderList)
-	@RequestMapping(value = "/orderList", method = RequestMethod.GET)
-	public void orderList(HttpServletRequest req, OrderDTO orderDTO, Model model) throws Exception {
-
-		// orderDTO에서 아이디에 해당하는 주문 목록(list)을 가져온다
-
-		logger.info("주문 내역 조회 orderList - orderController");
-
-		HttpSession session = req.getSession();
-
-		MemberDTO memberLoginSession = (MemberDTO) session.getAttribute("MemberInfo");
-
-		orderDTO.setUserId(memberLoginSession.getUserId());
-
-		List<OrderDTO> orderList = orderService.orderList(orderDTO);
-
-		model.addAttribute("orderList", orderList);
+		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - Controller");
+		return orderService.productOrderPage(userId);
 
 	}
 
-	/*
-	 * // 주문 상세 내역 조회
-	 * 
-	 * @RequestMapping(value="/orderDetail", method = RequestMethod.GET) public
-	 * String orderDetail( HttpServletRequest req, OrderDTO orderDTO ) throws
-	 * Exception{
-	 * 
-	 * logger.info("주문 상세 내역 조회 orderDetail - orderController");
-	 * 
-	 * HttpSession session = req.getSession();
-	 * 
-	 * MemberDTO memberLoginSession = (MemberDTO)
-	 * session.getAttribute("memberInfo");
-	 * 
-	 * orderDTO.setUserId(memberLoginSession.getUserId());
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	// 결제 하기
+	@ResponseBody
+	@RequestMapping(value="/orderNum", method=RequestMethod.POST)
+	public boolean pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
+		
+		logger.info("결제 하기 시작");
+
+		// OrderNum 부여
+		Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yymmdd");
+        String str = format.format(date);
+        int str2 = Integer.parseInt(str);
+
+		String rn = RandomStringUtils.randomNumeric(6);
+		int num6 = Integer.parseInt(rn);
+
+		orderDTO.setOrderNum(str2 + "_" + num6);
+		orderDetailDTO.setOrderNum(str2 + "_" + num6);
+
+		// OrderDetailNum 부여
+		String rnn = RandomStringUtils.randomNumeric(9);
+		int num9 = Integer.parseInt(rnn);
+
+		orderDetailDTO.setOrderDetailNum(str2 + num9);
+		paymentDTO.setOrderDetailNum(str2 + num9);
+		
+		String defaultDeliStatus = "배송 준비";
+		orderDetailDTO.setPaymentStatus(defaultDeliStatus);
+		
+		// PaymentNum 부여
+        paymentDTO.setPaymentNum(str2 + num6);
+
+        //paymentDTO
+        paymentDTO.setPaySet(orderDTO.getPaySet());
+        paymentDTO.setPayCompany(orderDTO.getPayCompany());
+        paymentDTO.setPayMoney(orderDTO.getPayMoney());
+        paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
+        paymentDTO.setPayBank(orderDTO.getPayBank());
+
+        boolean order = orderService.pay(orderDTO, orderDetailDTO, paymentDTO);
+        
+        if(order == true) {
+        	
+        	orderService.cartAllDelete(orderDTO);
+        	
+        	return true;
+        	
+        } else {
+        	
+        	return false; 
+        }
+        
+	}
+
+	// 주문내역조회페이지 불러오기
+	@ResponseBody
+	@RequestMapping(value="/orderListPage/{userId}" , method=RequestMethod.GET)
+	public List<OrderDTO> orderListPage(@PathVariable("userId") String userId) throws Exception{
+		logger.info("주문내역조회페이지 불러오기 orderListPage - Controller");
+		List<OrderDTO> orderDTO =  orderService.orderListPage(userId);
+		return orderDTO;
+	}
+
+	// 주문상세내역조회페이지 불러오기
+	@ResponseBody
+	@RequestMapping(value="/orderDetailPage", method=RequestMethod.GET)
+	public List<OrderDTO> orderDetailPage(@RequestParam String orderNum) throws Exception{
+
+		logger.info("주문상세내역조회페이지 불러오기 orderDetailPage - Controller");
+		List<OrderDTO> order = new ArrayList<>();
+		order = orderService.orderDetailPage(orderNum);
+		return order;
+
+	}
+	
+	//주문상세내역조회페이지(selelctOne) 불러오기
+	   @ResponseBody
+	   @RequestMapping(value = "/orderDetailOne", method = RequestMethod.GET)
+	   public OrderDTO orderDetailOne(@RequestParam String orderNum) throws Exception {
+
+	      logger.info("주문상세내역조회페이지(selectOne) 불러오기 orderDetailOne - Controller", orderNum);
+
+	      return orderService.orderDetailOne(orderNum);
+	   }
+
+	// 결제완료페이지 불러오기
+	@ResponseBody
+	@RequestMapping(value="/orderFinishPage", method=RequestMethod.GET)
+	public OrderDTO orderFinishPage(@RequestParam String orderNum) throws Exception{
+
+		logger.info("결제완료페이지 불러오기 orderFinishPage - Controller");
+		OrderDTO orderDTO = orderService.orderFinishPage(orderNum);
+		return orderDTO;
+	}
+
+	// 카트에 담긴 상품 정보 불러오기
+//		@ResponseBody
+//		@RequestMapping(value="/productOrderPage/{userId}", method=RequestMethod.GET)
+//		public List<OrderDTO> productOrderPage(@PathVariable("userId") String userId) throws Exception {
+//
+//			logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - Controller");
+//			return orderService.productOrderPage(userId);
+//
+//		}
+
+
+//	// orderDetailNum 만들기
+//		@ResponseBody
+//		@RequestMapping(value="/orderDetailNum", method=RequestMethod.POST)
+//		public String writeProductInfo(OrderDetailDTO orderDetailDTO) throws Exception{
+//
+//			Date date = new Date();
+//	        SimpleDateFormat format = new SimpleDateFormat("yymmdd");
+//	        String str = format.format(date);
+//	        int str2 = Integer.parseInt(str);
+//
+//			String rnn = RandomStringUtils.randomNumeric(10);
+//			int num10 = Integer.parseInt(rnn);
+//
+//			orderDetailDTO.setOrderDetailNum(str2 + num10);
+//
+//			return "";
+//		}
+
+
 }
+
+

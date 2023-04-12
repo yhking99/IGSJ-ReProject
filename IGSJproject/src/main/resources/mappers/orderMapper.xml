@@ -2,79 +2,132 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.orderMapper">
 
-	<resultMap type="ezen.project.IGSJ.order.domain.OrderDTO" id="mapping_orderDTO">
-		<result property="userId" column="userId"/>
-		<result property="userName" column="userName"/>
-		<result property="userPhoneNumber" column="userPhoneNumber"/>
-		<result property="postAddress" column="postAddress"/>
-		<result property="address" column="address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-		<result property="detailAddress" column="detailAddress" jdbcType="VARCHAR" javaType="java.lang.String"/>
-	</resultMap>
 	<!-- 주문 페이지 불러오기 -->
-	<!-- 1.배송지정보에 회원테이블(MemberDTO),회원주소테이블(MemberAddressDTO - userID로) 가져오기 
-		[아이디(userId), 이름(userName), 전화번호(userPhoneNumber), 우편번호(postAddress), 주소(address), 
-		상세주소(detailAddress)] -->
-	<select id="getOrderPage"
-		resultMap="mapping_orderDTO"
-		parameterType="String"
-		resultType="hashmap"
-		>
-		SELECT me.userId, userName, userPhoneNumber, postAddress, address, detailAddress
-		FROM MemberDTO me, MemberAddressDTO ma
-		WHERE me.userId = ma.userId
-		AND me.userId = #{userId}
-	</select>
+	<!-- <select id="getOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO"> SELECT userId, userName, userPhoneNumber FROM MemberDTO me WHERE me.userId = #{userId} </select> -->
 
-<!-- 	<select id="getOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
-		select me.userId, userName, userPhoneNumber, postAddress,
-		address, detailAddress
+	<!-- 주문 페이지 불러오기 -->
+	<select id="getOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
+		select me.userId, userName, userPhoneNumber, postAddress, address, detailAddress
 		From MemberDTO me
 		inner join MemberAddressDTO ma
 		on me.userId = ma.userId
 		where me.userId = #{userId}
-	</select> -->
+	</select>
 
+	<!-- 카트에 담긴 상품 정보 불러오기 -->
+	<select id="getProductOrderPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO" parameterType="String">
+		select pd.pno, storedFileRootName, product_name, product_price, productCnt
+		from CartDTO cd
+		inner join ProductDTO pd
+		on cd.pno = pd.pno
+		join ProductFileDTO pfd
+		on cd.pno = pfd.pno
+		where cd.userId = #{userId}
+	</select>
 
-
-	<!-- 주문 등록 -->
-	<insert id="orderInsert">
-		INSERT INTO OrderDTO
-		(orderNum, userId, orderDate,
-		postAddress, detailAddress, recipient,
-		recipientPhone)
-		VALUES
-		(#{orderNum}, #{userId}, NOW(), #{postAddress},
-		#{detailAddress},
-		#{recipient}, #{recipientPhone},)
+	<!-- 수령인정보 등록하기(orderDTO) -->
+	<insert id="writeRecipientInfo" parameterType="ezen.project.IGSJ.order.domain.OrderDTO">
+		INSERT INTO OrderDTO(orderNum, userId, order_date, post_address, detail_address, detail_address2, recipient, recipient_phone)
+		VALUES (#{orderNum}, #{userId}, current_timestamp(), #{post_address}, #{detail_address}, #{detail_address2}, #{recipient}, #{recipient_phone})
 	</insert>
 
-	<!-- 주문 상세 등록 --><!-- orderDetailNum 어케해야하지... -->
-	<insert id="orderDetailInsert">
-		INSERT INTO OrderDetailDTO
-		(orderNum, pno, productCnt,
-		productPrice, paymentStatus)
-		VALUES (#{orderNum},
-		#{pno}, #{productCnt},
-		#{productPrice}, #{paymentStatus})
+	<!-- 주문제품정보 등록하기(orderDetailDTO) -->
+	<insert id="writeProductInfo" parameterType="ezen.project.IGSJ.order.domain.OrderDetailDTO">
+		INSERT INTO OrderDetailDTO(orderNum, orderDetailNum, pno, productCnt, productPrice, paymentStatus)
+		VALUES (#{orderNum}, #{orderDetailNum},#{pno}, #{productCnt}, #{productPrice}, '결제완료')
 	</insert>
 
+	<!-- 결제정보 등록하기(paymentDTO) -->
+	<insert id="writePaymentInfo" parameterType="ezen.project.IGSJ.order.domain.PaymentDTO">
+		INSERT INTO PaymentDTO (orderDetailNum, paymentNum, paySet, payCompany, payMoney, payRegDate, payBank)
+		VALUES (#{orderDetailNum}, #{paymentNum}, #{paySet}, #{payCompany}, #{payMoney}, current_timestamp(), #{payBank});
+	</insert>
 
+	<!-- 주문내역조회페이지 불러오기 -->
+	<select id="getOrderListPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO" parameterType="String">
+		SELECT od.orderNum, product_name, storedFileRootName, order_date, product_price, paymentStatus, pdd.pno
+		FROM OrderDetailDTO odd
+		INNER JOIN OrderDTO od
+		on odd.orderNum = od.orderNum
+		join ProductDTO pdd
+		on odd.pno = pdd.pno
+		join ProductFileDTO pfd
+		on odd.pno = pfd.pno
+		where od.userId = #{userId};
+	</select>
 
-	<!-- 2.상품정보에 장바구니테이블(CartDTO) 가져오기 [제품이름(product_name), 제품주문수량(productCnt), 
-		제품가격(product_price)] -->
+	<!-- 주문상세내역조회페이지 불러오기 -->
+	<select id="getOrderDetailPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
+		SELECT odd.pno, od.orderNum, order_date, storedFileRootName, product_name, product_price, paymentStatus, recipient, recipient_phone, post_address, detail_address, detail_address2, payMoney, paySet
+		FROM OrderDTO od
+		INNER join OrderDetailDTO odd
+		on od.orderNum = odd.orderNum
+		join ProductDTO pd
+		on odd.pno = pd.pno
+		join ProductFileDTO pfd
+		on pd.pno = pfd.pno
+		join PaymentDTO pmd
+		on odd.orderDetailNum = pmd.orderDetailNum
+		Where od.orderNum = #{orderNum}
+	</select>
+	
+	<!-- 주문 상세 내역 조회페이지(selectOne) 불러오기 -->
+   <select id = "orderDetailOne" resultType = "ezen.project.IGSJ.order.domain.OrderDTO">
 
-	<!-- 3.결제버튼 눌렀을 때 (paymentMapper) -->
+      SELECT   odd.pno, od.orderNum, order_date, storedFileRootName, product_name, product_price, paymentStatus, recipient, recipient_phone, post_address, detail_address, detail_address2, payMoney, paySet
+      FROM   OrderDTO od
+      INNER join   OrderDetailDTO odd
+      on      od.orderNum = odd.orderNum
+      join   ProductDTO pd
+      on      odd.pno = pd.pno
+      join   ProductFileDTO pfd
+      on      pd.pno = pfd.pno
+      join   PaymentDTO pmd
+      on      odd.orderDetailNum = pmd.orderDetailNum
+      Where   od.orderNum = #{orderNum}
+      GROUP BY od.orderNum;
 
+    </select>
 
+	<!-- 결제완료페이지 불러오기 -->
+	<select id="getOrderFinishPage" resultType="ezen.project.IGSJ.order.domain.OrderDTO">
+		SELECT od.orderNum, recipient, recipient_phone, od.post_address, detail_address, detail_address2, productCnt, paySet, payMoney, pdd.pno, product_name, product_price, storedFileRootName
+		FROM OrderDTO od
+		INNER JOIN OrderDetailDTO odd
+		ON od.orderNum = odd.orderNum
+		JOIN PaymentDTO pmd
+		ON pmd.orderDetailNum = odd.orderDetailNum
+		JOIN ProductDTO pdd
+		ON pdd.pno = odd.pno
+		JOIN ProductFileDTO pfd
+		ON pdd.pno = pfd.pno
+		WHERE od.orderNum = #{orderNum};
+	</select>
 
-	<!-- orderFinish -->
-	<!-- 결제정보에 개인결제정보테이블(paymentDTO) 가져오기 [결제방법(payset), 결제총금액(payMoney)] -->
+	<insert id="payOrder" parameterType="ezen.project.IGSJ.order.domain.OrderDTO">
+		INSERT INTO OrderDTO (orderNum, userId, post_address, detail_address, detail_address2, recipient, recipient_phone)
+		VALUES (#{orderNum}, #{userId}, #{post_address}, #{detail_address}, #{detail_address2}, #{recipient}, #{recipient_phone})
+	</insert>
 
-	<!-- 상품정보에 결제후상품정보출력테이블(OrderDetailDTO)가져오기 [제품이름(product_name), 상품개수(productCnt), 
-		상품가격(product_price)] -->
+	<insert id="payOrderDetail" parameterType="ezen.project.IGSJ.order.domain.OrderDetailDTO">
 
-	<!-- 배송지정보에 배송정보테이블(PostInformationDTO)가져오기 [수령인(recipient), 수령인전화번호(recipient_phone), 
-		우편번호(post_address), 상세주소1(detail_address), 상세주소2(detail_address2)] -->
+		INSERT INTO OrderDetailDTO (orderDetailNum, orderNum, pno, productCnt, productPrice, paymentStatus)
+		VALUES (#{orderDetailNum}, #{orderNum}, #{pno}, #{productCnt}, #{productPrice}, #{paymentStatus})
 
+	</insert>
+
+	<insert id="payPayment" parameterType="ezen.project.IGSJ.order.domain.PaymentDTO">
+
+		INSERT INTO PaymentDTO (paymentNum, orderDetailNum, paySet, payCompany, payMoney, payBank)
+		VALUES (#{paymentNum}, #{orderDetailNum}, #{paySet}, #{payCompany}, #{payMoney}, #{payBank})
+
+	</insert>
+
+	<!-- 장바구니 전부 삭제 -->
+	<delete id="deleteAll" parameterType="ezen.project.IGSJ.order.domain.OrderDTO">
+		delete
+		from CartDTO
+		where userId = #{userId}
+	</delete>
 
 </mapper>

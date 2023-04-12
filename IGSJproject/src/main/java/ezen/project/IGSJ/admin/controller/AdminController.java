@@ -48,25 +48,27 @@ public class AdminController {
 
 	// 관리자 페이지 입장
 	@RequestMapping(value = "/admin/mainpage", method = RequestMethod.GET)
-	public void adminMainPage() throws Exception {
+	public void adminMainPage(HttpServletRequest req) throws Exception {
 
 		logger.info("관리자 페이지 입장");
 
 	}
-	
+
 	// 관리자 페이지 입장
 	@RequestMapping(value = "/admin/admindetail", method = RequestMethod.GET)
-	public void adminDetailPage() throws Exception {
-		
+	public void adminDetailPage(HttpServletRequest req) throws Exception {
+
 		logger.info("관리자 메뉴 페이지 입장");
-		
+
 	}
 
 	// 전체 회원 불러오기
 	@RequestMapping(value = "/admin/memberlist", method = RequestMethod.GET)
 	public void getAllUsers(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "userId") String searchType,
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+			PageIngredient page, 
+			Model model) throws Exception {
 
 		logger.info("관리자 페이지 - 회원 목록 출력 getAllUsers - controller");
 
@@ -150,7 +152,9 @@ public class AdminController {
 	@RequestMapping(value = "/admin/productlist", method = RequestMethod.GET)
 	public void getProductList(@RequestParam("pageNum") int pageNum,
 			@RequestParam(value = "searchType", required = false, defaultValue = "product_name") String searchType,
-			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, PageIngredient page, Model model) throws Exception {
+			@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, 
+			PageIngredient page, 
+			Model model) throws Exception {
 
 		logger.info("관리자 페이지 - 상품 목록 출력 getProductList - controller");
 
@@ -211,8 +215,8 @@ public class AdminController {
 
 	// 관리자 상품 정보 수정
 	@RequestMapping(value = "/admin/productmodify", method = RequestMethod.POST)
-	public String adminProductModify(ProductDTO productDTO, ProductFileDTO productFile,
-			@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+	public String adminProductModify(ProductDTO productDTO, ProductFileDTO productFile, @RequestParam("file") MultipartFile file,
+			HttpServletRequest request) throws Exception {
 
 		logger.info("관리자 상품 정보 수정 시작 controller");
 		AwsS3 awsS3 = AwsS3.getInstance();
@@ -224,10 +228,10 @@ public class AdminController {
 			InputStream is = file.getInputStream();
 
 			s3ObjectUrl = awsS3.upload(is, fileName, file.getContentType(), file.getSize());
-			
+
 			logger.info("파일 업로드 위치 : {}", s3ObjectUrl);
-			
-			if( productDTO.getOriginalFileName() != s3ObjectUrl) {
+
+			if (productDTO.getOriginalFileName() != s3ObjectUrl) {
 				awsS3.delete(productDTO.getOriginalFileName());
 			}
 			productFile.setOriginalFileName(fileName);
@@ -237,60 +241,53 @@ public class AdminController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		logger.info("제품 이미지까지 수정 완료");
 
+		logger.info("제품 이미지 수정 완료");
 
 		return "redirect:/admin/productDetail?pno=" + productDTO.getPno();
 	}
-	
+
 	// 관리자, 판매자 로그인 페이지 진입
-	@RequestMapping(value = "/admin/managerLoginPage", method = RequestMethod.GET)
-	public String managerLoginPage() throws Exception {
-		
+	@RequestMapping(value = "/managerLoginPage", method = RequestMethod.GET)
+	public void managerLoginPage() throws Exception {
+
 		logger.info("매니저 로그인 페이지 접속");
-		
-		return "/admin/managerLoginPage";
+
 	}
-	
+
 	// 관리자, 판매자 로그인 메소드
-	@RequestMapping(value = "/admin/managerLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "/managerLogin", method = RequestMethod.POST)
 	public String managerLogin(MemberDTO memberDTO, RedirectAttributes rda, HttpServletRequest req) throws Exception {
-			
-		logger.info("매니저 로그인 페이지 접속");
+
+		logger.info("매니저 로그인 페이지 접속 : {}", memberDTO.getUserId());
 		
-		// 세션 객체 생성
-		HttpSession managerSession = req.getSession();
-		
-		MemberDTO manager = adminService.managerLogin(memberDTO);
-		
-		if (manager == null) {
-			
+		MemberDTO member = adminService.managerLogin(memberDTO);
+		HttpSession session = req.getSession();
+
+		if (member == null) {
+
 			rda.addFlashAttribute("managerLoginFalse", false);
 			logger.info("관리자 로그인 실패");
-			
+
 			return "redirect:/admin/managerLoginPage";
-			
+
 		} else {
-
-			if (manager.getUserVerify() == 5) {
-				managerSession.setAttribute("managerInfo", manager);
-				logger.info("판매 인증 회원 로그인 : {}", managerSession.getAttribute("managerInfo"));
-
-			} else if (manager.getUserVerify() == 128) {
-				managerSession.setAttribute("managerInfo", manager);
-				logger.info("관리자 로그인 : {}", managerSession.getAttribute("managerInfo"));
-
+			if (member.getUserVerify() == 128) {
+				session.setAttribute("member", member);
+				return "redirect:/admin/mainpage";
+				
+			} else if (member.getUserVerify() == 5) {
+				session.setAttribute("member", member);
+				return "redirect:/seller/mainpage";
 			} else {
 				logger.info("일반 회원 로그인 차단");
-				
-				rda.addFlashAttribute("blockNomalMember" , false);
-				
-				return "redirect:/admin/managerLoginPage";
+
+				rda.addFlashAttribute("blockNomalMember", false);
+
+				return "redirect:/";
 			}
+
 		}
-		
-		return "/admin/mainpage";
 	}
 
 }
