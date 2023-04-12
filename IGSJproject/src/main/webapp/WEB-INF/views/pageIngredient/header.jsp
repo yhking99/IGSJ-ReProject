@@ -91,6 +91,9 @@
 			<ul>
 				<li><a href="/seller/productlist?pageNum=1">상품목록</a></li>
 			</ul>
+			<ul>
+				<li><a href="/seller/orderlist">주문배송조회</a></li>
+			</ul>
 			</div>
 		</c:when>
 		<c:otherwise>

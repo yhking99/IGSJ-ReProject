@@ -308,4 +308,10 @@ public class SellerController {
 		return true;
 	}
 
+	// 주문배송조회페이지
+	@RequestMapping(value="/orderlist", method= RequestMethod.GET)
+	public void getOrder() throws Exception{
+		
+		
+	}
 }
