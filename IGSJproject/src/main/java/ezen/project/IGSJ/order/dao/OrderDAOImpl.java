@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
 import ezen.project.IGSJ.order.domain.PaymentDTO;
-import ezen.project.IGSJ.product.domain.ProductDTO;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO {
@@ -38,6 +37,16 @@ public class OrderDAOImpl implements OrderDAO {
 		logger.info("카트에 담긴 상품 정보 불러오기 productOrderPage - OrderDAO");
 		return sqlSession.selectList(NAME_SPACE + ".getProductOrderPage", userId);
 	}
+	
+	// 주문상세내역조회페이지(selelctOne) 불러오기
+	   @Override
+	   public OrderDTO orderDetailOne(String orderNum) throws Exception {
+
+	      logger.info("주문상세내역조회페이지(selelctOne) 불러오기 orderDetailOne - OrderDAO");
+
+	      return sqlSession.selectOne(NAME_SPACE + ".orderDetailOne", orderNum);
+	   }
+	
 
 	// 주문정보 등록하기(수령인정보)
 	@Override
@@ -47,16 +56,20 @@ public class OrderDAOImpl implements OrderDAO {
 
 		for (OrderDetailDTO orderDetail : orderDetails) {
 
-			int result2 = sqlSession.insert(NAME_SPACE + ".payOrderDetail", orderDetail);
+			sqlSession.insert(NAME_SPACE + ".payOrderDetail", orderDetail);
 		}
 
 		int result3 = sqlSession.insert(NAME_SPACE + ".payPayment", paymentDTO);
 
 		if (result1 == 1 && result3 == 1) {
-			return true;
-		} else
-			return false;
 
+			return true;
+
+		} else {
+
+			return false;
+			
+		}
 	}
 
 	// 주문내역조회페이지 불러오기
@@ -86,7 +99,7 @@ public class OrderDAOImpl implements OrderDAO {
 	// 결제완료 후 장바구니 전체 삭제
 	@Override
 	public int cartAllDelete(OrderDTO orderDTO) throws Exception {
-		return sqlSession.delete(NAME_SPACE+".deleteAll",orderDTO);
+		return sqlSession.delete(NAME_SPACE + ".deleteAll", orderDTO);
 	}
 
 }

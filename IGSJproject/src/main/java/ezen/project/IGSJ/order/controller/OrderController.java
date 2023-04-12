@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ezen.project.IGSJ.cart.service.CartService;
 import ezen.project.IGSJ.order.domain.OrderDTO;
 import ezen.project.IGSJ.order.domain.OrderDetailDTO;
 import ezen.project.IGSJ.order.domain.PaymentDTO;
 import ezen.project.IGSJ.order.service.OrderService;
-import ezen.project.IGSJ.product.domain.ProductDTO;
 
 @Controller("orderController")
 @CrossOrigin(origins = "http://localhost:8080")
@@ -62,8 +60,8 @@ public class OrderController {
 	@RequestMapping(value="/orderNum", method=RequestMethod.POST)
 	public boolean pay(@RequestBody OrderDTO orderDTO, OrderDetailDTO orderDetailDTO ,PaymentDTO paymentDTO) throws Exception{
 		
-		logger.info(" 결제 하기 시작");
-		logger.info("fdsjajksnklcvbjkadsfjklewewrjkldsfadsfuioewmnkladsfnkladsf ="+orderDTO.getPaySet());
+		logger.info("결제 하기 시작");
+
 		// OrderNum 부여
 		Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yymmdd");
@@ -83,14 +81,14 @@ public class OrderController {
 		orderDetailDTO.setOrderDetailNum(str2 + num9);
 		paymentDTO.setOrderDetailNum(str2 + num9);
 		
-		orderDetailDTO.setPaymentStatus("배송 준비");
+		String defaultDeliStatus = "배송 준비";
+		orderDetailDTO.setPaymentStatus(defaultDeliStatus);
 		
 		// PaymentNum 부여
         paymentDTO.setPaymentNum(str2 + num6);
 
         //paymentDTO
         paymentDTO.setPaySet(orderDTO.getPaySet());
-        logger.info("fdsklajfdsiouiormnmndsfauioewfjkadsfjkldsfjkl="+paymentDTO.getPaySet());
         paymentDTO.setPayCompany(orderDTO.getPayCompany());
         paymentDTO.setPayMoney(orderDTO.getPayMoney());
         paymentDTO.setPayRegDate(orderDTO.getPayRegDate());
@@ -103,6 +101,7 @@ public class OrderController {
         	orderService.cartAllDelete(orderDTO);
         	
         	return true;
+        	
         } else {
         	
         	return false; 
@@ -130,6 +129,16 @@ public class OrderController {
 		return order;
 
 	}
+	
+	//주문상세내역조회페이지(selelctOne) 불러오기
+	   @ResponseBody
+	   @RequestMapping(value = "/orderDetailOne", method = RequestMethod.GET)
+	   public OrderDTO orderDetailOne(@RequestParam String orderNum) throws Exception {
+
+	      logger.info("주문상세내역조회페이지(selectOne) 불러오기 orderDetailOne - Controller", orderNum);
+
+	      return orderService.orderDetailOne(orderNum);
+	   }
 
 	// 결제완료페이지 불러오기
 	@ResponseBody
