@@ -75,7 +75,10 @@ public class SellerController {
 
 	// aws s3 상품 업로드
 	@RequestMapping(value = "/productRegister", method = RequestMethod.POST)
-	public String postRegister(ProductDTO product, ProductFileDTO productFile, @RequestParam("product_img") MultipartFile file,
+	public String postRegister(
+			ProductDTO product, 
+			ProductFileDTO productFile, 
+			@RequestParam("product_img") MultipartFile file,
 			HttpServletRequest request) throws Exception {
 
 		AwsS3 awsS3 = AwsS3.getInstance();
