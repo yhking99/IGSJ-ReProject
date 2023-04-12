@@ -67,6 +67,16 @@ public class OrderServiceImpl implements OrderService {
 		logger.info("주문내역조회페이지 불러오기 orderListPage - OrderService");
 		return orderDAO.orderListPage(userId);
 	}
+	
+	// 주문상세내역조회페이지(selelctOne) 불러오기
+	@Override
+	  public OrderDTO orderDetailOne(String orderNum) throws Exception {
+
+	    logger.info("주문상세내역조회페이지(selectOne) 불러오기 orderDetailOne - OrderService");
+
+	  return orderDAO.orderDetailOne(orderNum);
+	  }
+	
 
 	// 주문상세내역조회페이지 불러오기
 	@Override
