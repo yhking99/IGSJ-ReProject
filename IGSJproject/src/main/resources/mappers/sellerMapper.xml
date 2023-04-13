@@ -166,7 +166,7 @@
 		where product.userId = #{userId} 
 
 		order by orderdto.order_date <!-- 검색결과 가나다순 정리 -->
-		limit #{displayTotalContent} , #{pageContent}
+		limit #{pageContent} ,#{displayTotalContent}
 	
 	</select>
 	
