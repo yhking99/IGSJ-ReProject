@@ -145,7 +145,7 @@ span {
 			</table>
 
 			<!-- 페이징 시작 -->
-			<%-- <div>
+			 <div>
 				<div class="paging" align="center">
 					<%
 					PageIngredient pageIngredient = (PageIngredient) request.getAttribute("page");
@@ -156,7 +156,7 @@ span {
 					if (pageIngredient.isPrevPage() == true) {
 					%>
 					<span> <a
-						href="/seller/productlist?pageNum=<%=pageIngredient.getStartPage() - 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">&lt;</a>
+						href="/seller/orderlist?pageNum=<%=pageIngredient.getStartPage() - 1%>">&lt;</a>
 					</span>
 					<%
 					}
@@ -167,7 +167,7 @@ span {
 					if (selectedPageNum != i) {
 					%>
 					<span> <a id="notSelectedPage"
-						href="/seller/productlist?pageNum=<%=i%><%=pageIngredient.getSearchTypeAndKeyword()%>"><%=i%></a>
+						href="/seller/orderlist?pageNum=<%=i%>"><%=i%></a>
 					</span>
 					<%
 					} else if (selectedPageNum == i) {
@@ -182,7 +182,7 @@ span {
 					if (pageIngredient.isNextPage() == true) {
 					%>
 					<span> <a
-						href="/seller/productlist?pageNum=<%=pageIngredient.getEndPage() + 1%><%=pageIngredient.getSearchTypeAndKeyword()%>">&gt;</a>
+						href="/seller/orderlist?pageNum=<%=pageIngredient.getEndPage() + 1%>">&gt;</a>
 					</span>
 					<%
 					}
@@ -190,10 +190,9 @@ span {
 				</div>
 				<!-- 페이징 끝 -->
 				
-			</div> --%>
+			</div> 
 		</div>
 	
 	</div>
-	<script src="/resources/seller/sellerProductList.js"></script>
 </body>
 </html>
