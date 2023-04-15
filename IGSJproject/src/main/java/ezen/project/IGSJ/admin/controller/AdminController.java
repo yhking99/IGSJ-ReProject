@@ -73,7 +73,7 @@ public class AdminController {
 		logger.info("관리자 페이지 - 회원 목록 출력 검색타입: {} , 검색어 : {} ", searchType, keyword);
 
 		// 파라미터 순서 int contentNum , int maxPageNum, int selectContent
-		page = new PageIngredient(10, 10, 10);
+		page = new PageIngredient(7,7,7);
 
 		page.setPageNum(pageNum);
 		page.setSearchType(searchType);
@@ -294,7 +294,7 @@ public class AdminController {
 
 		session.invalidate();
 
-		return "/";
+		return "redirect:/";
 	}
 
 }
