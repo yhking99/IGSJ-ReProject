@@ -287,7 +287,7 @@ public class AdminController {
 	}
 
 	// 로그아웃 로직
-	@RequestMapping(value = "/member/memberLogout", method = RequestMethod.GET)
+	@RequestMapping(value = "/manager/managerLogout", method = RequestMethod.GET)
 	public String memberLogout(HttpSession session) throws Exception {
 
 		logger.info("유저 로그아웃, 로그아웃 계정 : {}", session.getAttribute("member").toString());
