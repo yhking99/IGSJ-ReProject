@@ -92,6 +92,9 @@
 				<li><a href="/seller/productlist?pageNum=1">상품목록</a></li>
 			</ul>
 			<ul>
+				<li><a href="/seller/productRegister">상품등록</a></li>
+			</ul>
+			<ul>
 				<li><a href="/seller/orderlist?pageNum=1">주문배송조회</a></li>
 			</ul>
 			</div>
